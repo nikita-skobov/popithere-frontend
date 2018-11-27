@@ -9,10 +9,19 @@ export default class Canvas extends Component {
     this.brain.store('Canvas', this)
   }
 
+  componentDidMount() {
+    const size = this.leaflet.offsetHeight
+    try {
+      this.brain.tell.Buttons.adjust(size, false)
+    } catch (e) {
+      // do nothing
+    }
+  }
+
   render() {
     return (
       <div className="pos">
-        <div className="square">
+        <div ref={(leaflet) => { this.leaflet = leaflet }} className="square">
           <canvas className="canvas" />
         </div>
       </div>
