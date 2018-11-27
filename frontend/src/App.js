@@ -52,8 +52,13 @@ export default class App extends Component {
       )
     }
 
-    return <div />
     // else, render for mobile/tablet
+    return (
+      <div className="parent">
+        <div className="square-holder-p" />
+        <div className="sidebar-p" />
+      </div>
+    )
   }
 }
 
