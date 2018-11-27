@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 import { Container, Row, Col } from 'reactstrap'
+import Square from './components/Square'
 
 export default class App extends Component {
   constructor(props) {
@@ -46,7 +47,9 @@ export default class App extends Component {
       // render for desktop
       return (
         <div className="parent">
-          <div className="square-holder" />
+          <div className="square-holder">
+            <Square brain={this.brain} />
+          </div>
           <div className="sidebar" />
         </div>
       )
