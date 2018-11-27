@@ -11,10 +11,8 @@ export default class Buttons extends Component {
 
   render() {
     return (
-      <div className="pos">
-        <div className="square">
-          <canvas className="canvas" />
-        </div>
+      <div>
+        dsadsa
       </div>
     )
   }
