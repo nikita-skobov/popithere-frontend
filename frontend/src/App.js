@@ -8,8 +8,6 @@ export default class App extends Component {
   constructor(props) {
     super(props)
     this.brain = props.brain
-    this.sideBarMinWidth = props.sideBarMinWidth
-    this.sideBarPercent = props.sideBarPercent
 
     const iw = window.innerWidth
     const ih = window.innerHeight
@@ -59,12 +57,6 @@ export default class App extends Component {
   }
 }
 
-App.defaultProps = {
-  sideBarMinWidth: 300,
-}
-
 App.propTypes = {
   brain: PropTypes.instanceOf(Object).isRequired,
-  sideBarMinWidth: PropTypes.number,
-  sideBarPercent: PropTypes.number.isRequired,
 }
