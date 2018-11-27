@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 import Canvas from './components/Canvas'
+import Buttons from './components/Buttons'
 
 export default class App extends Component {
   constructor(props) {
@@ -39,6 +40,7 @@ export default class App extends Component {
   render() {
     return [
       <Canvas brain={this.brain} />,
+      <Buttons brain={this.brain} />,
     ]
   }
 }
