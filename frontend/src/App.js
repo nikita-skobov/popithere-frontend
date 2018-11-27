@@ -13,9 +13,7 @@ export default class App extends Component {
     const iw = window.innerWidth
     const ih = window.innerHeight
 
-    this.state = {
-      orientation: iw > ih ? 'landscape' : 'portrait',
-    }
+    this.orientation = iw > ih ? 'landscape' : 'portrait'
 
     this.brain.store('App', this)
 
@@ -25,7 +23,7 @@ export default class App extends Component {
   shouldResize(iw, ih) {
     // inner width, inner height
     let should = false
-    let { orientation } = this.state
+    let { orientation } = this
     if (orientation === 'landscape' && iw < ih) {
       should = true
       orientation = 'portrait'
@@ -33,7 +31,8 @@ export default class App extends Component {
       should = true
       orientation = 'landscape'
     }
-    this.setState({ orientation })
+
+    this.orientation = orientation
     return should
   }
 
