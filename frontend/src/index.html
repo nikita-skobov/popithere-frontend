@@ -6,44 +6,27 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
   <style>
-    .parent {
-      width: 100vw;
-      height: 100vh;
+    html, body {
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
     }
     .pos {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 50%;
+      margin:0;
+      height:100vh;
+      display:flex;
+      flex-direction:column;
     }
     .square {
-      background-color: peachpuff;
-      height: 0;
-      padding-bottom: 100%;
-    }
-    .square-holder {
-      position: relative;
-      width: 70%;
-      height: 100%;
-      float: left;
-      background-color: red;
-    }
-    .sidebar {
-      float: left;
-      background-color: green;
-      width: 30%;
-      height: 100%;
-    }
-    .square-holder-p {
-      width: 100%;
-      height: 70%;
-      background-color: red;
-    }
-    .sidebar-p {
-      background-color: green;
-      width: 100%;
-      height: 30%;
+      width: calc(100vh);
+      max-width: 100vw;
+      max-height: 100vw;
+      flex: 1;
+      overflow: auto;
+      background: turquoise;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
   </style>
 </head>
