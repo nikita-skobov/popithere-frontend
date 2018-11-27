@@ -1,3 +1,4 @@
+/* global window */
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
@@ -10,8 +11,12 @@ export default class Buttons extends Component {
     this.buttonsOffset = props.buttonsOffset
     this.brain = props.brain
 
+    const iw = window.innerWidth
+    const ih = window.innerHeight
+
     this.state = {
       leftPx: 0,
+      orientation: iw > ih ? 'landscape' : 'portrait',
     }
 
     this.brain.store('Buttons', this)
@@ -20,19 +25,35 @@ export default class Buttons extends Component {
   }
 
   adjust(size, changePos) {
-    if (!changePos) {
-      const leftPx = size + (this.buttonsWidth / 2) + this.buttonsOffset
-      if (this.state.leftPx !== leftPx) {
-        this.setState({ leftPx })
-      }
+    if (changePos) {
+      let { orientation } = this.state
+      if (orientation === 'portrait') orientation = 'landscape'
+      else if (orientation === 'landscape') orientation = 'portrait'
+      this.setState({ orientation })
+    }
+    const leftPx = size + (this.buttonsWidth / 2) + this.buttonsOffset
+    if (this.state.leftPx !== leftPx) {
+      this.setState({ leftPx })
     }
   }
 
   render() {
     const { buttonsWidth } = this
-    const { leftPx } = this.state
+    const { leftPx, orientation } = this.state
+
+    if (orientation === 'landscape') {
+      return (
+        <div className="my-buttons" style={{ left: leftPx, width: buttonsWidth }}>
+          <Button block>Chat</Button>
+          <Button block>More</Button>
+          <Button block>3</Button>
+        </div>
+      )
+    }
+
+    // else, render for mobile
     return (
-      <div className="my-buttons" style={{ left: leftPx, width: buttonsWidth }}>
+      <div className="my-buttons-portrait" style={{ top: leftPx, height: buttonsWidth }}>
         <Button>Chat</Button>
         <Button>More</Button>
         <Button>3</Button>
