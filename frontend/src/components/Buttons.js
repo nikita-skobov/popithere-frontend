@@ -54,9 +54,9 @@ export default class Buttons extends Component {
     // else, render for mobile
     return (
       <div className="my-buttons-portrait" style={{ top: leftPx, height: buttonsWidth }}>
-        <Button>Chat</Button>
-        <Button>More</Button>
-        <Button>3</Button>
+        <Button className="mb">Chat</Button>
+        <Button className="mb">More</Button>
+        <Button className="mb">3</Button>
       </div>
     )
   }
