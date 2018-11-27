@@ -2,7 +2,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import { Container, Row, Col } from 'reactstrap'
+import Canvas from './components/Canvas'
 
 export default class App extends Component {
   constructor(props) {
@@ -17,7 +17,7 @@ export default class App extends Component {
     }
 
     this.brain.store('App', this)
-  
+
     this.shouldResize = this.shouldResize.bind(this)
   }
 
@@ -37,13 +37,9 @@ export default class App extends Component {
   }
 
   render() {
-    return (
-      <div className="pos">
-        <div className="square">
-          <canvas className="canvas" />
-        </div>
-      </div>
-    )
+    return [
+      <Canvas brain={this.brain} />,
+    ]
   }
 }
 
