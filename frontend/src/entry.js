@@ -27,4 +27,4 @@ window.addEventListener('resize', (e) => {
   }
 })
 
-ReactDOM.render(<App brain={brain} />, reactContainer)
+ReactDOM.render(<App brain={brain} sideBarPercent={0.3} />, reactContainer)
