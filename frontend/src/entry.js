@@ -6,4 +6,4 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 
 const reactContainer = document.getElementById('react-container')
 
-ReactDOM.render(<App name="mynamehere" />, reactContainer)
+ReactDOM.render(<App />, reactContainer)
