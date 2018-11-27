@@ -56,17 +56,6 @@ export default class App extends Component {
 
     return <div />
     // else, render for mobile/tablet
-
-    // return (
-    //   <Container fluid>
-    //     <Row>
-    //       <Col xs="5"> this 5 ay</Col>
-    //       <Col xs="auto">
-    //         <canvas width="50vw" height="50vw" />
-    //       </Col>
-    //     </Row>
-    //   </Container>
-    // )
   }
 }
 
