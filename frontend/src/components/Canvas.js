@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-export default class App extends Component {
+export default class Canvas extends Component {
   constructor(props) {
     super(props)
     this.brain = props.brain
@@ -20,6 +20,6 @@ export default class App extends Component {
   }
 }
 
-App.propTypes = {
+Canvas.propTypes = {
   brain: PropTypes.instanceOf(Object).isRequired,
 }
