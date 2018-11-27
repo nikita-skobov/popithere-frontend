@@ -17,14 +17,14 @@ const brain = (function brain() {
 }())
 
 window.addEventListener('resize', (e) => {
-  // try {
-  //   const ih = window.innerHeight
-  //   const iw = window.innerWidth
-  //   brain.ask.App.shouldResize(iw, ih)
-  // } catch (err) {
-  //   // do nothing, try again
-  //   // on next resize event
-  // }
+  try {
+    const ih = window.innerHeight
+    const iw = window.innerWidth
+    brain.ask.App.shouldResize(iw, ih)
+  } catch (err) {
+    // do nothing, try again
+    // on next resize event
+  }
 })
 
 ReactDOM.render(<App brain={brain} />, reactContainer)
