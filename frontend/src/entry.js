@@ -20,7 +20,14 @@ window.addEventListener('resize', (e) => {
   try {
     const ih = window.innerHeight
     const iw = window.innerWidth
-    brain.ask.App.shouldResize(iw, ih)
+    const size = brain.ask.Canvas.leaflet.offsetWidth
+    if (brain.ask.App.shouldResize(iw, ih)) {
+      console.log(brain.tell.Canvas.leaflet)
+      brain.tell.Buttons.adjust(size, true)
+    } else {
+      brain.tell.Buttons.adjust(size, false)
+    }
+    console.log()
   } catch (err) {
     // do nothing, try again
     // on next resize event
