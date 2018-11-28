@@ -24,17 +24,32 @@ export default class Buttons extends Component {
     this.adjust = this.adjust.bind(this)
   }
 
-  adjust(size, changePos) {
-    if (changePos) {
-      let { orientation } = this.state
-      if (orientation === 'portrait') orientation = 'landscape'
-      else if (orientation === 'landscape') orientation = 'portrait'
-      this.setState({ orientation })
+  moveButtons(orientation, size) {
+    if (orientation === 'landscape') {
+      const leftPx = size + (this.buttonsWidth / 2) + this.buttonsOffset
+      if (this.state.leftPx !== leftPx) {
+        // only set state if it is different from the last state
+        this.setState({ leftPx })
+      }
     }
-    const leftPx = size + (this.buttonsWidth / 2) + this.buttonsOffset
+    // else if orientation portrait
+    const leftPx = size + this.buttonsOffset
     if (this.state.leftPx !== leftPx) {
+      // only set state if it is different from the last state
       this.setState({ leftPx })
     }
+  }
+
+  adjust(size, changePos) {
+    let { orientation } = this.state
+    if (changePos) {
+      if (orientation === 'portrait') orientation = 'landscape'
+      else if (orientation === 'landscape') orientation = 'portrait'
+      this.setState({ orientation }, () => {
+        this.moveButtons(orientation, size)
+      })
+    }
+    this.moveButtons(orientation, size)
   }
 
   render() {
