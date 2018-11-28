@@ -8,14 +8,14 @@ export default class ChatBox extends Component {
     this.brain = props.brain
 
     this.brain.store('ChatBox', this)
-
-    this.onSubmit = this.onSubmit.bind(this)
   }
 
 
   render() {
     return (
-      <div />
+      <div className="input-margins chat-box">
+        fdsafdas
+      </div>
     )
   }
 }

@@ -67,6 +67,7 @@ export default class Chat extends Component {
       return (
         <div className="chat-l" style={{ left: leftPx, width }}>
           <ChatInput brain={this.brain} />
+          <ChatBox brain={this.brain} />
         </div>
       )
     }
