@@ -25,7 +25,7 @@ export default class Buttons extends Component {
   componentDidMount() {
     try {
       const size = this.brain.ask.Canvas.leaflet.offsetWidth
-      this.moveButtons(size)
+      this.adjust(size)
     } catch (e) {
       // do nothing
     }
@@ -36,16 +36,12 @@ export default class Buttons extends Component {
     this.setState({ open: !open })
   }
 
-  moveButtons(size) {
+  adjust(size) {
     const leftPx = size - this.btn.offsetWidth
     if (this.state.leftPx !== leftPx) {
       // only set state if it is different from the last state
       this.setState({ leftPx })
     }
-  }
-
-  adjust(size) {
-    this.moveButtons(size)
   }
 
   render() {
