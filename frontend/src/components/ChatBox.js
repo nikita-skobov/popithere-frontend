@@ -8,6 +8,7 @@ export default class ChatBox extends Component {
     this.brain = props.brain
 
     this.state = {
+      maxHeight: 300,
       chats: [
         {
           name: 'olive oil',
@@ -28,9 +29,9 @@ export default class ChatBox extends Component {
   }
 
   render() {
-    const { chats } = this.state
+    const { chats, maxHeight } = this.state
     return (
-      <div className="input-margins chat-box">
+      <div className="input-margins chat-box" style={{ maxHeight }}>
         {chats.slice(0).reverse().map((item) => {
           const { name, msg } = item
           return <div> <span>{name}</span>: {msg} </div>
