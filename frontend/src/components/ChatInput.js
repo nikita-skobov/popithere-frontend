@@ -20,6 +20,13 @@ export default class ChatInput extends Component {
     const input = e.target.getElementsByTagName('input')[0]
     const value = input.value
     input.value = ""
+
+    const chat = {
+      name: 'Johhnuyyy',
+      msg: value,
+    }
+
+    this.brain.tell.ChatBox.addChat(chat)
   }
 
   render() {
