@@ -4,6 +4,7 @@ export default class RenderWindow {
   constructor(props) {
     this.defaults = {
       backgroundColor: 0xafa0fb,
+      maxSprites: 10,
     }
 
     this.brain = props.brain
@@ -12,12 +13,13 @@ export default class RenderWindow {
     this.renderer = PIXI.autoDetectRenderer(
       this.size[0],
       this.size[1],
-      { preserveDrawinngBuffer: true },
+      { preserveDrawinngBuffer: false },
     )
 
     this.renderer.backgroundColor = props.backgroundColor || this.defaults.backgroundColor
 
     this.stage = new PIXI.Container()
+    this.maxSprites = props.maxSprites || this.defaults.maxSprites
 
     // eslint-disable-next-line
     const oldCanvas = document.getElementsByTagName('canvas')[0]
@@ -32,12 +34,25 @@ export default class RenderWindow {
     cat.x = x
     cat.y = y
     this.stage.addChild(cat)
+    this.render()
+  }
+
+  render() {
+    const numSprites = this.stage.children.length
+    if (numSprites > this.maxSprites) {
+      // remove the oldest sprites
+      const diff = numSprites - this.maxSprites
+      console.log(`removing ${diff} sprites`)
+      this.stage.removeChildren(0, diff)
+    }
+    console.log(this.stage)
+    console.log(this.stage.children)
     this.renderer.render(this.stage)
   }
 
   afterLoad() {
     console.log('Assets loaded!')
-    this.renderer.render(this.stage)
+    this.render()
   }
 
   loadAssets(assetArray, cb) {
