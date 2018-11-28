@@ -31,12 +31,12 @@ export default class Buttons extends Component {
         // only set state if it is different from the last state
         this.setState({ leftPx })
       }
-    }
-    // else if orientation portrait
-    const leftPx = size + this.buttonsOffset
-    if (this.state.leftPx !== leftPx) {
-      // only set state if it is different from the last state
-      this.setState({ leftPx })
+    } else if (orientation === 'portrait') {
+      const leftPx = size + this.buttonsOffset
+      if (this.state.leftPx !== leftPx) {
+        // only set state if it is different from the last state
+        this.setState({ leftPx })
+      }
     }
   }
 
