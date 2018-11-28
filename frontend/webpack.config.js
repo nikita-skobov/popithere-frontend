@@ -2,7 +2,7 @@ const path = require('path')
 const HtmlWebPackPlugin = require('html-webpack-plugin')
 
 module.exports = {
-  entry: ['./src/entry.js'],
+  entry: ['whatwg-fetch', './src/entry.js'],
   watch: false,
   optimization: {
     splitChunks: {
