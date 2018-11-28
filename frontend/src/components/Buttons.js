@@ -2,7 +2,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import { Button } from 'reactstrap'
+import { Button, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap'
 
 export default class Buttons extends Component {
   constructor(props) {
@@ -17,26 +17,25 @@ export default class Buttons extends Component {
     this.state = {
       leftPx: 0,
       orientation: iw > ih ? 'landscape' : 'portrait',
+      open: false,
     }
 
     this.brain.store('Buttons', this)
 
     this.adjust = this.adjust.bind(this)
+    this.toggleDropdown = this.toggleDropdown.bind(this)
+  }
+
+  toggleDropdown() {
+    const { open } = this.state
+    this.setState({ open: !open })
   }
 
   moveButtons(orientation, size) {
-    if (orientation === 'landscape') {
-      const leftPx = size + (this.buttonsWidth / 2) + this.buttonsOffset
-      if (this.state.leftPx !== leftPx) {
-        // only set state if it is different from the last state
-        this.setState({ leftPx })
-      }
-    } else if (orientation === 'portrait') {
-      const leftPx = size + this.buttonsOffset
-      if (this.state.leftPx !== leftPx) {
-        // only set state if it is different from the last state
-        this.setState({ leftPx })
-      }
+    const leftPx = size - this.buttonsWidth
+    if (this.state.leftPx !== leftPx) {
+      // only set state if it is different from the last state
+      this.setState({ leftPx })
     }
   }
 
@@ -53,25 +52,16 @@ export default class Buttons extends Component {
   }
 
   render() {
-    const { buttonsWidth } = this
-    const { leftPx, orientation } = this.state
+    const { buttonsWidth, toggleDropdown } = this
+    const { leftPx, orientation, open } = this.state
 
-    if (orientation === 'landscape') {
-      return (
-        <div className="my-buttons" style={{ left: leftPx, width: buttonsWidth }}>
-          <Button block>Chat</Button>
-          <Button block>More</Button>
-          <Button block>3</Button>
-        </div>
-      )
-    }
-
-    // else, render for mobile
     return (
-      <div className="my-buttons-portrait" style={{ top: leftPx, height: buttonsWidth }}>
-        <Button className="mb">Chat</Button>
-        <Button className="mb">More</Button>
-        <Button className="mb">3</Button>
+      <div className="my-buttons" style={{ left: leftPx }}>
+        <ButtonDropdown isOpen={open} toggle={toggleDropdown}>
+          <DropdownToggle>
+            <i className="fa fa-bars" />
+          </DropdownToggle>
+        </ButtonDropdown>
       </div>
     )
   }
