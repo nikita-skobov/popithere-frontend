@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 import Canvas from './components/Canvas'
 import Buttons from './components/Buttons'
 import Chat from './components/Chat'
+import MyModal from './components/MyModal'
 
 export default class App extends Component {
   constructor(props) {
@@ -42,6 +43,7 @@ export default class App extends Component {
       <Canvas brain={this.brain} />,
       <Buttons buttonsWidth={80} brain={this.brain} />,
       <Chat brain={this.brain} />,
+      <MyModal brain={this.brain} />,
     ]
   }
 }
