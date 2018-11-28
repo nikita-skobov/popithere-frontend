@@ -17,6 +17,8 @@ export default class RenderWindow {
 
     this.renderer.backgroundColor = props.backgroundColor || this.defaults.backgroundColor
 
+    this.stage = new PIXI.Container()
+
     // eslint-disable-next-line
     const oldCanvas = document.getElementsByTagName('canvas')[0]
     this.renderer.view.classList.add('canvas')
@@ -24,8 +26,9 @@ export default class RenderWindow {
 
     const setup = () => {
       console.log('doing setup!')
-      this.cat = new PIXI.Sprite(PIXI.loader.resources.test1.texture)
-      this.renderer.render(this.cat)
+      const cat = new PIXI.Sprite(PIXI.loader.resources.test1.texture)
+      this.stage.addChild(cat)
+      this.renderer.render(this.stage)
     }
 
     PIXI.loader
@@ -34,8 +37,21 @@ export default class RenderWindow {
   }
 
   drawImage(name, { x, y }) {
-    this[name].x = x
-    this[name].y = y
-    this.renderer.render(this[name])
+    console.log(`drawing ${name}`)
+    console.log(x, y)
+    console.log(`Clearing before render? ${this.renderer.clearBeforeRender}`)
+    const cat = new PIXI.Sprite(PIXI.loader.resources[name].texture)
+    cat.x = x
+    cat.y = y
+    this.stage.addChild(cat)
+    this.renderer.render(this.stage)
+  }
+
+  getWidth() {
+    return this.size[0]
+  }
+
+  getHeight() {
+    return this.size[1]
   }
 }

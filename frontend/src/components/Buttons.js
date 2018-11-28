@@ -24,6 +24,7 @@ export default class Buttons extends Component {
 
     this.adjust = this.adjust.bind(this)
     this.toggleDropdown = this.toggleDropdown.bind(this)
+    this.popIt = this.popIt.bind(this)
   }
 
   componentDidMount() {
@@ -48,6 +49,12 @@ export default class Buttons extends Component {
     }
   }
 
+  popIt(e) {
+    console.log(e)
+    e.preventDefault()
+    this.brain.tell.Canvas.popIt('test1')
+  }
+
   render() {
     const { toggleDropdown } = this
     const { leftPx, open } = this.state
@@ -59,7 +66,7 @@ export default class Buttons extends Component {
             <i className="fa fa-bars" />
           </DropdownToggle>
           <DropdownMenu>
-            <DropdownItem>Chat</DropdownItem>
+            <DropdownItem onClick={this.popIt}>Pop It!</DropdownItem>
             <DropdownItem>Some other stuff</DropdownItem>
             <DropdownItem>Support</DropdownItem>
           </DropdownMenu>

@@ -10,6 +10,7 @@ export default class Canvas extends Component {
     this.RW = null
 
     this.brain.store('Canvas', this)
+    this.popIt = this.popIt.bind(this)
   }
 
   componentDidMount() {
@@ -21,6 +22,16 @@ export default class Canvas extends Component {
     }
     const { brain } = this
     this.RW = new RenderWindow({ brain, size: [1069, 1069] })
+  }
+
+  popIt(name) {
+    const randomBetween = (min, max) => {
+      return Math.floor(Math.floor(Math.random() * (max - min + 1) + min))
+    }
+    const width = this.RW.getWidth()
+    const height = this.RW.getHeight()
+    const pos = { x: randomBetween(0, width), y: randomBetween(0, height) }
+    this.RW.drawImage(name, pos)
   }
 
   render() {
