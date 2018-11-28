@@ -21,6 +21,11 @@ export default class ChatBox extends Component {
     this.addChat = this.addChat.bind(this)
   }
 
+  componentDidMount() {
+    const size = this.brain.ask.Canvas.leaflet.offsetHeight
+    this.setState({ maxHeight: size * 0.9 })
+  }
+
   addChat(chat) {
     this.setState((prevState) => {
       prevState.chats.push(chat)
