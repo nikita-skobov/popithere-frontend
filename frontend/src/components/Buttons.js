@@ -11,12 +11,8 @@ export default class Buttons extends Component {
     this.buttonsOffset = props.buttonsOffset
     this.brain = props.brain
 
-    const iw = window.innerWidth
-    const ih = window.innerHeight
-
     this.state = {
       leftPx: 0,
-      orientation: iw > ih ? 'landscape' : 'portrait',
       open: false,
     }
 
@@ -40,7 +36,7 @@ export default class Buttons extends Component {
     this.setState({ open: !open })
   }
 
-  moveButtons(orientation, size) {
+  moveButtons(size) {
     const leftPx = size - this.btn.offsetWidth
     if (this.state.leftPx !== leftPx) {
       // only set state if it is different from the last state
@@ -48,22 +44,13 @@ export default class Buttons extends Component {
     }
   }
 
-  adjust(size, changePos) {
-    let { orientation } = this.state
-    if (changePos) {
-      if (orientation === 'portrait') orientation = 'landscape'
-      else if (orientation === 'landscape') orientation = 'portrait'
-      this.setState({ orientation }, () => {
-        this.moveButtons(orientation, size)
-      })
-    }
-    this.moveButtons(orientation, size)
+  adjust(size) {
+    this.moveButtons(size)
   }
 
-
   render() {
-    const { buttonsWidth, toggleDropdown } = this
-    const { leftPx, orientation, open } = this.state
+    const { toggleDropdown } = this
+    const { leftPx, open } = this.state
 
     return (
       <div ref={(btn) => { this.btn = btn }} className="my-buttons" style={{ left: leftPx }}>
