@@ -21,8 +21,6 @@ export default class ChatBox extends Component {
   }
 
   addChat(chat) {
-    console.log(this.state.chats[0])
-    console.log(this.state.chats)
     this.setState((prevState) => {
       prevState.chats.push(chat)
       return prevState
