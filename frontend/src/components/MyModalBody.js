@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import {
-  Modal,
-  ModalHeader,
-  ModalBody,
+  Input,
+  Label,
 } from 'reactstrap'
 
 import PropTypes from 'prop-types'
@@ -18,10 +17,14 @@ export default class MyModalBody extends Component {
 
   render() {
     const { type } = this
+    const maxSpriteCount = this.brain.ask.Canvas.maxSprites
 
     if (type === 'options') {
       return (
-        <div />
+        <div>
+          <Label for="exampleCount" className="mr-sm-2">Max Sprite Count</Label>
+          <Input bsSzie="sm" id="exampleCount" type="number" defaultValue={maxSpriteCount} />
+        </div>
       )
     }
     return (
