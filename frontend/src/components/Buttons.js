@@ -1,8 +1,12 @@
-/* global window */
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import { Button, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap'
+import {
+  ButtonDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+} from 'reactstrap'
 
 export default class Buttons extends Component {
   constructor(props) {
