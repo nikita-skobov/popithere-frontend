@@ -1,4 +1,4 @@
-/* global window */
+/* global document */
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
@@ -18,8 +18,8 @@ export default class ChatInput extends Component {
     e.preventDefault()
     document.activeElement.blur()
     const input = e.target.getElementsByTagName('input')[0]
-    const value = input.value
-    input.value = ""
+    const { value } = input
+    input.value = ''
 
     const chat = {
       name: 'Johhnuyyy',
