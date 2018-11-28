@@ -16,6 +16,8 @@ export default class Chat extends Component {
     }
 
     this.brain.store('Chat', this)
+
+    this.adjust = this.adjust.bind(this)
   }
 
   componentDidMount() {
@@ -24,6 +26,14 @@ export default class Chat extends Component {
       this.setState({ leftPx: size })
     } catch (e) {
       // do nothing
+    }
+  }
+
+  adjust(size) {
+    const leftPx = size
+    if (this.state.leftPx !== leftPx) {
+      // only set state if it is different from the last state
+      this.setState({ leftPx })
     }
   }
 

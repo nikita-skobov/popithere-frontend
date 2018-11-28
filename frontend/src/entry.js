@@ -25,6 +25,7 @@ window.addEventListener('resize', (e) => {
       // at some point this might have something here
     }
 
+    brain.tell.Chat.adjust(size)
     brain.tell.Buttons.adjust(size)
   } catch (err) {
     // do nothing, try again
