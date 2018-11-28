@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import {
-  Button,
   Modal,
   ModalHeader,
   ModalBody,
 } from 'reactstrap'
 
 import PropTypes from 'prop-types'
+
+import MyModalBody from './MyModalBody'
 
 export default class MyModal extends Component {
   constructor(props) {
@@ -47,9 +48,7 @@ export default class MyModal extends Component {
           )}
         </ModalHeader>
         <ModalBody>
-          {type === 'options' && (
-            <Button>some options here</Button>
-          )}
+          <MyModalBody brain={this.brain} type={type} />
         </ModalBody>
       </Modal>
     )
