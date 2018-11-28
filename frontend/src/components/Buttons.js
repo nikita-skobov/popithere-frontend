@@ -26,13 +26,22 @@ export default class Buttons extends Component {
     this.toggleDropdown = this.toggleDropdown.bind(this)
   }
 
+  componentDidMount() {
+    try {
+      const size = this.brain.ask.Canvas.leaflet.offsetWidth
+      this.moveButtons(null, size)
+    } catch (e) {
+      // do nothing
+    }
+  }
+
   toggleDropdown() {
     const { open } = this.state
     this.setState({ open: !open })
   }
 
   moveButtons(orientation, size) {
-    const leftPx = size - this.buttonsWidth
+    const leftPx = size - this.btn.offsetWidth
     if (this.state.leftPx !== leftPx) {
       // only set state if it is different from the last state
       this.setState({ leftPx })
@@ -51,16 +60,22 @@ export default class Buttons extends Component {
     this.moveButtons(orientation, size)
   }
 
+
   render() {
     const { buttonsWidth, toggleDropdown } = this
     const { leftPx, orientation, open } = this.state
 
     return (
-      <div className="my-buttons" style={{ left: leftPx }}>
-        <ButtonDropdown isOpen={open} toggle={toggleDropdown}>
+      <div ref={(btn) => { this.btn = btn }} className="my-buttons" style={{ left: leftPx }}>
+        <ButtonDropdown direction="left" isOpen={open} toggle={toggleDropdown}>
           <DropdownToggle>
             <i className="fa fa-bars" />
           </DropdownToggle>
+          <DropdownMenu>
+            <DropdownItem>Chat</DropdownItem>
+            <DropdownItem>Some other stuff</DropdownItem>
+            <DropdownItem>Support</DropdownItem>
+          </DropdownMenu>
         </ButtonDropdown>
       </div>
     )
