@@ -13,6 +13,23 @@ export default class MyModalBody extends Component {
     this.type = props.type
 
     this.brain.store('MyModalBody', this)
+
+    this.handleChange = this.handleChange.bind(this)
+  }
+
+  handleChange(e) {
+    e.preventDefault()
+    const { name, value } = e.target
+    const { type } = this
+    if (type === 'options') {
+      if (name === 'maxspritecount') {
+        const num = parseInt(value, 10)
+        if (!Number.isNaN(num)) {
+          // if user input is actually a number
+          this.brain.tell.Canvas.settingsChange(name, num)
+        }
+      }
+    }
   }
 
   render() {
@@ -23,7 +40,7 @@ export default class MyModalBody extends Component {
       return (
         <div>
           <Label for="exampleCount" className="mr-sm-2">Max Sprite Count</Label>
-          <Input bsSzie="sm" id="exampleCount" type="number" defaultValue={maxSpriteCount} />
+          <Input name="maxspritecount" onChange={this.handleChange} bsSzie="sm" id="exampleCount" type="number" defaultValue={maxSpriteCount} />
         </div>
       )
     }
