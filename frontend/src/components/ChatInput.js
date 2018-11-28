@@ -2,6 +2,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
+import { InputGroup, Input, InputGroupAddon, Button } from 'reactstrap'
+
 export default class ChatInput extends Component {
   constructor(props) {
     super(props)
@@ -11,7 +13,14 @@ export default class ChatInput extends Component {
   }
 
   render() {
-    return <div />
+    return (
+      <InputGroup className="input-margins">
+        <Input placeholder="Send a message" />
+        <InputGroupAddon addonType="append">
+          <Button>Chat</Button>
+        </InputGroupAddon>
+      </InputGroup>
+    )
   }
 }
 
