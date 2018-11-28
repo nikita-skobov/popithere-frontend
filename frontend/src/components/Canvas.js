@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 import RenderWindow from '../RenderWindow'
+import { assetList } from '../customConfig'
 
 export default class Canvas extends Component {
   constructor(props) {
@@ -22,6 +23,7 @@ export default class Canvas extends Component {
     }
     const { brain } = this
     this.RW = new RenderWindow({ brain, size: [1069, 1069] })
+    this.RW.loadAssets(assetList)
   }
 
   popIt(name) {

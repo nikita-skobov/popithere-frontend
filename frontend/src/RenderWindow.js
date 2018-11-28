@@ -3,7 +3,7 @@ import * as PIXI from 'pixi.js'
 export default class RenderWindow {
   constructor(props) {
     this.defaults = {
-      backgroundColor: 0xffffff,
+      backgroundColor: 0xafa0fb,
     }
 
     this.brain = props.brain
@@ -24,16 +24,16 @@ export default class RenderWindow {
     this.renderer.view.classList.add('canvas')
     oldCanvas.replaceWith(this.renderer.view)
 
-    const setup = () => {
-      console.log('doing setup!')
-      const cat = new PIXI.Sprite(PIXI.loader.resources.test1.texture)
-      this.stage.addChild(cat)
-      this.renderer.render(this.stage)
-    }
+    // const setup = () => {
+    //   console.log('doing setup!')
+    //   const cat = new PIXI.Sprite(PIXI.loader.resources.test1.texture)
+    //   this.stage.addChild(cat)
+    //   this.renderer.render(this.stage)
+    // }
 
-    PIXI.loader
-      .add('test1', 'images/test1.png')
-      .load(setup)
+    // PIXI.loader
+    //   .add('test1', 'images/test1.png')
+    //   .load(setup)
   }
 
   drawImage(name, { x, y }) {
@@ -45,6 +45,20 @@ export default class RenderWindow {
     cat.y = y
     this.stage.addChild(cat)
     this.renderer.render(this.stage)
+  }
+
+  afterLoad() {
+    console.log('Assets loaded!')
+    this.renderer.render(this.stage)
+  }
+
+  loadAssets(assetArray, cb) {
+    let callback = cb
+    if (!callback) {
+      callback = this.afterLoad
+    }
+
+    PIXI.loader.add(assetArray).load(callback.bind(this))
   }
 
   getWidth() {
