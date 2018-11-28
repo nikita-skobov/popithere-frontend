@@ -40,10 +40,10 @@ export default class Chat extends Component {
     const { orientation } = this.state
     if (orientation === 'landscape') {
       this.setState({ orientation: 'portrait' })
-      this.brain.tell.ChatBox.setState({ maxHeight: size * 0.75 })
+      this.brain.tell.ChatBox.setState({ maxHeight: size * 0.9 })
     } else if (orientation === 'portrait') {
       this.setState({ orientation: 'landscape' })
-      this.brain.tell.ChatBox.setState({ maxHeight: size * 0.75 })
+      this.brain.tell.ChatBox.setState({ maxHeight: size * 0.9 })
     }
   }
 
