@@ -43,13 +43,16 @@ export default class Chat extends Component {
   }
 
   adjust(size) {
+    const { orientation } = this.state
     const leftPx = size
     const width = window.innerWidth - size
     if (this.state.leftPx !== leftPx) {
       // only set state if it is different from the last state
       this.setState({ leftPx })
     }
-    if (this.state.width !== width) {
+    if (this.state.width !== width && orientation === 'landscape') {
+      // only set width if its different AND orientation is landscape
+      // mobile has width = 100% by default
       this.setState({ width })
     }
   }
