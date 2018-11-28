@@ -25,7 +25,7 @@ export default class Buttons extends Component {
   componentDidMount() {
     try {
       const size = this.brain.ask.Canvas.leaflet.offsetWidth
-      this.moveButtons(null, size)
+      this.moveButtons(size)
     } catch (e) {
       // do nothing
     }
