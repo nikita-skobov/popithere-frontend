@@ -1,10 +1,13 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
+import RenderWindow from '../RenderWindow'
+
 export default class Canvas extends Component {
   constructor(props) {
     super(props)
     this.brain = props.brain
+    this.RW = null
 
     this.brain.store('Canvas', this)
   }
@@ -16,6 +19,8 @@ export default class Canvas extends Component {
     } catch (e) {
       // do nothing
     }
+    const { brain } = this
+    this.RW = new RenderWindow({ brain, size: [1069, 1069] })
   }
 
   render() {
