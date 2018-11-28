@@ -55,7 +55,7 @@ export default class Buttons extends Component {
     return (
       <div ref={(btn) => { this.btn = btn }} className="my-buttons" style={{ left: leftPx }}>
         <ButtonDropdown direction="left" isOpen={open} toggle={toggleDropdown}>
-          <DropdownToggle>
+          <DropdownToggle className="btn-override">
             <i className="fa fa-bars" />
           </DropdownToggle>
           <DropdownMenu>
