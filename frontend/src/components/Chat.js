@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 import ChatInput from './ChatInput'
+import ChatBox from './ChatBox'
 
 export default class Chat extends Component {
   constructor(props) {
@@ -74,6 +75,7 @@ export default class Chat extends Component {
     return (
       <div className="chat-p" style={{ top: leftPx }}>
         <ChatInput brain={this.brain} />
+        <ChatBox brain={this.brain} />
       </div>
     )
   }
