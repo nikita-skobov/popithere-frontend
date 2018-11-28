@@ -24,7 +24,7 @@ export default class Buttons extends Component {
 
     this.adjust = this.adjust.bind(this)
     this.toggleDropdown = this.toggleDropdown.bind(this)
-    this.popIt = this.popIt.bind(this)
+    this.handleButton = this.handleButton.bind(this)
   }
 
   componentDidMount() {
@@ -49,10 +49,12 @@ export default class Buttons extends Component {
     }
   }
 
-  popIt(e) {
-    console.log(e)
+  handleButton(e) {
     e.preventDefault()
-    this.brain.tell.Canvas.popIt('test1')
+    const { name } = e.target
+    if (name === 'popit') {
+      this.brain.tell.Canvas.popIt('test1')
+    }
   }
 
   render() {
@@ -66,8 +68,8 @@ export default class Buttons extends Component {
             <i className="fa fa-bars" />
           </DropdownToggle>
           <DropdownMenu>
-            <DropdownItem onClick={this.popIt}>Pop It!</DropdownItem>
-            <DropdownItem>Some other stuff</DropdownItem>
+            <DropdownItem name="popit" onClick={this.handleButton}>Pop It!</DropdownItem>
+            <DropdownItem name="options" onClick={this.handleButton}>Options</DropdownItem>
             <DropdownItem>Support</DropdownItem>
           </DropdownMenu>
         </ButtonDropdown>
