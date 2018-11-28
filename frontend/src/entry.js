@@ -22,7 +22,7 @@ window.addEventListener('resize', (e) => {
     const iw = window.innerWidth
     const size = brain.ask.Canvas.leaflet.offsetWidth
     if (brain.ask.App.shouldResize(iw, ih)) {
-      // at some point this might have something here
+      brain.tell.Chat.changeOrientation()
     }
 
     brain.tell.Chat.adjust(size)
