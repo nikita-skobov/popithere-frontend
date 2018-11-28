@@ -2,6 +2,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
+import ChatInput from './ChatInput'
+
 export default class Chat extends Component {
   constructor(props) {
     super(props)
@@ -63,7 +65,7 @@ export default class Chat extends Component {
     if (orientation === 'landscape') {
       return (
         <div className="chat-l" style={{ left: leftPx, width }}>
-          dsaas
+          <ChatInput brain={this.brain} />
         </div>
       )
     }
@@ -71,7 +73,7 @@ export default class Chat extends Component {
     // else, render for mobile
     return (
       <div className="chat-p" style={{ top: leftPx }}>
-        fdsa
+        <ChatInput brain={this.brain} />
       </div>
     )
   }
