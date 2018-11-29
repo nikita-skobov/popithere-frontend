@@ -41,13 +41,14 @@ export default class RenderWindow {
 
   onPointerDown(event) {
     if (this.currentlyPopping) {
-      const { x, y } = event.data.getLocalPosition(this.stage)
+      const clickPos = event.data.getLocalPosition(this.stage)
       const chat = {
         name: 'test',
-        msg: `x:${x}, y:${y}`,
+        msg: `x:${clickPos.x}, y:${clickPos.y}`,
       }
       this.brain.tell.ChatBox.addChat(chat)
       console.log(event.data.getLocalPosition(this.stage))
+      const { x, y } = this.calculatePos(this.poppingName, clickPos)
       this.addImage(this.poppingName, { x, y })
       this.render()
     }
@@ -55,6 +56,12 @@ export default class RenderWindow {
 
   onPointerMove(event) {
     // console.log(event.data.originalEvent.x, event.data.originalEvent.y)
+  }
+
+  // eslint-disable-next-line
+  calculatePos(name, clickPos) {
+    const { width, height } = PIXI.loader.resources[name].texture
+    return { x: clickPos.x - (width / 2), y: clickPos.y - (height / 2) }
   }
 
   addImage(name, { x, y }) {
