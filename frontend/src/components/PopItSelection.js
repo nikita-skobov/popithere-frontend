@@ -14,6 +14,8 @@ export default class PopItSelection extends Component {
     super(props)
     this.brain = props.brain
 
+    this.maxImages = 16
+
     this.state = {
       choice: 'none',
     }
@@ -57,8 +59,11 @@ export default class PopItSelection extends Component {
       )
     }
 
+    const imageArr = [...Array(this.maxImages).keys()]
     if (choice === 'image') {
-      
+      return imageArr.map((index) => {
+        return <p>{index}</p>
+      })
     }
     return (
       <div />
