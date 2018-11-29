@@ -56,6 +56,7 @@ export default class PopItSelection extends Component {
     const { name } = e.target
     console.log(name)
     this.brain.tell.Canvas.popItChosen('image', name)
+    this.brain.tell.MyModal.toggle()
   }
 
   render() {
