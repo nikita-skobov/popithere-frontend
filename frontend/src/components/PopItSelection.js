@@ -9,6 +9,10 @@ import {
 
 import PropTypes from 'prop-types'
 
+import RowGenerator from './RowGenerator'
+
+import { assetList } from '../customConfig'
+
 export default class PopItSelection extends Component {
   constructor(props) {
     super(props)
@@ -59,11 +63,14 @@ export default class PopItSelection extends Component {
       )
     }
 
-    const imageArr = [...Array(this.maxImages).keys()]
     if (choice === 'image') {
-      return imageArr.map((index) => {
-        return <p>{index}</p>
-      })
+      return (
+        <div>
+          <Button> Previous </Button>
+          <RowGenerator cellCount={this.maxImages} loopArray={assetList} />
+          <Button> Next </Button>
+        </div>
+      )
     }
     return (
       <div />
