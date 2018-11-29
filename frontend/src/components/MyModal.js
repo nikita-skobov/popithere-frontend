@@ -47,7 +47,7 @@ export default class MyModal extends Component {
             'Options'
           )}
           {type === 'popit' && (
-            'Choose your popit!'
+            'Choose your Popit!'
           )}
         </ModalHeader>
         <ModalBody>
