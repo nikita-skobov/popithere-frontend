@@ -50,7 +50,6 @@ export default class RenderWindow {
       console.log(event.data.getLocalPosition(this.stage))
       this.addImage(this.poppingName, { x, y })
       this.render()
-      this.donePopping()
     }
   }
 
