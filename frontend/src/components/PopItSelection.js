@@ -18,7 +18,7 @@ export default class PopItSelection extends Component {
     super(props)
     this.brain = props.brain
 
-    this.maxImages = 16
+    this.maxImages = 10
 
     this.state = {
       choice: 'none',
@@ -36,6 +36,15 @@ export default class PopItSelection extends Component {
     const { name } = e.target
     if (choice === 'none') {
       this.setState({ choice: name })
+    } else if (choice === 'image') {
+      if (name === 'prev' || name === 'next') {
+        this.setState((prevState) => {
+          const tempState = prevState
+          const delta = name === 'next' ? this.maxImages : -this.maxImages
+          tempState.offset += delta
+          return tempState
+        })
+      }
     }
   }
 
@@ -59,9 +68,9 @@ export default class PopItSelection extends Component {
       const { offset } = this.state
       return (
         <div>
-          <Button block disabled={offset === 0}> Previous </Button>
+          <Button onClick={this.handleButton} name="prev" block disabled={offset === 0}> Previous </Button>
           <RowGenerator cellCount={this.maxImages} offset={offset} loopArray={assetList} />
-          <Button block disabled={assetList.length - this.maxImages <= offset}> Next </Button>
+          <Button onClick={this.handleButton} name="next" block disabled={assetList.length - this.maxImages <= offset}> Next </Button>
         </div>
       )
     }
