@@ -44,6 +44,8 @@ export default class PopItSelection extends Component {
           tempState.offset += delta
           return tempState
         })
+      } else if (name === 'back') {
+        this.setState({ choice: 'none' })
       }
     }
   }
@@ -68,6 +70,7 @@ export default class PopItSelection extends Component {
       const { offset } = this.state
       return (
         <div>
+          <Button className="mb1em" onClick={this.handleButton} name="back">Back</Button>
           <Button className="mb1em" onClick={this.handleButton} name="prev" block disabled={offset === 0}> Previous </Button>
           <RowGenerator cellCount={this.maxImages} offset={offset} loopArray={assetList} />
           <Button onClick={this.handleButton} name="next" block disabled={assetList.length - this.maxImages <= offset}> Next </Button>
