@@ -53,7 +53,7 @@ export default class RenderWindow {
       this.render()
     }
   }
-
+// make a Game class... have different games with different rules
   onPointerMove(event) {
     // console.log(event.data.originalEvent.x, event.data.originalEvent.y)
   }
