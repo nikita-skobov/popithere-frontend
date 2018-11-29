@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Row, Col } from 'reactstrap'
+import { Row, Col, Button } from 'reactstrap'
 
 import PropTypes from 'prop-types'
 
@@ -22,8 +22,16 @@ const RowGenerator = (props) => {
           const item2 = loopArray[index + 1 + offset]
           return (
             <Row>
-              <Col>{item1.name}</Col>
-              <Col>{item2.name}</Col>
+              <Col>
+                <Button>
+                  <img className="w50" src={item1.url} alt="some shit" />
+                </Button>
+              </Col>
+              <Col>
+                <Button>
+                  <img className="w50" src={item2.url} alt="some shit" />
+                </Button>
+              </Col>
             </Row>
           )
         }
@@ -31,7 +39,11 @@ const RowGenerator = (props) => {
         // of images, then render 1, but empty second
         return (
           <Row>
-            <Col>{item1.name}</Col>
+            <Col>
+              <Button>
+                <img className="w50" src={item1.url} alt="some shit" />
+              </Button>
+            </Col>
             <Col />
           </Row>
         )
