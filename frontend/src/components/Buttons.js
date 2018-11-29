@@ -53,7 +53,8 @@ export default class Buttons extends Component {
     e.preventDefault()
     const { name } = e.target
     if (name === 'popit') {
-      this.brain.tell.Canvas.popIt('test1')
+      this.brain.tell.MyModal.toggle(name)
+      // this.brain.tell.Canvas.popIt('test1')
     } else if (name === 'options') {
       this.brain.tell.MyModal.toggle(name)
     }

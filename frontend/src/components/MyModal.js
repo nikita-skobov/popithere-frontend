@@ -46,6 +46,9 @@ export default class MyModal extends Component {
           {type === 'options' && (
             'Options'
           )}
+          {type === 'popit' && (
+            'Choose your popit!'
+          )}
         </ModalHeader>
         <ModalBody>
           <MyModalBody brain={this.brain} type={type} />

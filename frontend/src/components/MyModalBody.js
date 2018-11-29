@@ -2,9 +2,14 @@ import React, { Component } from 'react'
 import {
   Input,
   Label,
+  Row,
+  Col,
+  Button,
 } from 'reactstrap'
 
 import PropTypes from 'prop-types'
+
+import PopItSelection from './PopItSelection'
 
 export default class MyModalBody extends Component {
   constructor(props) {
@@ -42,6 +47,11 @@ export default class MyModalBody extends Component {
           <Label for="exampleCount" className="mr-sm-2">Max Sprite Count</Label>
           <Input name="maxspritecount" onChange={this.handleChange} bsSzie="sm" id="exampleCount" type="number" defaultValue={maxSpriteCount} />
         </div>
+      )
+    }
+    if (type === 'popit') {
+      return (
+        <PopItSelection brain={this.brain} />
       )
     }
     return (
