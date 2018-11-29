@@ -26,6 +26,9 @@ export default class RenderWindow {
     this.renderer.view.classList.add('canvas')
     oldCanvas.replaceWith(this.renderer.view)
 
+    this.currentlyPopping = false
+    this.poppingName = null
+
     this.stage.interactive = true
     this.stage.hitArea = new PIXI.Rectangle(0, 0, this.size[0], this.size[1])
     this.stage.on('pointermove', (event) => {
@@ -37,14 +40,18 @@ export default class RenderWindow {
   }
 
   onPointerDown(event) {
-    // console.log(event.data.getLocalPosition())
-    const { x, y } = event.data.getLocalPosition(this.stage)
-    const chat = {
-      name: 'test',
-      msg: `x:${x}, y:${y}`,
+    if (this.currentlyPopping) {
+      const { x, y } = event.data.getLocalPosition(this.stage)
+      const chat = {
+        name: 'test',
+        msg: `x:${x}, y:${y}`,
+      }
+      this.brain.tell.ChatBox.addChat(chat)
+      console.log(event.data.getLocalPosition(this.stage))
+      this.addImage(this.poppingName, { x, y })
+      this.render()
+      this.donePopping()
     }
-    this.brain.tell.ChatBox.addChat(chat)
-    console.log(event.data.getLocalPosition(this.stage))
   }
 
   onPointerMove(event) {
@@ -58,6 +65,16 @@ export default class RenderWindow {
     cat.x = x
     cat.y = y
     this.stage.addChild(cat)
+  }
+
+  startPopping(name) {
+    this.poppingName = name
+    this.currentlyPopping = true
+  }
+
+  donePopping() {
+    this.poppingName = null
+    this.currentlyPopping = false
   }
 
   render() {

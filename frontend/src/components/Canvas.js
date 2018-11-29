@@ -13,6 +13,7 @@ export default class Canvas extends Component {
 
     this.brain.store('Canvas', this)
     this.popIt = this.popIt.bind(this)
+    this.popItChosen = this.popItChosen.bind(this)
     this.settingsChange = this.settingsChange.bind(this)
   }
 
@@ -32,6 +33,14 @@ export default class Canvas extends Component {
     if (type === 'maxspritecount') {
       this.maxSprites = value
       this.RW.changeMaxSprites(value)
+    }
+  }
+
+  popItChosen(type, val) {
+    if (type === 'image') {
+      console.log(this.RW)
+      console.log(this.RW.getHeight())
+      this.RW.startPopping(val)
     }
   }
 
