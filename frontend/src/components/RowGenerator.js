@@ -9,6 +9,7 @@ const RowGenerator = (props) => {
     cellCount,
     loopArray,
     offset,
+    cb,
   } = props
 
   const cellList = [...Array(cellCount).keys()]
@@ -23,13 +24,13 @@ const RowGenerator = (props) => {
           return (
             <Row className="mb1em">
               <Col>
-                <Button className="half-trans">
-                  <img className="w50" src={item1.url} alt="some shit" />
+                <Button onClick={cb} name={item1.name} className="half-trans">
+                  <img name={item1.name} className="w50" src={item1.url} alt="some shit" />
                 </Button>
               </Col>
               <Col>
-                <Button className="half-trans">
-                  <img className="w50" src={item2.url} alt="some shit" />
+                <Button onClick={cb} name={item2.name} className="half-trans">
+                  <img name={item2.name} className="w50" src={item2.url} alt="some shit" />
                 </Button>
               </Col>
             </Row>
@@ -40,8 +41,8 @@ const RowGenerator = (props) => {
         return (
           <Row className="mb1em">
             <Col>
-              <Button className="half-trans">
-                <img className="w50" src={item1.url} alt="some shit" />
+              <Button onClick={cb} name={item1.name} className="half-trans">
+                <img name={item1.name} className="w50" src={item1.url} alt="some shit" />
               </Button>
             </Col>
             <Col />
@@ -69,6 +70,7 @@ RowGenerator.propTypes = {
   cellCount: PropTypes.number.isRequired,
   loopArray: PropTypes.instanceOf(Array).isRequired,
   offset: PropTypes.number,
+  cb: PropTypes.func.isRequired,
 }
 
 export default RowGenerator

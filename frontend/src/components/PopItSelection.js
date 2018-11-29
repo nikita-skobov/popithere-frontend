@@ -28,6 +28,7 @@ export default class PopItSelection extends Component {
     this.brain.store('PopItSelection', this)
 
     this.handleButton = this.handleButton.bind(this)
+    this.popItChosen = this.popItChosen.bind(this)
   }
 
   handleButton(e) {
@@ -48,6 +49,12 @@ export default class PopItSelection extends Component {
         this.setState({ choice: 'none' })
       }
     }
+  }
+
+  popItChosen(e) {
+    e.preventDefault()
+    const { name } = e.target
+    console.log(name)
   }
 
   render() {
@@ -72,7 +79,7 @@ export default class PopItSelection extends Component {
         <div>
           <Button className="mb1em" onClick={this.handleButton} name="back">Back</Button>
           <Button className="mb1em" onClick={this.handleButton} name="prev" block disabled={offset === 0}> Previous </Button>
-          <RowGenerator cellCount={this.maxImages} offset={offset} loopArray={assetList} />
+          <RowGenerator cb={this.popItChosen} cellCount={this.maxImages} offset={offset} loopArray={assetList} />
           <Button onClick={this.handleButton} name="next" block disabled={assetList.length - this.maxImages <= offset}> Next </Button>
         </div>
       )
