@@ -25,6 +25,30 @@ export default class RenderWindow {
     const oldCanvas = document.getElementsByTagName('canvas')[0]
     this.renderer.view.classList.add('canvas')
     oldCanvas.replaceWith(this.renderer.view)
+
+    this.stage.interactive = true
+    this.stage.hitArea = new PIXI.Rectangle(0, 0, this.size[0], this.size[1])
+    this.stage.on('pointermove', (event) => {
+      this.onPointerMove(event)
+    })
+    this.stage.on('pointerdown', (event) => {
+      this.onPointerDown(event)
+    })
+  }
+
+  onPointerDown(event) {
+    // console.log(event.data.getLocalPosition())
+    const { x, y } = event.data.getLocalPosition(this.stage)
+    const chat = {
+      name: 'test',
+      msg: `x:${x}, y:${y}`,
+    }
+    this.brain.tell.ChatBox.addChat(chat)
+    console.log(event.data.getLocalPosition(this.stage))
+  }
+
+  onPointerMove(event) {
+    // console.log(event.data.originalEvent.x, event.data.originalEvent.y)
   }
 
   addImage(name, { x, y }) {
