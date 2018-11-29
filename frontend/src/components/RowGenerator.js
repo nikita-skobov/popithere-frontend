@@ -23,12 +23,12 @@ const RowGenerator = (props) => {
           return (
             <Row>
               <Col>
-                <Button>
+                <Button className="half-trans">
                   <img className="w50" src={item1.url} alt="some shit" />
                 </Button>
               </Col>
               <Col>
-                <Button>
+                <Button className="half-trans">
                   <img className="w50" src={item2.url} alt="some shit" />
                 </Button>
               </Col>
@@ -40,7 +40,7 @@ const RowGenerator = (props) => {
         return (
           <Row>
             <Col>
-              <Button>
+              <Button className="half-trans">
                 <img className="w50" src={item1.url} alt="some shit" />
               </Button>
             </Col>
