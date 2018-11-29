@@ -68,7 +68,7 @@ export default class PopItSelection extends Component {
       const { offset } = this.state
       return (
         <div>
-          <Button onClick={this.handleButton} name="prev" block disabled={offset === 0}> Previous </Button>
+          <Button className="mb1em" onClick={this.handleButton} name="prev" block disabled={offset === 0}> Previous </Button>
           <RowGenerator cellCount={this.maxImages} offset={offset} loopArray={assetList} />
           <Button onClick={this.handleButton} name="next" block disabled={assetList.length - this.maxImages <= offset}> Next </Button>
         </div>
