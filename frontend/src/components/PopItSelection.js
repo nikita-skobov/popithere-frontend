@@ -37,15 +37,6 @@ export default class PopItSelection extends Component {
     if (choice === 'none') {
       this.setState({ choice: name })
     }
-    // if (type === 'options') {
-    //   if (name === 'maxspritecount') {
-    //     const num = parseInt(value, 10)
-    //     if (!Number.isNaN(num)) {
-    //       // if user input is actually a number
-    //       this.brain.tell.Canvas.settingsChange(name, num)
-    //     }
-    //   }
-    // }
   }
 
   render() {
