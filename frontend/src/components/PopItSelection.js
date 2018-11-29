@@ -22,6 +22,7 @@ export default class PopItSelection extends Component {
 
     this.state = {
       choice: 'none',
+      offset: 0,
     }
 
     this.brain.store('PopItSelection', this)
@@ -64,11 +65,12 @@ export default class PopItSelection extends Component {
     }
 
     if (choice === 'image') {
+      const { offset } = this.state
       return (
         <div>
-          <Button> Previous </Button>
-          <RowGenerator cellCount={this.maxImages} loopArray={assetList} />
-          <Button> Next </Button>
+          <Button block disabled={offset === 0}> Previous </Button>
+          <RowGenerator cellCount={this.maxImages} offset={offset} loopArray={assetList} />
+          <Button block disabled={assetList.length - this.maxImages <= offset}> Next </Button>
         </div>
       )
     }
