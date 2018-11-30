@@ -121,6 +121,7 @@ export default class RenderWindow {
     } else {
       // do nothing
     }
+    this.brain.tell.Canvas.newGame(this.currentGame)
   }
 
   render() {
@@ -136,12 +137,12 @@ export default class RenderWindow {
 
   afterLoad() {
     console.log('Assets loaded!')
-    this.render()
-    const cat = new PIXI.Sprite(PIXI.loader.resources.test1.texture)
-    cat.x = 200
-    cat.y = 200
-    this.inputLayer.inputBox.addChild(cat)
-    this.inputRenderer.render(this.inputLayer.inputBox)
+    // this.render()
+    // const cat = new PIXI.Sprite(PIXI.loader.resources.test1.texture)
+    // cat.x = 200
+    // cat.y = 200
+    // this.inputLayer.inputBox.addChild(cat)
+    // this.inputRenderer.render(this.inputLayer.inputBox)
 
     setTimeout(() => {
       console.log('chaning game:')
