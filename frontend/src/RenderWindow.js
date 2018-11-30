@@ -115,8 +115,8 @@ export default class RenderWindow {
   changeGame(name) {
     if (name === 'PopItHere') {
       this.currentGame = new PopItHere({
-        baseLayer: this.renderer,
-        inputLayer: this.inputRenderer,
+        baseLayer: this.baseLayer,
+        inputLayer: this.inputLayer,
       })
     } else {
       // do nothing
