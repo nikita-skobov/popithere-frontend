@@ -62,7 +62,7 @@ export default class RenderWindow {
     // all other canvas2 elements are just part of the body
     // so they need to be resized seperately
     const canvases = document.getElementsByClassName('canvas2')
-    canvases.forEach((el) => {
+    Array.prototype.forEach.call(canvases, (el) => {
       const elm = el
       elm.style.left = `${this.renderer.view.offsetLeft}px`
       elm.style.top = `${this.renderer.view.offsetTop}px`
