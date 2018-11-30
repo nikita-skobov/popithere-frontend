@@ -7,7 +7,7 @@ export default class RenderLayer {
     // backgroundColor: props.backgroundColor, // default is white,
     // transparent: false, // default is false
     // addToPage: false, // default is true
-    // type: 'base' || 'input' // default is undefined
+    // type: 'base' || 'input' // default is extra
     this.size = props.size
 
     this.renderer = PIXI.autoDetectRenderer(
@@ -51,15 +51,26 @@ export default class RenderLayer {
     }
   }
 
-  makeInteractive() {
-    this.inputBox = new PIXI.Container()
-    this.inputBox.interactive = true
-    this.inputBox.hitArea = new PIXI.Rectangle(0, 0, this.size[0], this.size[1])
-    this.inputBox.on('pointermove', (event) => {
-      this.onPointerMove(event)
-    })
-    this.inputBox.on('pointerdown', (event) => {
-      this.onPointerDown(event)
-    })
+  makeInteractive(flag) {
+    if (flag) {
+      // if flag is true, make it interactive
+      if (!this.inputBox) {
+        // only create a new input box if one does not exist
+        this.inputBox = new PIXI.Container()
+        this.inputBox.interactive = true
+        this.inputBox.hitArea = new PIXI.Rectangle(0, 0, this.size[0], this.size[1])
+        this.inputBox.on('pointermove', (event) => {
+          this.onPointerMove(event)
+        })
+        this.inputBox.on('pointerdown', (event) => {
+          this.onPointerDown(event)
+        })
+      }
+    } else if (this.inputBox) {
+      // otherwise destroy the current inputBox, and set to null
+      // this can be used if you want to disable interactions dynamically
+      this.inputBox.destroy(true)
+      this.inputBox = null
+    }
   }
 }
