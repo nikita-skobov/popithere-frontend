@@ -2,6 +2,7 @@ import * as PIXI from 'pixi.js'
 
 export default class RenderLayer {
   constructor(props) {
+    console.log('calling render layer')
     // size: this.size,
     // interactive: false, // default is false
     // backgroundColor: props.backgroundColor, // default is white,
@@ -43,6 +44,10 @@ export default class RenderLayer {
       this.type = 'extra'
     }
 
+    if (typeof props.addToPage === 'undefined') {
+      props.addToPage = true
+    }
+
     if (props.addToPage) {
       // for extra layers just add it to the body
       // but the base layer is part of react, so it should
@@ -72,5 +77,16 @@ export default class RenderLayer {
     if (this.root.interactive) {
       this.root.on(event, callback)
     }
+  }
+
+  addImage(name, { x, y }) {
+    const img = new PIXI.Sprite(PIXI.loader.resources[name].texture)
+    img.x = x
+    img.y = y
+    this.root.addChild(img)
+  }
+
+  draw() {
+    this.renderer.render(this.root)
   }
 }
