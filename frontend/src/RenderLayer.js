@@ -59,12 +59,6 @@ export default class RenderLayer {
         this.inputBox = new PIXI.Container()
         this.inputBox.interactive = true
         this.inputBox.hitArea = new PIXI.Rectangle(0, 0, this.size[0], this.size[1])
-        this.inputBox.on('pointermove', (event) => {
-          this.onPointerMove(event)
-        })
-        this.inputBox.on('pointerdown', (event) => {
-          this.onPointerDown(event)
-        })
         this.renderer.render(this.inputBox)
       }
     } else if (this.inputBox) {
