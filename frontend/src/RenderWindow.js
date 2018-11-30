@@ -13,7 +13,9 @@ export default class RenderWindow {
     this.renderer = PIXI.autoDetectRenderer(
       this.size[0],
       this.size[1],
-      { preserveDrawinngBuffer: false },
+      {
+        preserveDrawinngBuffer: false,
+      },
     )
 
     this.renderer.backgroundColor = props.backgroundColor || this.defaults.backgroundColor
@@ -25,6 +27,25 @@ export default class RenderWindow {
     const oldCanvas = document.getElementsByTagName('canvas')[0]
     this.renderer.view.classList.add('canvas')
     oldCanvas.replaceWith(this.renderer.view)
+
+    this.renderer2 = PIXI.autoDetectRenderer(
+      this.size[0],
+      this.size[1],
+      {
+        preserveDrawingBuffer: false,
+        transparent: true,
+      },
+    )
+
+    this.renderer2.backgroundColor = 0xababfb
+    this.renderer2.view.classList.add('canvas2')
+    console.log(`new width: ${this.renderer.view.offsetWidth}`)
+    console.log(`new height: ${this.renderer.view.offsetHeight}`)
+    this.renderer2.view.style.left = this.renderer.view.offsetLeft + "px"
+    this.renderer2.view.style.top = this.renderer.view.offsetTop + "px"
+    this.renderer2.view.style.width = this.renderer.view.offsetWidth + "px"
+    this.renderer2.view.style.height = this.renderer.view.offsetHeight + "px"
+    document.body.appendChild(this.renderer2.view)
 
     this.currentlyPopping = false
     this.poppingName = null
