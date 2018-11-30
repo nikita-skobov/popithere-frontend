@@ -53,7 +53,7 @@ export default class RenderLayer {
       // not be added to the page
       this.renderer.view.classList.add('canvas2')
       this.renderer.view.classList.add(this.type)
-      this.renderer.view.style.zIndex = '15'
+      this.renderer.view.style.zIndex = this.type === 'input' ? '16' : '15'
       document.body.appendChild(this.renderer.view)
 
       // set initial position of layer
