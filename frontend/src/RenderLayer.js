@@ -6,6 +6,7 @@ export default class RenderLayer {
     // interactive: false, // default is false
     // backgroundColor: props.backgroundColor, // default is white,
     // transparent: false, // default is false
+    // addToPage: false, // default is true
     this.size = props.size
 
     this.renderer = PIXI.autoDetectRenderer(
@@ -18,6 +19,8 @@ export default class RenderLayer {
     )
 
     if (!props.transparent) {
+      // only apply background color if not transparent
+      // default is white: 0xffffff
       this.renderer.backgroundColor = props.backgroundColor || 0xffffff
     }
 
@@ -26,6 +29,15 @@ export default class RenderLayer {
 
     if (props.interactive) {
       this.makeInteractive()
+    }
+
+    if (props.addToPage) {
+      // for extra layers just add it to the body
+      // but the base layer is part of react, so it should
+      // not be added to the page
+      this.inputRenderer.view.classList.add('canvas2')
+      this.inputRenderer.view.style.zIndex = '15'
+      document.body.appendChild(this.inputRenderer.view)
     }
   }
 
