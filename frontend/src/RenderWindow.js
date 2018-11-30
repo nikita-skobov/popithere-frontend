@@ -1,6 +1,7 @@
 import * as PIXI from 'pixi.js'
 
 import PopItHere from './Games/PopItHere'
+import RenderLayer from './RenderLayer'
 
 export default class RenderWindow {
   constructor(props) {
@@ -12,6 +13,14 @@ export default class RenderWindow {
     this.brain = props.brain
     this.size = props.size
     this.aspectRatio = this.size[0] / this.size[1]
+
+    this.baseLayer = new RenderLayer({
+      size: this.size,
+      interactive: false, // default is false
+      backgroundColor: props.backgroundColor, // default is white,
+      transparent: false, // default is false
+    })
+
     this.renderer = PIXI.autoDetectRenderer(
       this.size[0],
       this.size[1],
