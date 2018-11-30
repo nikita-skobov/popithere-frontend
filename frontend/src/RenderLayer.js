@@ -29,7 +29,7 @@ export default class RenderLayer {
     this.inputBox = null
 
     if (props.interactive) {
-      this.makeInteractive()
+      this.makeInteractive(true)
     }
 
     this.type = props.type
@@ -65,6 +65,7 @@ export default class RenderLayer {
         this.inputBox.on('pointerdown', (event) => {
           this.onPointerDown(event)
         })
+        this.renderer.render(this.inputBox)
       }
     } else if (this.inputBox) {
       // otherwise destroy the current inputBox, and set to null
