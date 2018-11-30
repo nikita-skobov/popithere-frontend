@@ -1,3 +1,4 @@
+
 const has = Object.prototype.hasOwnProperty
 
 export default class Game {
@@ -36,10 +37,30 @@ export default class Game {
       if (typeof btn.text !== 'string') {
         throw new Error('text must be a string')
       }
-      this.buttons.push({
+
+      const obj = {
         name: btn.name,
         text: btn.text,
-      })
+      }
+
+      if (has.call(btn, 'on')) {
+        if (typeof btn.on !== 'function') {
+          throw new Error('property: "on" must be a function')
+        }
+        obj.on = btn.on
+      }
+
+      if (has.call(btn, 'modal')) {
+        if (!has.call(btn.modal, '$$typeof')) {
+          throw new Error('property: "modal" must be a react component')
+        }
+        if (btn.modal.$$typeof.toString() !== 'Symbol(react.element)') {
+          throw new Error('property: "modal" must be a react component')
+        }
+        obj.modal = btn.modal
+      }
+
+      this.buttons.push(obj)
     } else {
       throw new Error('addButton argument must be either a string or object')
     }
