@@ -9,11 +9,16 @@ const reactContainer = document.getElementById('react-container')
 
 const brain = (function brain() {
   const components = {}
+  const resizeCallbacks = []
 
   return {
     store: (name, ref) => { components[name] = ref },
     tell: components,
     ask: components,
+    onResize: (func) => { resizeCallbacks.push(func) },
+
+    // private members
+    p_resizeCallbacks: resizeCallbacks,
   }
 }())
 
@@ -32,6 +37,15 @@ window.addEventListener('resize', (e) => {
     // do nothing, try again
     // on next resize event
   }
+
+  brain.p_resizeCallbacks.forEach((func) => {
+    try {
+      func(e)
+    } catch (err) {
+      // do nothing, try again
+      // on next resize event
+    }
+  })
 })
 
 ReactDOM.render(<App brain={brain} />, reactContainer)
