@@ -62,11 +62,9 @@ export default class RenderLayer {
         this.root.interactive = true
         this.root.hitArea = new PIXI.Rectangle(0, 0, this.size[0], this.size[1])
       }
-    } else if (this.root) {
-      // otherwise destroy the current root, and set to null
-      // this can be used if you want to disable interactions dynamically
-      this.root.destroy(true)
-      this.root = null
+    } else if (this.root.interactive) {
+      // otherwise if flag is false, AND root IS interactive then disable interactivity
+      this.root.interactive = false
     }
   }
 
