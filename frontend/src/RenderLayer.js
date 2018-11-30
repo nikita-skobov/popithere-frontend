@@ -68,4 +68,10 @@ export default class RenderLayer {
       this.inputBox = null
     }
   }
+
+  on(event, callback) {
+    if (this.inputBox) {
+      this.inputBox.on(event, callback)
+    }
+  }
 }
