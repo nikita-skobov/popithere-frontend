@@ -15,6 +15,7 @@ export default class Canvas extends Component {
     this.popIt = this.popIt.bind(this)
     this.popItChosen = this.popItChosen.bind(this)
     this.settingsChange = this.settingsChange.bind(this)
+    this.newGame = this.newGame.bind(this)
   }
 
   componentDidMount() {
@@ -39,6 +40,10 @@ export default class Canvas extends Component {
       this.maxSprites = value
       this.RW.changeMaxSprites(value)
     }
+  }
+
+  newGame(game) {
+    this.brain.tell.Buttons.newButtons(game.getButtons())
   }
 
   popItChosen(type, val) {
