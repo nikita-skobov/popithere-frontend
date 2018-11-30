@@ -1,3 +1,4 @@
+import * as PIXI from 'pixi.js'
 
 const has = Object.prototype.hasOwnProperty
 
@@ -16,6 +17,11 @@ export default class Game {
     return this.buttons
   }
 
+  // eslint-disable-next-line
+  calculatePos(name, clickPos) {
+    const { width, height } = PIXI.loader.resources[name].texture
+    return { x: clickPos.x - (width / 2), y: clickPos.y - (height / 2) }
+  }
 
   addButton(btn) {
     // can either be an obj or string
