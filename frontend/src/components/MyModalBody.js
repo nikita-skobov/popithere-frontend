@@ -54,6 +54,10 @@ export default class MyModalBody extends Component {
         <PopItSelection brain={this.brain} />
       )
     }
+    if (typeof type === 'object') {
+      const ModalBody = type.modal
+      return <ModalBody />
+    }
     return (
       <div />
     )

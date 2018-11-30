@@ -8,6 +8,8 @@ import {
   DropdownItem,
 } from 'reactstrap'
 
+const has = Object.prototype.hasOwnProperty
+
 export default class Buttons extends Component {
   constructor(props) {
     super(props)
@@ -66,6 +68,29 @@ export default class Buttons extends Component {
       // this.brain.tell.Canvas.popIt('test1')
     } else if (name === 'options') {
       this.brain.tell.MyModal.toggle(name)
+    } else {
+      // game buttons
+
+      // first find the button with that name
+      let button = null
+      const { gameButtons } = this.state
+      gameButtons.forEach((btn) => {
+        if (btn.name === name) {
+          button = btn
+        }
+      })
+
+      if (button) {
+        // only proceed if button was found
+
+        if (has.call(button, 'on')) {
+          button.on()
+        }
+
+        if (has.call(button, 'modal')) {
+          this.brain.tell.MyModal.toggle(button)
+        }
+      }
     }
   }
 
