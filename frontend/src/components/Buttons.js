@@ -18,6 +18,7 @@ export default class Buttons extends Component {
     this.state = {
       leftPx: 0,
       open: false,
+      gameButtons: [],
     }
 
     this.brain.store('Buttons', this)
@@ -34,6 +35,14 @@ export default class Buttons extends Component {
     } catch (e) {
       // do nothing
     }
+  }
+
+  newButtons(buttons) {
+    this.setState((prevState) => {
+      const tempState = prevState
+      tempState.gameButtons = buttons
+      return tempState
+    })
   }
 
   toggleDropdown() {
@@ -62,7 +71,7 @@ export default class Buttons extends Component {
 
   render() {
     const { toggleDropdown } = this
-    const { leftPx, open } = this.state
+    const { leftPx, open, gameButtons } = this.state
 
     return (
       <div ref={(btn) => { this.btn = btn }} className="my-buttons" style={{ left: leftPx }}>
@@ -71,6 +80,10 @@ export default class Buttons extends Component {
             <i className="fa fa-bars" />
           </DropdownToggle>
           <DropdownMenu>
+            {gameButtons.map(item => (
+              // users can load buttons into the menu dynamically
+              <DropdownItem name={item.name} onClick={this.handleButton}>{item.text}</DropdownItem>
+            ))}
             <DropdownItem name="popit" onClick={this.handleButton}>Pop It!</DropdownItem>
             <DropdownItem name="options" onClick={this.handleButton}>Options</DropdownItem>
             <DropdownItem>Support</DropdownItem>
