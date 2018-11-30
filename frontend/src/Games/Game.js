@@ -9,6 +9,7 @@ export default class Game {
     this.baseLayer = props.baseLayer
     this.inputLayer = props.inputLayer
     this.size = props.size
+    this.modal = props.modal
 
     this.buttons = []
   }

@@ -116,6 +116,7 @@ export default class RenderWindow {
         baseLayer: this.baseLayer,
         inputLayer: this.inputLayer,
         size: this.size,
+        modal: this.brain.ask.MyModal,
       })
     } else {
       // do nothing
