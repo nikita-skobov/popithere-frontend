@@ -17,7 +17,6 @@ export default class RenderWindow {
         preserveDrawinngBuffer: false,
       },
     )
-
     this.renderer.backgroundColor = props.backgroundColor || this.defaults.backgroundColor
 
     this.stage = new PIXI.Container()
@@ -28,7 +27,11 @@ export default class RenderWindow {
     this.renderer.view.classList.add('canvas')
     oldCanvas.replaceWith(this.renderer.view)
 
-    this.renderer2 = PIXI.autoDetectRenderer(
+    this.currentlyPopping = false
+    this.poppingName = null
+
+    // creates a seperate renderer element to handle all inputs
+    this.inputRenderer = PIXI.autoDetectRenderer(
       this.size[0],
       this.size[1],
       {
@@ -36,40 +39,39 @@ export default class RenderWindow {
         transparent: true,
       },
     )
+    this.inputRenderer.view.classList.add('canvas2')
+    this.inputRenderer.view.style.zIndex = '15'
+    document.body.appendChild(this.inputRenderer.view)
 
-    this.renderer2.view.classList.add('canvas2')
-    console.log(`new width: ${this.renderer.view.offsetWidth}`)
-    console.log(`new height: ${this.renderer.view.offsetHeight}`)
-    this.renderer2.view.style.left = this.renderer.view.offsetLeft + "px"
-    this.renderer2.view.style.top = this.renderer.view.offsetTop + "px"
-    this.renderer2.view.style.width = this.renderer.view.offsetWidth + "px"
-    this.renderer2.view.style.height = this.renderer.view.offsetHeight + "px"
-    this.renderer2.view.style.zIndex = '15'
-    document.body.appendChild(this.renderer2.view)
-
-    this.currentlyPopping = false
-    this.poppingName = null
-
-    // this.stage.interactive = true
-    // this.stage.hitArea = new PIXI.Rectangle(0, 0, this.size[0], this.size[1])
-    // this.stage.on('pointermove', (event) => {
-    //   this.onPointerMove(event)
-    // })
-    // this.stage.on('pointerdown', (event) => {
-    //   this.onPointerDown(event)
-    // })
-
-    this.stage2 = new PIXI.Container()
-    this.stage2.interactive = true
-    this.stage2.hitArea = new PIXI.Rectangle(0, 0, this.size[0], this.size[1])
-    this.stage2.on('pointermove', (event) => {
+    // sets up interactivity for the global input box
+    this.inputBox = new PIXI.Container()
+    this.inputBox.interactive = true
+    this.inputBox.hitArea = new PIXI.Rectangle(0, 0, this.size[0], this.size[1])
+    this.inputBox.on('pointermove', (event) => {
       this.onPointerMove(event)
     })
-    this.stage2.on('pointerdown', (event) => {
+    this.inputBox.on('pointerdown', (event) => {
       this.onPointerDown(event)
     })
 
-    this.renderer2.render(this.stage2)
+    // set input renderer initial position
+    this.repositionInput()
+    // render it once so inputBox detection works
+    this.inputRenderer.render(this.inputBox)
+
+    // special resize handler. this way renderWindow
+    // does not need to expose itself to brain
+    this.brain.onResize((e) => {
+      console.log('inside brain resize')
+      this.repositionInput()
+    })
+  }
+
+  repositionInput() {
+    this.inputRenderer.view.style.left = `${this.renderer.view.offsetLeft}px`
+    this.inputRenderer.view.style.top = `${this.renderer.view.offsetTop}px`
+    this.inputRenderer.view.style.width = `${this.renderer.view.offsetWidth}px`
+    this.inputRenderer.view.style.height = `${this.renderer.view.offsetHeight}px`
   }
 
   onPointerDown(event) {
@@ -132,6 +134,11 @@ export default class RenderWindow {
   afterLoad() {
     console.log('Assets loaded!')
     this.render()
+    const cat = new PIXI.Sprite(PIXI.loader.resources.test1.texture)
+    cat.x = 200
+    cat.y = 200
+    this.inputBox.addChild(cat)
+    this.inputRenderer.render(this.inputBox)
   }
 
   changeMaxSprites(newMax) {
