@@ -37,7 +37,6 @@ export default class RenderWindow {
       },
     )
 
-    this.renderer2.backgroundColor = 0xababfb
     this.renderer2.view.classList.add('canvas2')
     console.log(`new width: ${this.renderer.view.offsetWidth}`)
     console.log(`new height: ${this.renderer.view.offsetHeight}`)
@@ -45,22 +44,36 @@ export default class RenderWindow {
     this.renderer2.view.style.top = this.renderer.view.offsetTop + "px"
     this.renderer2.view.style.width = this.renderer.view.offsetWidth + "px"
     this.renderer2.view.style.height = this.renderer.view.offsetHeight + "px"
+    this.renderer2.view.style.zIndex = '15'
     document.body.appendChild(this.renderer2.view)
 
     this.currentlyPopping = false
     this.poppingName = null
 
-    this.stage.interactive = true
-    this.stage.hitArea = new PIXI.Rectangle(0, 0, this.size[0], this.size[1])
-    this.stage.on('pointermove', (event) => {
+    // this.stage.interactive = true
+    // this.stage.hitArea = new PIXI.Rectangle(0, 0, this.size[0], this.size[1])
+    // this.stage.on('pointermove', (event) => {
+    //   this.onPointerMove(event)
+    // })
+    // this.stage.on('pointerdown', (event) => {
+    //   this.onPointerDown(event)
+    // })
+
+    this.stage2 = new PIXI.Container()
+    this.stage2.interactive = true
+    this.stage2.hitArea = new PIXI.Rectangle(0, 0, this.size[0], this.size[1])
+    this.stage2.on('pointermove', (event) => {
       this.onPointerMove(event)
     })
-    this.stage.on('pointerdown', (event) => {
+    this.stage2.on('pointerdown', (event) => {
       this.onPointerDown(event)
     })
+
+    this.renderer2.render(this.stage2)
   }
 
   onPointerDown(event) {
+    console.log(event)
     if (this.currentlyPopping) {
       const clickPos = event.data.getLocalPosition(this.stage)
       const chat = {
@@ -76,6 +89,7 @@ export default class RenderWindow {
   }
 // make a Game class... have different games with different rules
   onPointerMove(event) {
+    // console.log(event)
     // console.log(event.data.originalEvent.x, event.data.originalEvent.y)
   }
 
