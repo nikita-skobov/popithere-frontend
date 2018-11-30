@@ -57,7 +57,7 @@ export default class RenderLayer {
   makeInteractive(flag) {
     if (flag) {
       // if flag is true, make it interactive
-      if (!this.root) {
+      if (!this.root.interactive) {
         // only create a new input box if one does not exist
         this.root.interactive = true
         this.root.hitArea = new PIXI.Rectangle(0, 0, this.size[0], this.size[1])
@@ -71,9 +71,7 @@ export default class RenderLayer {
   }
 
   on(event, callback) {
-    console.log('inside render layer event')
-    if (this.root) {
-      console.log('input box true')
+    if (this.root.interactive) {
       this.root.on(event, callback)
     }
   }
