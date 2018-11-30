@@ -5,11 +5,6 @@ import RenderLayer from './RenderLayer'
 
 export default class RenderWindow {
   constructor(props) {
-    this.defaults = {
-      backgroundColor: 0xafa0fb,
-      maxSprites: 10,
-    }
-
     this.brain = props.brain
     this.size = props.size
     this.aspectRatio = this.size[0] / this.size[1]
@@ -31,7 +26,7 @@ export default class RenderWindow {
     oldCanvas.replaceWith(this.renderer.view)
 
     this.stage = new PIXI.Container()
-    this.maxSprites = props.maxSprites || this.defaults.maxSprites
+    this.maxSprites = props.maxSprites
     this.currentlyPopping = false
     this.poppingName = null
 
@@ -145,8 +140,8 @@ export default class RenderWindow {
     const cat = new PIXI.Sprite(PIXI.loader.resources.test1.texture)
     cat.x = 200
     cat.y = 200
-    this.inputBox.addChild(cat)
-    this.inputRenderer.render(this.inputBox)
+    this.inputLayer.inputBox.addChild(cat)
+    this.inputRenderer.render(this.inputLayer.inputBox)
 
     setTimeout(() => {
       console.log('chaning game:')

@@ -25,7 +25,12 @@ export default class Canvas extends Component {
       // do nothing
     }
     const { brain, maxSprites } = this
-    this.RW = new RenderWindow({ brain, maxSprites, size: [1069, 1069] })
+    this.RW = new RenderWindow({
+      brain,
+      maxSprites,
+      size: [1069, 1069],
+      backgroundColor: 0xafa0fb,
+    })
     this.RW.loadAssets(assetList)
   }
 
