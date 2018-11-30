@@ -117,6 +117,7 @@ export default class RenderWindow {
       this.currentGame = new PopItHere({
         baseLayer: this.baseLayer,
         inputLayer: this.inputLayer,
+        size: this.size,
       })
     } else {
       // do nothing

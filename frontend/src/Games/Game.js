@@ -7,6 +7,7 @@ export default class Game {
     console.log(props)
     this.baseLayer = props.baseLayer
     this.inputLayer = props.inputLayer
+    this.size = props.size
 
     this.buttons = []
   }
