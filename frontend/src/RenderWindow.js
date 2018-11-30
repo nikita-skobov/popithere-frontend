@@ -19,70 +19,56 @@ export default class RenderWindow {
       interactive: false, // default is false
       backgroundColor: props.backgroundColor, // default is white,
       transparent: false, // default is false
+      addToPage: false, // default is true
+      type: 'base', // default is extra
     })
 
-    this.renderer = PIXI.autoDetectRenderer(
-      this.size[0],
-      this.size[1],
-      {
-        preserveDrawinngBuffer: false,
-      },
-    )
-    this.renderer.backgroundColor = props.backgroundColor || this.defaults.backgroundColor
-
-    this.stage = new PIXI.Container()
-    this.maxSprites = props.maxSprites || this.defaults.maxSprites
-
+    // base layer needs to be inserted to DOM specially
+    this.renderer = this.baseLayer.renderer
     // eslint-disable-next-line
     const oldCanvas = document.getElementsByTagName('canvas')[0]
     this.renderer.view.classList.add('canvas')
     oldCanvas.replaceWith(this.renderer.view)
 
+    this.stage = new PIXI.Container()
+    this.maxSprites = props.maxSprites || this.defaults.maxSprites
     this.currentlyPopping = false
     this.poppingName = null
 
     // creates a seperate renderer element to handle all inputs
-    this.inputRenderer = PIXI.autoDetectRenderer(
-      this.size[0],
-      this.size[1],
-      {
-        preserveDrawingBuffer: false,
-        transparent: true,
-      },
-    )
-    this.inputRenderer.view.classList.add('canvas2')
-    this.inputRenderer.view.style.zIndex = '15'
-    document.body.appendChild(this.inputRenderer.view)
-
-    // sets up interactivity for the global input box
-    this.inputBox = new PIXI.Container()
-    this.inputBox.interactive = true
-    this.inputBox.hitArea = new PIXI.Rectangle(0, 0, this.size[0], this.size[1])
-    this.inputBox.on('pointermove', (event) => {
-      this.onPointerMove(event)
-    })
-    this.inputBox.on('pointerdown', (event) => {
-      this.onPointerDown(event)
+    this.inputLayer = new RenderLayer({
+      size: this.size,
+      interactive: true,
+      transparent: true,
+      addToPage: true,
+      type: 'input',
     })
 
     // set input renderer initial position
-    this.repositionInput()
+    this.repositionCanvases()
     // render it once so inputBox detection works
-    this.inputRenderer.render(this.inputBox)
+    this.inputRenderer = this.inputLayer.renderer
 
     // special resize handler. this way renderWindow
     // does not need to expose itself to brain
     this.brain.onResize((e) => {
       console.log('inside brain resize')
-      this.repositionInput()
+      this.repositionCanvases()
     })
   }
 
-  repositionInput() {
-    this.inputRenderer.view.style.left = `${this.renderer.view.offsetLeft}px`
-    this.inputRenderer.view.style.top = `${this.renderer.view.offsetTop}px`
-    this.inputRenderer.view.style.width = `${this.renderer.view.offsetWidth}px`
-    this.inputRenderer.view.style.height = `${this.renderer.view.offsetHeight}px`
+  repositionCanvases() {
+    // class canvas is part of react root,
+    // all other canvas2 elements are just part of the body
+    // so they need to be resized seperately
+    const canvases = document.getElementsByClassName('canvas2')
+    canvases.forEach((el) => {
+      const elm = el
+      elm.style.left = `${this.renderer.view.offsetLeft}px`
+      elm.style.top = `${this.renderer.view.offsetTop}px`
+      elm.style.width = `${this.renderer.view.offsetWidth}px`
+      elm.style.height = `${this.renderer.view.offsetHeight}px`
+    })
   }
 
   onPointerDown(event) {
