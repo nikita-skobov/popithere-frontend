@@ -7,6 +7,7 @@ export default class RenderLayer {
     // backgroundColor: props.backgroundColor, // default is white,
     // transparent: false, // default is false
     // addToPage: false, // default is true
+    // type: 'base' || 'input' // default is undefined
     this.size = props.size
 
     this.renderer = PIXI.autoDetectRenderer(
@@ -31,13 +32,22 @@ export default class RenderLayer {
       this.makeInteractive()
     }
 
+    this.type = props.type
+    if (this.type !== 'base' && this.type !== 'input') {
+      // when users are making games, they should NOT use base, or input
+      // this allows the RenderWindow to remove all canvases
+      // where className === extra
+      this.type = 'extra'
+    }
+
     if (props.addToPage) {
       // for extra layers just add it to the body
       // but the base layer is part of react, so it should
       // not be added to the page
-      this.inputRenderer.view.classList.add('canvas2')
-      this.inputRenderer.view.style.zIndex = '15'
-      document.body.appendChild(this.inputRenderer.view)
+      this.renderer.view.classList.add('canvas2')
+      this.renderer.view.classList.add(this.type)
+      this.renderer.view.style.zIndex = '15'
+      document.body.appendChild(this.renderer.view)
     }
   }
 
