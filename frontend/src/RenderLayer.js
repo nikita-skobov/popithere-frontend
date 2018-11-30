@@ -25,12 +25,15 @@ export default class RenderLayer {
       this.renderer.backgroundColor = props.backgroundColor || 0xffffff
     }
 
-    // by default, no interaction
-    this.inputBox = null
+    // everything rendered will go inside root
+    this.root = new PIXI.Container()
 
     if (props.interactive) {
       this.makeInteractive(true)
     }
+
+    // initial render so it shows up
+    this.renderer.render(this.root)
 
     this.type = props.type
     if (this.type !== 'base' && this.type !== 'input') {
@@ -54,24 +57,24 @@ export default class RenderLayer {
   makeInteractive(flag) {
     if (flag) {
       // if flag is true, make it interactive
-      if (!this.inputBox) {
+      if (!this.root) {
         // only create a new input box if one does not exist
-        this.inputBox = new PIXI.Container()
-        this.inputBox.interactive = true
-        this.inputBox.hitArea = new PIXI.Rectangle(0, 0, this.size[0], this.size[1])
-        this.renderer.render(this.inputBox)
+        this.root.interactive = true
+        this.root.hitArea = new PIXI.Rectangle(0, 0, this.size[0], this.size[1])
       }
-    } else if (this.inputBox) {
-      // otherwise destroy the current inputBox, and set to null
+    } else if (this.root) {
+      // otherwise destroy the current root, and set to null
       // this can be used if you want to disable interactions dynamically
-      this.inputBox.destroy(true)
-      this.inputBox = null
+      this.root.destroy(true)
+      this.root = null
     }
   }
 
   on(event, callback) {
-    if (this.inputBox) {
-      this.inputBox.on(event, callback)
+    console.log('inside render layer event')
+    if (this.root) {
+      console.log('input box true')
+      this.root.on(event, callback)
     }
   }
 }
