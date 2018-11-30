@@ -2,7 +2,6 @@ import * as PIXI from 'pixi.js'
 
 export default class RenderLayer {
   constructor(props) {
-    console.log('calling render layer')
     // size: this.size,
     // interactive: false, // default is false
     // backgroundColor: props.backgroundColor, // default is white,
@@ -56,6 +55,13 @@ export default class RenderLayer {
       this.renderer.view.classList.add(this.type)
       this.renderer.view.style.zIndex = '15'
       document.body.appendChild(this.renderer.view)
+
+      // set initial position of layer
+      const canvas = document.getElementsByClassName('canvas')[0]
+      this.renderer.view.style.left = `${canvas.offsetLeft}px`
+      this.renderer.view.style.top = `${canvas.offsetTop}px`
+      this.renderer.view.style.width = `${canvas.offsetWidth}px`
+      this.renderer.view.style.height = `${canvas.offsetHeight}px`
     }
   }
 
