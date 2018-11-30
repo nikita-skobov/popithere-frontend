@@ -39,8 +39,6 @@ export default class RenderWindow {
       type: 'input',
     })
 
-    // set input renderer initial position
-    this.repositionCanvases()
     // render it once so inputBox detection works
     this.inputRenderer = this.inputLayer.renderer
 
