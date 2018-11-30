@@ -1,5 +1,7 @@
 import * as PIXI from 'pixi.js'
 
+import PopItHere from './Games/PopItHere'
+
 export default class RenderWindow {
   constructor(props) {
     this.defaults = {
@@ -120,6 +122,17 @@ export default class RenderWindow {
     this.currentlyPopping = false
   }
 
+  changeGame(name) {
+    if (name === 'PopItHere') {
+      this.currentGame = new PopItHere({
+        baseLayer: this.renderer,
+        inputLayer: this.inputRenderer,
+      })
+    } else {
+      // do nothing
+    }
+  }
+
   render() {
     const numSprites = this.stage.children.length
     if (numSprites > this.maxSprites) {
@@ -139,6 +152,11 @@ export default class RenderWindow {
     cat.y = 200
     this.inputBox.addChild(cat)
     this.inputRenderer.render(this.inputBox)
+
+    setTimeout(() => {
+      console.log('chaning game:')
+      this.changeGame('PopItHere')
+    }, 3000)
   }
 
   changeMaxSprites(newMax) {
