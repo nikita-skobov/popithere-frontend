@@ -50,11 +50,16 @@ export default class Game {
         obj.on = btn.on
       }
 
+      // if user supplies a modal property,
+      // verify that it is a react function
       if (has.call(btn, 'modal')) {
-        if (!has.call(btn.modal, '$$typeof')) {
+        if (typeof btn.modal !== 'function') {
+          throw new Error('property "modal" must be a function')
+        }
+        if (!has.call(btn.modal(), '$$typeof')) {
           throw new Error('property: "modal" must be a react component')
         }
-        if (btn.modal.$$typeof.toString() !== 'Symbol(react.element)') {
+        if (btn.modal().$$typeof.toString() !== 'Symbol(react.element)') {
           throw new Error('property: "modal" must be a react component')
         }
         obj.modal = btn.modal
