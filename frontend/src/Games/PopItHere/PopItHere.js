@@ -68,8 +68,8 @@ export default class PopItHere extends Game {
     if (this.currentlyPopping) {
       const clickPos = this.getLocalPosition(event)
       const { x, y } = this.calculatePos(this.poppingName, clickPos)
-      this.baseLayer.addImage(this.poppingName, { x, y })
-      this.baseLayer.draw()
+      this.addImage(this.poppingName, { x, y })
+      this.draw()
     }
   }
 }

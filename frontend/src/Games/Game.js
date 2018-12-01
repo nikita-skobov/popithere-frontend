@@ -20,6 +20,14 @@ export default class Game {
     return event.data.getLocalPosition(this.inputLayer.root)
   }
 
+  addImage(name, pos) {
+    this.baseLayer.addImage(name, pos)
+  }
+
+  draw() {
+    this.baseLayer.draw()
+  }
+
   addButton(btn) {
     // can either be an obj or string
     if (typeof btn === 'string') {
