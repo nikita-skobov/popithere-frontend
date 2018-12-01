@@ -4,8 +4,6 @@ const has = Object.prototype.hasOwnProperty
 
 export default class Game {
   constructor(props) {
-    console.log('inside game cosntructor')
-    console.log(props)
     this.baseLayer = props.baseLayer
     this.inputLayer = props.inputLayer
     this.size = props.size
@@ -65,10 +63,10 @@ export default class Game {
           throw new Error('property "modal" must be a function')
         }
         if (!has.call(btn.modal(), '$$typeof')) {
-          throw new Error('property: "modal" must be a react component')
+          throw new Error('property: "modal" must return a react component')
         }
         if (btn.modal().$$typeof.toString() !== 'Symbol(react.element)') {
-          throw new Error('property: "modal" must be a react component')
+          throw new Error('property: "modal" must return a react component')
         }
         obj.modal = btn.modal
       }
@@ -77,5 +75,5 @@ export default class Game {
     } else {
       throw new Error('addButton argument must be either a string or object')
     }
-  }
+  } // end of addButton
 }
