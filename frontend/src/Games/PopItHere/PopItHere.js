@@ -8,6 +8,8 @@ export default class PopItHere extends Game {
   constructor(props) {
     super(props)
 
+    this.setBackgroundColor(0xab1212)
+
     this.on('pointerdown', (event) => {
       this.pointerDown(event)
     })
@@ -27,14 +29,14 @@ export default class PopItHere extends Game {
     this.currentlyPopping = false
     this.poppingName = null
 
-    const TEST_LAYER = this.addLayer('test', {
+    this.TEST_LAYER = this.addLayer('test', {
       backgroundColor: 0x48a23f,
       transparent: true,
     })
     this.addImage('test1',
       { x: 10, y: 10 },
-      TEST_LAYER)
-    this.draw(TEST_LAYER)
+      this.TEST_LAYER)
+    this.draw(this.TEST_LAYER)
 
     // this.secondLayer = new RenderLayer({
     //   size: this.size,

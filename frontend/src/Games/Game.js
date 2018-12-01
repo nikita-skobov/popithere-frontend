@@ -29,6 +29,17 @@ export default class Game {
     return event.data.getLocalPosition(this.inputLayer.root)
   }
 
+  setBackgroundColor(color, layer = this.defaultLayer) {
+    if (this.layerExists(layer)) {
+      const L = this.layers[layer.name]
+      const { renderer } = L
+      renderer.backgroundColor = color
+      renderer.render(L.root)
+    } else {
+      throw new Error(`cannot set background color to layer: ${layer.name}. it does not exist`)
+    }
+  }
+
   addImage(name, pos, layer = this.defaultLayer) {
     if (this.layerExists(layer)) {
       this.layers[layer.name].addImage(name, pos)
