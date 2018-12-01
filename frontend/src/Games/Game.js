@@ -53,8 +53,19 @@ export default class Game {
     renderer.render(this.base.root)
   }
 
-  addImage(name, pos) {
-    this.base.addImage(name, pos)
+  layerExists(layer) {
+    if (layer instanceof Layer) {
+      return has.call(this.layers, layer.name)
+    }
+    throw new Error('layer must be an instance of a Layer')
+  }
+
+  addImage(name, pos, layer = this.layers.base) {
+    if (this.layerExists(layer)) {
+      this.layers[layer.name].addImage(name, pos)
+    } else {
+      throw new Error(`layer: ${layer.name} does not exist`)
+    }
   }
 
   draw() {

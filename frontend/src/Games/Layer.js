@@ -10,4 +10,11 @@ export default class Layer {
       this.container = new PIXI.Container()
     }
   }
+
+  addImage(name, { x, y }) {
+    const img = new PIXI.Sprite(PIXI.loader.resources[name].texture)
+    img.x = x
+    img.y = y
+    this.container.addChild(img)
+  }
 }
