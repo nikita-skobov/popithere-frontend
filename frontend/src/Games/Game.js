@@ -50,7 +50,7 @@ export default class Game {
   }
 
   getLocalPosition(event) {
-    return event.data.getLocalPosition(this.inputLayer.root)
+    return this.inputHandler.getLocalPosition(event)
   }
 
   setBackgroundColor(color, layer = this.defaultLayer) {

@@ -6,4 +6,8 @@ export default class InputHandler {
   toggleInteractions(flag) {
     this.inputLayer.root.interactive = flag
   }
+
+  getLocalPosition(event) {
+    return event.data.getLocalPosition(this.inputLayer.root)
+  }
 }
