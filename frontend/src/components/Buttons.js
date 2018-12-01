@@ -8,6 +8,8 @@ import {
   DropdownItem,
 } from 'reactstrap'
 
+import { defaultButtons } from '../customConfig'
+
 const has = Object.prototype.hasOwnProperty
 
 export default class Buttons extends Component {
@@ -65,10 +67,10 @@ export default class Buttons extends Component {
     const { name } = e.target
     // first check for one of the default buttons
     // like options, help, about, etc
-    if (name === 'options') {
+    if (defaultButtons.includes(name)) {
       this.brain.tell.MyModal.toggle(name)
     } else {
-      // game buttons
+      // otherwise it is a game buttons defined by user
 
       // first find the button with that name
       let button = null
