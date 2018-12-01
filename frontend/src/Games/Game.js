@@ -2,7 +2,7 @@ const has = Object.prototype.hasOwnProperty
 
 export default class Game {
   constructor(props) {
-    this.baseLayer = props.baseLayer
+    this.base = props.baseLayer
     this.inputHandler = props.inputHandler
     this.size = props.size
     this.modal = props.modal
@@ -15,10 +15,10 @@ export default class Game {
   }
 
   endGame() {
-    this.baseLayer.stopAnimating()
-    this.baseLayer.removeAllChildren()
-    this.baseLayer.renderer.backgroundColor = 0x000000
-    this.baseLayer.renderer.clear()
+    this.base.stopAnimating()
+    this.base.removeAllChildren()
+    this.base.renderer.backgroundColor = 0x000000
+    this.base.renderer.clear()
     this.inputHandler.toggleInteractions(false)
   }
 
@@ -31,17 +31,17 @@ export default class Game {
   }
 
   setBackgroundColor(color) {
-    const { renderer } = this.baseLayer
+    const { renderer } = this.base
     renderer.backgroundColor = color
-    renderer.render(this.baseLayer.root)
+    renderer.render(this.base.root)
   }
 
   addImage(name, pos) {
-    this.baseLayer.addImage(name, pos)
+    this.base.addImage(name, pos)
   }
 
   draw() {
-    this.baseLayer.draw()
+    this.base.draw()
   }
 
   on(event, callback) {
