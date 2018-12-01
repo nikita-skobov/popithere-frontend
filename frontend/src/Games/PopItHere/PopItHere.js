@@ -1,4 +1,5 @@
 import React from 'react'
+import * as PIXI from 'pixi.js'
 
 import Game from '../Game'
 import RenderLayer from '../../RenderLayer'
@@ -55,6 +56,12 @@ export default class PopItHere extends Game {
   startPopping(name) {
     this.poppingName = name
     this.currentlyPopping = true
+  }
+
+  // eslint-disable-next-line
+  calculatePos(name, clickPos) {
+    const { width, height } = PIXI.loader.resources[name].texture
+    return { x: clickPos.x - (width / 2), y: clickPos.y - (height / 2) }
   }
 
   pointerDown(event) {
