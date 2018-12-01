@@ -71,10 +71,6 @@ export default class RenderLayer {
     this.renderer.destroy(true)
   }
 
-  removeListeners() {
-    this.root.interactive = false
-  }
-
   on(event, callback) {
     if (this.root.interactive) {
       this.root.on(event, callback)
