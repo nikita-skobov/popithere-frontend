@@ -9,7 +9,6 @@ export default class Canvas extends Component {
     super(props)
     this.brain = props.brain
     this.RW = null
-    this.maxSprites = 10
 
     this.brain.store('Canvas', this)
     this.settingsChange = this.settingsChange.bind(this)
@@ -34,10 +33,7 @@ export default class Canvas extends Component {
   }
 
   settingsChange(type, value) {
-    if (type === 'maxspritecount') {
-      this.maxSprites = value
-      this.RW.changeMaxSprites(value)
-    }
+    // empty for now
   }
 
   newGame(game) {
