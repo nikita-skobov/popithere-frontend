@@ -11,9 +11,6 @@ export default class PopItHere extends Game {
     this.inputLayer.on('pointerdown', (event) => {
       this.pointerDown(event)
     })
-    // this.inputLayer.on('pointermove', (event) => {
-    //   console.log('inside popithere pointer move')
-    // })
 
     this.addButton({
       name: 'popit2',
@@ -21,11 +18,9 @@ export default class PopItHere extends Game {
       on: () => {
         console.log('ya pressed tha button!!!')
       },
-      modal: () => {
-        return (
-          <PopItSelection game={this} />
-        )
-      },
+      modal: () => (
+        <PopItSelection game={this} />
+      ),
     })
 
     this.currentlyPopping = false
@@ -51,20 +46,17 @@ export default class PopItHere extends Game {
   }
 
   popItChosen(type, val) {
-    console.log('inside popItChosen')
     if (type === 'image') {
       this.startPopping(val)
     }
   }
 
   startPopping(name) {
-    console.log('inside startPopping')
     this.poppingName = name
     this.currentlyPopping = true
   }
 
   pointerDown(event) {
-    console.log('pointer down')
     if (this.currentlyPopping) {
       const clickPos = this.getLocalPosition(event)
       const { x, y } = this.calculatePos(this.poppingName, clickPos)
