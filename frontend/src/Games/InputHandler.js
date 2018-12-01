@@ -10,4 +10,10 @@ export default class InputHandler {
   getLocalPosition(event) {
     return event.data.getLocalPosition(this.inputLayer.root)
   }
+
+  on(event, callback) {
+    this.inputLayer.on(event, (e) => {
+      callback(e)
+    })
+  }
 }

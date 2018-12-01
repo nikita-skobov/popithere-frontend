@@ -115,7 +115,7 @@ export default class Game {
   }
 
   on(event, callback) {
-    this.inputLayer.on(event, (e) => {
+    this.inputHandler.on(event, (e) => {
       callback(e)
     })
   }
