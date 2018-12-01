@@ -54,7 +54,7 @@ export default class MyModal extends Component {
             'Options'
           )}
           {typeof type === 'object' && (
-            type.text
+            type.modalTitle || type.text
           )}
         </ModalHeader>
         <ModalBody>

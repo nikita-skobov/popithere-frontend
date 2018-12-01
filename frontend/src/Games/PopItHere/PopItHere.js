@@ -21,6 +21,7 @@ export default class PopItHere extends Game {
       modal: () => (
         <PopItSelection game={this} />
       ),
+      modalTitle: 'Choose your PopIt',
     })
 
     this.currentlyPopping = false

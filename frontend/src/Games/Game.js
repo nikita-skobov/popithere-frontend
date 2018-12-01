@@ -73,6 +73,14 @@ export default class Game {
           throw new Error('property: "modal" must return a react component')
         }
         obj.modal = btn.modal
+
+        if (has.call(btn, 'modalTitle')) {
+          if (typeof btn.modalTitle !== 'string') {
+            throw new Error('property "modalTitle" must be a string')
+          }
+
+          obj.modalTitle = btn.modalTitle
+        }
       }
 
       this.buttons.push(obj)
