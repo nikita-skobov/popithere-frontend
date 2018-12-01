@@ -1,4 +1,4 @@
-/* global document */
+/* global document window */
 import * as PIXI from 'pixi.js'
 
 export default class RenderLayer {
@@ -61,6 +61,22 @@ export default class RenderLayer {
       this.renderer.view.style.width = `${canvas.offsetWidth}px`
       this.renderer.view.style.height = `${canvas.offsetHeight}px`
     }
+
+    this.animating = null
+  }
+
+  removeAllChildren() {
+    this.root.removeChildren()
+  }
+
+  wipeAll() {
+    // removes root, and all children
+    this.root.destroy(true)
+  }
+
+  destroy() {
+    // removes it from DOM
+    this.renderer.destroy(true)
   }
 
   on(event, callback) {
@@ -76,7 +92,27 @@ export default class RenderLayer {
     this.root.addChild(img)
   }
 
+  stopAnimating() {
+    window.cancelAnimationFrame(this.animating)
+    this.animating = null
+  }
+
+  animate(val, beforeRender, afterRender) {
+    console.log(val)
+    const redraw = (val) => {
+      beforeRender()
+      this.renderer.render(this.root)
+      afterRender()
+      this.animating = window.requestAnimationFrame(redraw)
+    }
+    this.animating = window.requestAnimationFrame(redraw)
+  }
+
   draw() {
-    this.renderer.render(this.root)
+    if (this.animating === null) {
+      // if we are already animmating,
+      // no point in rendering
+      this.renderer.render(this.root)
+    }
   }
 }

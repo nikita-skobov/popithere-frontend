@@ -3,6 +3,7 @@ import * as PIXI from 'pixi.js'
 
 import PopItHere from './Games/PopItHere/PopItHere'
 import RenderLayer from './RenderLayer'
+import InputHandler from './Games/InputHandler'
 
 export default class RenderWindow {
   constructor(props) {
@@ -22,7 +23,16 @@ export default class RenderWindow {
     this.renderer = this.baseLayer.renderer
     const oldCanvas = document.getElementsByTagName('canvas')[0]
     this.renderer.view.classList.add('canvas')
-    oldCanvas.replaceWith(this.renderer.view)
+    oldCanvas.parentElement.replaceChild(this.renderer.view, oldCanvas)
+
+    // creates an 'ad' layer for popup advertisenments above the game
+    // kind of like twitch cheers/subscribe messsages
+    this.adLayer = new RenderLayer({
+      size: this.size,
+      interactive: false,
+      transparent: true,
+      addToPage: true,
+    })
 
     // creates a seperate renderer element to handle all inputs
     this.inputLayer = new RenderLayer({
@@ -33,8 +43,9 @@ export default class RenderWindow {
       type: 'input',
     })
 
-    // render it once so inputBox detection works
-    this.inputRenderer = this.inputLayer.renderer
+    this.inputHandler = new InputHandler({
+      inputLayer: this.inputLayer,
+    })
 
     // special resize handler. this way renderWindow
     // does not need to expose itself to brain
@@ -63,7 +74,7 @@ export default class RenderWindow {
     // to the Game instance so it can only use what is given to it
     const constructorOps = {
       baseLayer: this.baseLayer,
-      inputLayer: this.inputLayer,
+      inputHandler: this.inputHandler,
       size: this.size,
       modal: {
         // for example here we only want the Game instance

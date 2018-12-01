@@ -1,24 +1,25 @@
-import * as PIXI from 'pixi.js'
-
-import LayerName from './LayerName'
-
-import RenderLayer from '../RenderLayer'
-
 const has = Object.prototype.hasOwnProperty
 
 export default class Game {
   constructor(props) {
     this.baseLayer = props.baseLayer
-    this.inputLayer = props.inputLayer
+    this.inputHandler = props.inputHandler
     this.size = props.size
     this.modal = props.modal
 
     this.buttons = []
-    this.layers = {
-      base: this.baseLayer,
-    }
 
-    this.defaultLayer = new LayerName('base')
+    // when game resets it removes interactions,
+    // set to true for each new game instance
+    this.inputHandler.toggleInteractions(true)
+  }
+
+  endGame() {
+    this.baseLayer.stopAnimating()
+    this.baseLayer.removeAllChildren()
+    this.baseLayer.renderer.backgroundColor = 0x000000
+    this.baseLayer.renderer.clear()
+    this.inputHandler.toggleInteractions(false)
   }
 
   getButtons() {
@@ -26,63 +27,25 @@ export default class Game {
   }
 
   getLocalPosition(event) {
-    return event.data.getLocalPosition(this.inputLayer.root)
+    return this.inputHandler.getLocalPosition(event)
   }
 
-  setBackgroundColor(color, layer = this.defaultLayer) {
-    if (this.layerExists(layer)) {
-      const L = this.layers[layer.name]
-      const { renderer } = L
-      renderer.backgroundColor = color
-      renderer.render(L.root)
-    } else {
-      throw new Error(`cannot set background color to layer: ${layer.name}. it does not exist`)
-    }
+  setBackgroundColor(color) {
+    const { renderer } = this.baseLayer
+    renderer.backgroundColor = color
+    renderer.render(this.baseLayer.root)
   }
 
-  addImage(name, pos, layer = this.defaultLayer) {
-    if (this.layerExists(layer)) {
-      this.layers[layer.name].addImage(name, pos)
-    } else {
-      throw new Error(`cannot add image to layer: ${layer.name}. it does not exist`)
-    }
+  addImage(name, pos) {
+    this.baseLayer.addImage(name, pos)
   }
 
-  addLayer(name, opts) {
-    const opts2 = opts
-
-    if (typeof name !== 'string') {
-      throw new Error('must provide a name for the layer')
-    }
-
-    if (has.call(this.layers, name)) {
-      throw new Error(`layer: ${name} already exists`)
-    }
-
-    // set defaults for user
-    opts2.size = this.size
-    opts2.interactive = false
-    this.layers[name] = new RenderLayer(opts2)
-    return new LayerName(name)
-  }
-
-  layerExists(layerObj) {
-    if (layerObj instanceof LayerName) {
-      return has.call(this.layers, layerObj.name)
-    }
-    throw new Error('Must use a LayerName object, not a string!')
-  }
-
-  draw(layer = this.defaultLayer) {
-    if (this.layerExists(layer)) {
-      this.layers[layer.name].draw()
-    } else {
-      throw new Error(`cannot draw layer: ${layer.name}. it does not exist`)
-    }
+  draw() {
+    this.baseLayer.draw()
   }
 
   on(event, callback) {
-    this.inputLayer.on(event, (e) => {
+    this.inputHandler.on(event, (e) => {
       callback(e)
     })
   }
