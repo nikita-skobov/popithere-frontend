@@ -32,6 +32,7 @@ export default class Game {
   }
 
   endGame() {
+    this.inputHandler.removeAllListeners()
     this.base.stopAnimating()
 
     Object.keys(this.layers).forEach((key) => {
