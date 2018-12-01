@@ -22,7 +22,7 @@ export default class RenderWindow {
     this.renderer = this.baseLayer.renderer
     const oldCanvas = document.getElementsByTagName('canvas')[0]
     this.renderer.view.classList.add('canvas')
-    oldCanvas.replaceWith(this.renderer.view)
+    oldCanvas.parentElement.replaceChild(this.renderer.view, oldCanvas)
 
     // creates a seperate renderer element to handle all inputs
     this.inputLayer = new RenderLayer({
