@@ -30,6 +30,8 @@ export default class Game {
   }
 
   addLayer(name, opts) {
+    const opts2 = opts
+
     if (typeof name !== 'string') {
       throw new Error('must provide a name for the layer')
     }
@@ -38,7 +40,9 @@ export default class Game {
       throw new Error(`layer: ${name} already exists`)
     }
 
-    this.layers[name] = new RenderLayer(opts)
+    // set size for user
+    opts2.size = this.size
+    this.layers[name] = new RenderLayer(opts2)
   }
 
   draw() {

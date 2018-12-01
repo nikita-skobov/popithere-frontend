@@ -28,7 +28,6 @@ export default class PopItHere extends Game {
     this.poppingName = null
 
     this.addLayer('test', {
-      size: this.size,
       transparent: true,
     })
 
