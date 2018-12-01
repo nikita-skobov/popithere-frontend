@@ -53,9 +53,6 @@ export default class MyModal extends Component {
           {type === 'options' && (
             'Options'
           )}
-          {type === 'popit' && (
-            'Choose your Popit!'
-          )}
           {typeof type === 'object' && (
             type.text
           )}
