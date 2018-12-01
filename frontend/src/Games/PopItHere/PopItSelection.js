@@ -11,7 +11,7 @@ import PropTypes from 'prop-types'
 
 import RowGenerator from './RowGenerator'
 
-import { assetList } from '../customConfig'
+import { assetList } from '../../customConfig'
 
 export default class PopItSelection extends Component {
   constructor(props) {
