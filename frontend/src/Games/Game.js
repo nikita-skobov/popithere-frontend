@@ -46,8 +46,17 @@ export default class Game {
     this.layers[name] = new RenderLayer(opts2)
   }
 
-  draw() {
-    this.baseLayer.draw()
+  draw(layerName) {
+    if (layerName) {
+      if (has.call(this.layers, layerName)) {
+        this.layers[layerName].draw()
+      } else {
+        throw new Error(`cannot draw layer: ${layerName}. it does not exist`)
+      }
+    } else {
+      // by default draw the base layer
+      this.baseLayer.draw()
+    }
   }
 
   on(event, callback) {
