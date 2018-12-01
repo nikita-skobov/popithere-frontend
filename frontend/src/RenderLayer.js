@@ -90,18 +90,25 @@ export default class RenderLayer {
 
   stopAnimating() {
     window.cancelAnimationFrame(this.animating)
+    this.animating = null
   }
 
-  animate(val) { 
+  animate(val, beforeRender, afterRender) {
     console.log(val)
     const redraw = (val) => {
-      console.log(val)
+      beforeRender()
+      this.renderer.render(this.root)
+      afterRender()
       this.animating = window.requestAnimationFrame(redraw)
     }
     this.animating = window.requestAnimationFrame(redraw)
   }
 
   draw() {
-    this.renderer.render(this.root)
+    if (this.animating === null) {
+      // if we are already animmating,
+      // no point in rendering
+      this.renderer.render(this.root)
+    }
   }
 }
