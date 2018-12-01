@@ -67,7 +67,6 @@ export default class Game {
   }
 
   layerExists(layerObj) {
-    console.log(layerObj instanceof LayerName)
     if (layerObj instanceof LayerName) {
       return has.call(this.layers, layerObj.name)
     }
