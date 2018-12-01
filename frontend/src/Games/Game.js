@@ -40,8 +40,9 @@ export default class Game {
       throw new Error(`layer: ${name} already exists`)
     }
 
-    // set size for user
+    // set defaults for user
     opts2.size = this.size
+    opts2.interactive = false
     this.layers[name] = new RenderLayer(opts2)
   }
 
