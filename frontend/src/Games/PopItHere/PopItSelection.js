@@ -50,10 +50,8 @@ export default class PopItSelection extends Component {
   popItChosen(e) {
     e.preventDefault()
     const { name } = e.target
-    console.log(name)
     this.game.popItChosen('image', name)
     this.game.modal.toggle()
-    // this.game.tell.MyModal.toggle()
   }
 
   render() {
