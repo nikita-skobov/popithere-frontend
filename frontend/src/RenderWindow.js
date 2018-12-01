@@ -79,6 +79,7 @@ export default class RenderWindow {
         on: this.inputHandler.on,
         getLocalPosition: this.inputHandler.getLocalPosition,
         toggleInteractions: this.inputHandler.toggleInteractions,
+        removeAllListeners: this.inputHandler.removeAllListeners,
       },
       modal: {
         // for example here we only want the Game instance
@@ -102,6 +103,11 @@ export default class RenderWindow {
     setTimeout(() => {
       console.log('chaning game:')
       this.changeGame('PopItHere')
+
+      setTimeout(() => {
+        console.log('changing game again!')
+        this.changeGame('PopItHere')
+      }, 11000)
     }, 3000)
   }
 

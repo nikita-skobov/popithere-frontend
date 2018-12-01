@@ -5,6 +5,7 @@ export default class InputHandler {
     this.toggleInteractions = this.toggleInteractions.bind(this)
     this.getLocalPosition = this.getLocalPosition.bind(this)
     this.on = this.on.bind(this)
+    this.removeAllListeners = this.removeAllListeners.bind(this)
   }
 
   toggleInteractions(flag) {
@@ -19,5 +20,9 @@ export default class InputHandler {
     this.inputLayer.on(event, (e) => {
       callback(e)
     })
+  }
+
+  removeAllListeners() {
+    this.inputLayer.removeAllListeners()
   }
 }

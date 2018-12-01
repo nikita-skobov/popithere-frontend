@@ -81,6 +81,10 @@ export default class RenderLayer {
     }
   }
 
+  removeAllListeners() {
+    this.root.removeAllListeners()
+  }
+
   addImage(name, { x, y }) {
     const img = new PIXI.Sprite(PIXI.loader.resources[name].texture)
     img.x = x
