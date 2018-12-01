@@ -1,5 +1,7 @@
 import * as PIXI from 'pixi.js'
 
+import LayerName from './LayerName'
+
 import RenderLayer from '../RenderLayer'
 
 const has = Object.prototype.hasOwnProperty
@@ -15,6 +17,8 @@ export default class Game {
     this.layers = {
       base: this.baseLayer,
     }
+
+    this.defaultLayer = new LayerName('base')
   }
 
   getButtons() {
@@ -25,11 +29,11 @@ export default class Game {
     return event.data.getLocalPosition(this.inputLayer.root)
   }
 
-  addImage(name, pos, layerName = 'base') {
-    if (has.call(this.layers, layerName)) {
-      this.layers[layerName].addImage(name, pos)
+  addImage(name, pos, layer = this.defaultLayer) {
+    if (this.layerExists(layer)) {
+      this.layers[layer.name].addImage(name, pos)
     } else {
-      throw new Error(`cannot add image to layer: ${layerName}. it does not exist`)
+      throw new Error(`cannot add image to layer: ${layer.name}. it does not exist`)
     }
   }
 
@@ -48,13 +52,22 @@ export default class Game {
     opts2.size = this.size
     opts2.interactive = false
     this.layers[name] = new RenderLayer(opts2)
+    return new LayerName(name)
   }
 
-  draw(layerName = 'base') {
-    if (has.call(this.layers, layerName)) {
-      this.layers[layerName].draw()
+  layerExists(layerObj) {
+    console.log(layerObj instanceof LayerName)
+    if (layerObj instanceof LayerName) {
+      return has.call(this.layers, layerObj.name)
+    }
+    throw new Error('Must use a LayerName object, not a string!')
+  }
+
+  draw(layer = this.defaultLayer) {
+    if (this.layerExists(layer)) {
+      this.layers[layer.name].draw()
     } else {
-      throw new Error(`cannot draw layer: ${layerName}. it does not exist`)
+      throw new Error(`cannot draw layer: ${layer.name}. it does not exist`)
     }
   }
 
