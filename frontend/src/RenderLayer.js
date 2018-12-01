@@ -1,4 +1,4 @@
-/* global document */
+/* global document window */
 import * as PIXI from 'pixi.js'
 
 export default class RenderLayer {
@@ -61,6 +61,8 @@ export default class RenderLayer {
       this.renderer.view.style.width = `${canvas.offsetWidth}px`
       this.renderer.view.style.height = `${canvas.offsetHeight}px`
     }
+
+    this.animating = null
   }
 
   wipeAll() {
@@ -84,6 +86,19 @@ export default class RenderLayer {
     img.x = x
     img.y = y
     this.root.addChild(img)
+  }
+
+  stopAnimating() {
+    window.cancelAnimationFrame(this.animating)
+  }
+
+  animate(val) { 
+    console.log(val)
+    const redraw = (val) => {
+      console.log(val)
+      this.animating = window.requestAnimationFrame(redraw)
+    }
+    this.animating = window.requestAnimationFrame(redraw)
   }
 
   draw() {

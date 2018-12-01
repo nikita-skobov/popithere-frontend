@@ -23,6 +23,7 @@ export default class Game {
   }
 
   endGame() {
+    this.baseLayer.stopAnimating()
     this.baseLayer.renderer.backgroundColor = 0x000000
     this.baseLayer.renderer.clear()
     this.inputLayer.root.interactive = false
@@ -32,6 +33,7 @@ export default class Game {
         // we never want to remove the base layer
         this.layers[key].wipeAll()
         this.layers[key].destroy()
+        this.layers[key].stopAnimating()
       }
     })
   }
