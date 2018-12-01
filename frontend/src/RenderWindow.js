@@ -119,12 +119,4 @@ export default class RenderWindow {
 
     PIXI.loader.add(assetArray).load(callback.bind(this))
   }
-
-  getWidth() {
-    return this.size[0]
-  }
-
-  getHeight() {
-    return this.size[1]
-  }
 }
