@@ -2,9 +2,6 @@ import React, { Component } from 'react'
 import {
   Input,
   Label,
-  Row,
-  Col,
-  Button,
 } from 'reactstrap'
 
 import PropTypes from 'prop-types'

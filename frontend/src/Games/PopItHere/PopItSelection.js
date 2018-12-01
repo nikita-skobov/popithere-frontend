@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
 import {
-  Input,
-  Label,
   Row,
   Col,
   Button,

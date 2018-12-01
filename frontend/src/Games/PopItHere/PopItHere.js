@@ -1,7 +1,5 @@
 import React from 'react'
 
-import { Button } from 'reactstrap'
-
 import Game from '../Game'
 import RenderLayer from '../../RenderLayer'
 import PopItSelection from './PopItSelection'
