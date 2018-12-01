@@ -23,6 +23,7 @@ export default class Game {
   }
 
   endGame() {
+    this.baseLayer.renderer.clear()
     this.inputLayer.root.interactive = false
     Object.keys(this.layers).forEach((key) => {
       if (key !== 'base') {
