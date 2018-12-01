@@ -9,12 +9,11 @@ export default class PopItHere extends Game {
     super(props)
 
     this.inputLayer.on('pointerdown', (event) => {
-      console.log('inside popithere pointerdown')
       this.pointerDown(event)
     })
-    this.inputLayer.on('pointermove', (event) => {
-      console.log('inside popithere pointer move')
-    })
+    // this.inputLayer.on('pointermove', (event) => {
+    //   console.log('inside popithere pointer move')
+    // })
 
     this.addButton({
       name: 'popit2',
