@@ -9,7 +9,6 @@ const has = Object.prototype.hasOwnProperty
 export default class Game {
   constructor(props) {
     this.baseLayer = props.baseLayer
-    this.inputLayer = props.inputLayer
     this.inputHandler = props.inputHandler
     this.size = props.size
     this.modal = props.modal
@@ -25,7 +24,6 @@ export default class Game {
     // when game resets it removes interactions,
     // set to true for each new game instance
     this.inputHandler.toggleInteractions(true)
-    // this.inputLayer.root.interactive = true
     this.defaultLayer = new LayerName('base')
   }
 

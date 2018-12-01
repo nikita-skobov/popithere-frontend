@@ -74,7 +74,6 @@ export default class RenderWindow {
     // to the Game instance so it can only use what is given to it
     const constructorOps = {
       baseLayer: this.baseLayer,
-      inputLayer: this.inputLayer,
       inputHandler: this.inputHandler,
       size: this.size,
       modal: {
