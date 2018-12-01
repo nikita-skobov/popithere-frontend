@@ -29,10 +29,11 @@ export default class PopItHere extends Game {
 
     const TEST_LAYER = this.addLayer('test', {
       backgroundColor: 0x48a23f,
+      transparent: true,
     })
-    this.addImage('test1', {
-      x: 10, y: 10,
-    }, TEST_LAYER)
+    this.addImage('test1',
+      { x: 10, y: 10 },
+      TEST_LAYER)
     this.draw(TEST_LAYER)
 
     // this.secondLayer = new RenderLayer({
