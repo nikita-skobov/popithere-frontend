@@ -28,6 +28,12 @@ export default class Game {
     this.baseLayer.draw()
   }
 
+  on(event, callback) {
+    this.inputLayer.on(event, (e) => {
+      callback(e)
+    })
+  }
+
   addButton(btn) {
     // can either be an obj or string
     if (typeof btn === 'string') {

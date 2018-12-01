@@ -9,7 +9,7 @@ export default class PopItHere extends Game {
   constructor(props) {
     super(props)
 
-    this.inputLayer.on('pointerdown', (event) => {
+    this.on('pointerdown', (event) => {
       this.pointerDown(event)
     })
 
