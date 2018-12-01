@@ -74,8 +74,12 @@ export default class RenderWindow {
     // to the Game instance so it can only use what is given to it
     const constructorOps = {
       baseLayer: this.baseLayer,
-      inputHandler: this.inputHandler,
       size: this.size,
+      inputHandler: {
+        on: this.inputHandler.on,
+        getLocalPosition: this.inputHandler.getLocalPosition,
+        toggleInteractions: this.inputHandler.toggleInteractions,
+      },
       modal: {
         // for example here we only want the Game instance
         // to have access to isOpen and toggle. we don't want
