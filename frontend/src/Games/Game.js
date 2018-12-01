@@ -22,6 +22,10 @@ export default class Game {
     return { x: clickPos.x - (width / 2), y: clickPos.y - (height / 2) }
   }
 
+  getLocalPosition(event) {
+    return event.data.getLocalPosition(this.inputLayer.root)
+  }
+
   addButton(btn) {
     // can either be an obj or string
     if (typeof btn === 'string') {

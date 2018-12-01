@@ -66,13 +66,7 @@ export default class PopItHere extends Game {
   pointerDown(event) {
     console.log('pointer down')
     if (this.currentlyPopping) {
-      const clickPos = event.data.getLocalPosition(this.baseLayer.root)
-      // const chat = {
-      //   name: 'test',
-      //   msg: `x:${clickPos.x}, y:${clickPos.y}`,
-      // }
-      // this.brain.tell.ChatBox.addChat(chat)
-      // console.log(event.data.getLocalPosition(this.stage))
+      const clickPos = this.getLocalPosition(event)
       const { x, y } = this.calculatePos(this.poppingName, clickPos)
       this.baseLayer.addImage(this.poppingName, { x, y })
       this.baseLayer.draw()
