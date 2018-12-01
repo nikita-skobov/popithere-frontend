@@ -64,48 +64,6 @@ export default class RenderWindow {
     })
   }
 
-  onPointerDown(event) {
-    console.log(event)
-    if (this.currentlyPopping) {
-      const clickPos = event.data.getLocalPosition(this.stage)
-      const chat = {
-        name: 'test',
-        msg: `x:${clickPos.x}, y:${clickPos.y}`,
-      }
-      this.brain.tell.ChatBox.addChat(chat)
-      console.log(event.data.getLocalPosition(this.stage))
-      const { x, y } = this.calculatePos(this.poppingName, clickPos)
-      this.addImage(this.poppingName, { x, y })
-      this.render()
-    }
-  }
-  // make a Game class... have different games with different rules
-
-  // eslint-disable-next-line
-  calculatePos(name, clickPos) {
-    const { width, height } = PIXI.loader.resources[name].texture
-    return { x: clickPos.x - (width / 2), y: clickPos.y - (height / 2) }
-  }
-
-  addImage(name, { x, y }) {
-    console.log(`drawing ${name}`)
-    console.log(x, y)
-    const cat = new PIXI.Sprite(PIXI.loader.resources[name].texture)
-    cat.x = x
-    cat.y = y
-    this.stage.addChild(cat)
-  }
-
-  startPopping(name) {
-    this.poppingName = name
-    this.currentlyPopping = true
-  }
-
-  donePopping() {
-    this.poppingName = null
-    this.currentlyPopping = false
-  }
-
   changeGame(name) {
     // pass all necessary data, and object instances
     // to the Game instance so it can only use what is given to it
@@ -142,12 +100,6 @@ export default class RenderWindow {
 
   afterLoad() {
     console.log('Assets loaded!')
-    // this.render()
-    // const cat = new PIXI.Sprite(PIXI.loader.resources.test1.texture)
-    // cat.x = 200
-    // cat.y = 200
-    // this.inputLayer.inputBox.addChild(cat)
-    // this.inputRenderer.render(this.inputLayer.inputBox)
 
     setTimeout(() => {
       console.log('chaning game:')
