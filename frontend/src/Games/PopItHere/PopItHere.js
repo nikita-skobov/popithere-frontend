@@ -13,8 +13,8 @@ export default class PopItHere extends Game {
     })
 
     this.addButton({
-      name: 'popit2',
-      text: 'Pop Itdsadsa!',
+      name: 'popit',
+      text: 'Pop It!',
       on: () => {
         console.log('ya pressed tha button!!!')
       },
@@ -27,22 +27,22 @@ export default class PopItHere extends Game {
     this.poppingName = null
 
 
-    this.secondLayer = new RenderLayer({
-      size: this.size,
-      transparent: true,
-    })
+    // this.secondLayer = new RenderLayer({
+    //   size: this.size,
+    //   transparent: true,
+    // })
 
-    this.thirdLayer = new RenderLayer({
-      size: this.size,
-      transparent: true,
-    })
+    // this.thirdLayer = new RenderLayer({
+    //   size: this.size,
+    //   transparent: true,
+    // })
 
-    this.baseLayer.addImage('test1', { x: 10, y: 10 })
-    this.baseLayer.draw()
-    this.secondLayer.addImage('test1', { x: 50, y: 50 })
-    this.secondLayer.draw()
-    this.thirdLayer.addImage('test1', { x: 100, y: 100 })
-    this.thirdLayer.draw()
+    // this.baseLayer.addImage('test1', { x: 10, y: 10 })
+    // this.baseLayer.draw()
+    // this.secondLayer.addImage('test1', { x: 50, y: 50 })
+    // this.secondLayer.draw()
+    // this.thirdLayer.addImage('test1', { x: 100, y: 100 })
+    // this.thirdLayer.draw()
   }
 
   popItChosen(type, val) {
