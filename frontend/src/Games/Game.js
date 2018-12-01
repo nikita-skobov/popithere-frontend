@@ -10,6 +10,7 @@ export default class Game {
   constructor(props) {
     this.baseLayer = props.baseLayer
     this.inputLayer = props.inputLayer
+    this.inputHandler = props.inputHandler
     this.size = props.size
     this.modal = props.modal
 

@@ -3,6 +3,7 @@ import * as PIXI from 'pixi.js'
 
 import PopItHere from './Games/PopItHere/PopItHere'
 import RenderLayer from './RenderLayer'
+import InputHandler from './Games/InputHandler'
 
 export default class RenderWindow {
   constructor(props) {
@@ -42,6 +43,10 @@ export default class RenderWindow {
       type: 'input',
     })
 
+    this.inputHandler = new InputHandler({
+      inputLayer: this.inputLayer,
+    })
+
     // special resize handler. this way renderWindow
     // does not need to expose itself to brain
     this.brain.onResize(() => {
@@ -70,6 +75,7 @@ export default class RenderWindow {
     const constructorOps = {
       baseLayer: this.baseLayer,
       inputLayer: this.inputLayer,
+      inputHandler: this.inputHandler,
       size: this.size,
       modal: {
         // for example here we only want the Game instance
