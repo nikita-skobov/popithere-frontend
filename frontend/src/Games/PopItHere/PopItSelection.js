@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
 import {
-  Input,
-  Label,
   Row,
   Col,
   Button,
@@ -11,12 +9,12 @@ import PropTypes from 'prop-types'
 
 import RowGenerator from './RowGenerator'
 
-import { assetList } from '../customConfig'
+import { assetList } from '../../customConfig'
 
 export default class PopItSelection extends Component {
   constructor(props) {
     super(props)
-    this.brain = props.brain
+    this.game = props.game
 
     this.maxImages = 10
 
@@ -24,8 +22,6 @@ export default class PopItSelection extends Component {
       choice: 'none',
       offset: 0,
     }
-
-    this.brain.store('PopItSelection', this)
 
     this.handleButton = this.handleButton.bind(this)
     this.popItChosen = this.popItChosen.bind(this)
@@ -55,8 +51,9 @@ export default class PopItSelection extends Component {
     e.preventDefault()
     const { name } = e.target
     console.log(name)
-    this.brain.tell.Canvas.popItChosen('image', name)
-    this.brain.tell.MyModal.toggle()
+    this.game.popItChosen('image', name)
+    this.game.modal.toggle()
+    // this.game.tell.MyModal.toggle()
   }
 
   render() {
@@ -98,5 +95,5 @@ export default class PopItSelection extends Component {
 }
 
 PopItSelection.propTypes = {
-  brain: PropTypes.instanceOf(Object).isRequired,
+  game: PropTypes.instanceOf(Object).isRequired,
 }

@@ -96,3 +96,7 @@ exports.assetList = [
     url: 'images/hqdefault.jpg',
   },
 ]
+
+exports.defaultButtons = [
+  'options',
+]

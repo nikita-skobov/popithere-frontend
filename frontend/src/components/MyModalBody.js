@@ -2,14 +2,9 @@ import React, { Component } from 'react'
 import {
   Input,
   Label,
-  Row,
-  Col,
-  Button,
 } from 'reactstrap'
 
 import PropTypes from 'prop-types'
-
-import PopItSelection from './PopItSelection'
 
 export default class MyModalBody extends Component {
   constructor(props) {
@@ -49,10 +44,9 @@ export default class MyModalBody extends Component {
         </div>
       )
     }
-    if (type === 'popit') {
-      return (
-        <PopItSelection brain={this.brain} />
-      )
+    if (typeof type === 'object') {
+      const ModalBody = type.modal
+      return <ModalBody />
     }
     return (
       <div />
