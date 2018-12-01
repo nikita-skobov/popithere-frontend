@@ -13,6 +13,9 @@ export default class Game {
     this.size = props.size
     this.modal = props.modal
 
+    this.layerCount = 2
+    this.maxLayerCount = 7
+
     this.buttons = []
     this.layers = {
       base: this.baseLayer,
@@ -66,6 +69,10 @@ export default class Game {
   }
 
   addLayer(name, opts) {
+    if (this.layerCount >= this.maxLayerCount) {
+      throw new Error(`too many layers. max is ${this.maxLayerCount}`)
+    }
+
     const opts2 = opts
 
     if (typeof name !== 'string') {
@@ -84,6 +91,7 @@ export default class Game {
     opts2.size = this.size
     opts2.interactive = false
     this.layers[name] = new RenderLayer(opts2)
+    this.layerCount += 1
     return new LayerName(name)
   }
 
