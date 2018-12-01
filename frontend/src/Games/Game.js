@@ -1,5 +1,7 @@
 import * as PIXI from 'pixi.js'
 
+import RenderLayer from '../RenderLayer'
+
 const has = Object.prototype.hasOwnProperty
 
 export default class Game {
@@ -10,6 +12,9 @@ export default class Game {
     this.modal = props.modal
 
     this.buttons = []
+    this.layers = {
+      base: this.baseLayer,
+    }
   }
 
   getButtons() {
@@ -22,6 +27,18 @@ export default class Game {
 
   addImage(name, pos) {
     this.baseLayer.addImage(name, pos)
+  }
+
+  addLayer(name, opts) {
+    if (typeof name !== 'string') {
+      throw new Error('must provide a name for the layer')
+    }
+
+    if (has.call(this.layers, name)) {
+      throw new Error(`layer: ${name} already exists`)
+    }
+
+    this.layers[name] = new RenderLayer(opts)
   }
 
   draw() {

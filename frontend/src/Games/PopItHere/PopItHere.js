@@ -2,7 +2,6 @@ import React from 'react'
 import * as PIXI from 'pixi.js'
 
 import Game from '../Game'
-import RenderLayer from '../../RenderLayer'
 import PopItSelection from './PopItSelection'
 
 export default class PopItHere extends Game {
@@ -28,6 +27,10 @@ export default class PopItHere extends Game {
     this.currentlyPopping = false
     this.poppingName = null
 
+    this.addLayer('test', {
+      size: this.size,
+      transparent: true,
+    })
 
     // this.secondLayer = new RenderLayer({
     //   size: this.size,
