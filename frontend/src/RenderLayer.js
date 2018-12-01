@@ -64,10 +64,12 @@ export default class RenderLayer {
   }
 
   wipeAll() {
+    // removes root, and all children
     this.root.destroy(true)
   }
 
   destroy() {
+    // removes it from DOM
     this.renderer.destroy(true)
   }
 
