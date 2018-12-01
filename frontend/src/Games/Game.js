@@ -18,14 +18,21 @@ export default class Game {
       base: this.baseLayer,
     }
 
+    this.inputLayer.root.interactive = true
     this.defaultLayer = new LayerName('base')
   }
 
-  // endGame() {
-  //   Object.keys(this.layers).forEach((key) => {
-
-  //   })
-  // }
+  endGame() {
+    this.inputLayer.root.interactive = false
+    Object.keys(this.layers).forEach((key) => {
+      if (key !== 'base') {
+        // destroy removes it from page
+        // we never want to remove the base layer
+        this.layers[key].wipeAll()
+        this.layers[key].destroy()
+      }
+    })
+  }
 
   getButtons() {
     return this.buttons

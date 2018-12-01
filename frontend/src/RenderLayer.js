@@ -63,6 +63,18 @@ export default class RenderLayer {
     }
   }
 
+  wipeAll() {
+    this.root.destroy(true)
+  }
+
+  destroy() {
+    this.renderer.destroy(true)
+  }
+
+  removeListeners() {
+    this.root.interactive = false
+  }
+
   on(event, callback) {
     if (this.root.interactive) {
       this.root.on(event, callback)
