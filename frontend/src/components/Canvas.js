@@ -27,7 +27,7 @@ export default class Canvas extends Component {
       brain,
       maxSprites,
       size: [1069, 1069],
-      backgroundColor: 0xafa0fb,
+      backgroundColor: 0x000000,
     })
     this.RW.loadAssets(assetList)
   }

@@ -17,7 +17,8 @@ export default class RenderLayer {
     if (!props.transparent) {
       // only apply background color if not transparent
       // default is white: 0xffffff
-      this.renderer.backgroundColor = props.backgroundColor || 0xffffff
+      this.renderer.backgroundColor = typeof props.backgroundColor === 'number'
+        ? props.backgroundColor : 0xffffff
     }
 
     // everything rendered will go inside root
