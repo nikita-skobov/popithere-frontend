@@ -25,8 +25,12 @@ export default class Game {
     return event.data.getLocalPosition(this.inputLayer.root)
   }
 
-  addImage(name, pos) {
-    this.baseLayer.addImage(name, pos)
+  addImage(name, pos, layerName = 'base') {
+    if (has.call(this.layers, layerName)) {
+      this.layers[layerName].addImage(name, pos)
+    } else {
+      throw new Error(`cannot add image to layer: ${layerName}. it does not exist`)
+    }
   }
 
   addLayer(name, opts) {
@@ -46,16 +50,11 @@ export default class Game {
     this.layers[name] = new RenderLayer(opts2)
   }
 
-  draw(layerName) {
-    if (layerName) {
-      if (has.call(this.layers, layerName)) {
-        this.layers[layerName].draw()
-      } else {
-        throw new Error(`cannot draw layer: ${layerName}. it does not exist`)
-      }
+  draw(layerName = 'base') {
+    if (has.call(this.layers, layerName)) {
+      this.layers[layerName].draw()
     } else {
-      // by default draw the base layer
-      this.baseLayer.draw()
+      throw new Error(`cannot draw layer: ${layerName}. it does not exist`)
     }
   }
 

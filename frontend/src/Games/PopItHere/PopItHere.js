@@ -28,7 +28,7 @@ export default class PopItHere extends Game {
     this.poppingName = null
 
     this.addLayer('test', {
-      transparent: true,
+      backgroundColor: 0x48a23f,
     })
 
     // this.secondLayer = new RenderLayer({
