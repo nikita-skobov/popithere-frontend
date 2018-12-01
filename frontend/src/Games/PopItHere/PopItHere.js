@@ -29,46 +29,7 @@ export default class PopItHere extends Game {
     this.currentlyPopping = false
     this.poppingName = null
 
-    for(let i=0; i<3; i++) {
-      const TEST_LAYER = this.addLayer(`test${i}`, {
-        transparent: true,
-      })
-      this.addImage(`test1`, {
-        x: 10 + i * 3, y: 10 + i * 3,
-      }, TEST_LAYER)
-      this.draw(TEST_LAYER)
-    }
 
-    // this.TEST_LAYER = this.addLayer('test', {
-    //   backgroundColor: 0x48a23f,
-    //   transparent: true,
-    // })
-    // this.addImage('test1',
-    //   { x: 10, y: 10 },
-    //   this.TEST_LAYER)
-    // this.draw(this.TEST_LAYER)
-
-    // this.secondLayer = new RenderLayer({
-    //   size: this.size,
-    //   transparent: true,
-    // })
-
-    // this.thirdLayer = new RenderLayer({
-    //   size: this.size,
-    //   transparent: true,
-    // })
-
-    // this.baseLayer.addImage('test1', { x: 10, y: 10 })
-    // this.baseLayer.draw()
-    // this.secondLayer.addImage('test1', { x: 50, y: 50 })
-    // this.secondLayer.draw()
-    // this.thirdLayer.addImage('test1', { x: 100, y: 100 })
-    // this.thirdLayer.draw()
-    // this.baseLayer.animate('asda', () => {
-    //   console.log('before draw')
-    // }, () => {
-    //   console.log('after draw')
-    // })
     setTimeout(() => {
       console.log('ending GAME!')
       this.endGame()
