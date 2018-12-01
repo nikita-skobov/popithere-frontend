@@ -1,3 +1,5 @@
+import Layer from './Layer'
+
 const has = Object.prototype.hasOwnProperty
 
 export default class Game {
@@ -9,9 +11,24 @@ export default class Game {
 
     this.buttons = []
 
+    this.layers = {
+      base: new Layer({
+        name: 'base',
+        container: this.base.root,
+      }),
+    }
+
     // when game resets it removes interactions,
     // set to true for each new game instance
     this.inputHandler.toggleInteractions(true)
+  }
+
+  addLayer(name) {
+    if (has.call(this.layers, name)) {
+      throw new Error(`layer name: ${name} already exists`)
+    }
+
+    this.layers[name] = new Layer(name)
   }
 
   endGame() {
