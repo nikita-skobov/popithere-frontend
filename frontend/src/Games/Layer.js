@@ -17,4 +17,8 @@ export default class Layer {
     img.y = y
     this.container.addChild(img)
   }
+
+  removeAllChildren() {
+    this.container.removeChildren()
+  }
 }

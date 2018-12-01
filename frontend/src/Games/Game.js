@@ -33,7 +33,11 @@ export default class Game {
 
   endGame() {
     this.base.stopAnimating()
-    this.base.removeAllChildren()
+
+    Object.keys(this.layers).forEach((key) => {
+      this.layers[key].removeAllChildren()
+    })
+
     this.base.renderer.backgroundColor = 0x000000
     this.base.renderer.clear()
     this.inputHandler.toggleInteractions(false)

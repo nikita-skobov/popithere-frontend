@@ -65,10 +65,6 @@ export default class RenderLayer {
     this.animating = null
   }
 
-  removeAllChildren() {
-    this.root.removeChildren()
-  }
-
   wipeAll() {
     // removes root, and all children
     this.root.destroy(true)
