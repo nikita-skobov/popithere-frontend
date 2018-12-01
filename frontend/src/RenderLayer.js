@@ -1,13 +1,8 @@
+/* global document */
 import * as PIXI from 'pixi.js'
 
 export default class RenderLayer {
   constructor(props) {
-    // size: this.size,
-    // interactive: false, // default is false
-    // backgroundColor: props.backgroundColor, // default is white,
-    // transparent: false, // default is false
-    // addToPage: false, // default is true
-    // type: 'base' || 'input' // default is extra
     this.size = props.size
 
     this.renderer = PIXI.autoDetectRenderer(
@@ -44,6 +39,7 @@ export default class RenderLayer {
     }
 
     if (typeof props.addToPage === 'undefined') {
+      // eslint-disable-next-line
       props.addToPage = true
     }
 
