@@ -1,3 +1,4 @@
+/* global document */
 import * as PIXI from 'pixi.js'
 
 import PopItHere from './Games/PopItHere'
@@ -20,7 +21,6 @@ export default class RenderWindow {
 
     // base layer needs to be inserted to DOM specially
     this.renderer = this.baseLayer.renderer
-    // eslint-disable-next-line
     const oldCanvas = document.getElementsByTagName('canvas')[0]
     this.renderer.view.classList.add('canvas')
     oldCanvas.replaceWith(this.renderer.view)
@@ -44,7 +44,7 @@ export default class RenderWindow {
 
     // special resize handler. this way renderWindow
     // does not need to expose itself to brain
-    this.brain.onResize((e) => {
+    this.brain.onResize(() => {
       console.log('inside brain resize')
       this.repositionCanvases()
     })
@@ -79,11 +79,7 @@ export default class RenderWindow {
       this.render()
     }
   }
-// make a Game class... have different games with different rules
-  onPointerMove(event) {
-    // console.log(event)
-    // console.log(event.data.originalEvent.x, event.data.originalEvent.y)
-  }
+  // make a Game class... have different games with different rules
 
   // eslint-disable-next-line
   calculatePos(name, clickPos) {
