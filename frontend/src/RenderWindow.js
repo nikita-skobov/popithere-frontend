@@ -107,13 +107,22 @@ export default class RenderWindow {
   }
 
   changeGame(name) {
+    // pass all necessary data, and object instances
+    // to the Game instance so it can only use what is given to it
+    const constructorOps = {
+      baseLayer: this.baseLayer,
+      inputLayer: this.inputLayer,
+      size: this.size,
+      modal: {
+        // for example here we only want the Game instance
+        // to have access to isOpen and toggle. we don't want
+        // to give Game access to setState, render, etc.
+        isOpen: this.brain.ask.MyModal.isOpen,
+        toggle: this.brain.ask.MyModal.toggle,
+      },
+    }
     if (name === 'PopItHere') {
-      this.currentGame = new PopItHere({
-        baseLayer: this.baseLayer,
-        inputLayer: this.inputLayer,
-        size: this.size,
-        modal: this.brain.ask.MyModal,
-      })
+      this.currentGame = new PopItHere(constructorOps)
     } else {
       // do nothing
     }
