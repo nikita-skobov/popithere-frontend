@@ -24,7 +24,8 @@ export default class RenderLayer {
     this.root = new PIXI.Container()
 
     if (props.interactive) {
-      this.makeInteractive(true)
+      this.root.interactive = true
+      this.root.hitArea = new PIXI.Rectangle(0, 0, this.size[0], this.size[1])
     }
 
     // initial render so it shows up
@@ -58,20 +59,6 @@ export default class RenderLayer {
       this.renderer.view.style.top = `${canvas.offsetTop}px`
       this.renderer.view.style.width = `${canvas.offsetWidth}px`
       this.renderer.view.style.height = `${canvas.offsetHeight}px`
-    }
-  }
-
-  makeInteractive(flag) {
-    if (flag) {
-      // if flag is true, make it interactive
-      if (!this.root.interactive) {
-        // only create a new input box if one does not exist
-        this.root.interactive = true
-        this.root.hitArea = new PIXI.Rectangle(0, 0, this.size[0], this.size[1])
-      }
-    } else if (this.root.interactive) {
-      // otherwise if flag is false, AND root IS interactive then disable interactivity
-      this.root.interactive = false
     }
   }
 
