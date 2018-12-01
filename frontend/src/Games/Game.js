@@ -22,7 +22,10 @@ export default class Game {
       base: this.baseLayer,
     }
 
-    this.inputLayer.root.interactive = true
+    // when game resets it removes interactions,
+    // set to true for each new game instance
+    this.inputHandler.toggleInteractions(true)
+    // this.inputLayer.root.interactive = true
     this.defaultLayer = new LayerName('base')
   }
 
@@ -30,7 +33,7 @@ export default class Game {
     this.baseLayer.stopAnimating()
     this.baseLayer.renderer.backgroundColor = 0x000000
     this.baseLayer.renderer.clear()
-    this.inputLayer.root.interactive = false
+    this.inputHandler.toggleInteractions(false)
     Object.keys(this.layers).forEach((key) => {
       if (key !== 'base') {
         // destroy removes it from page
