@@ -63,10 +63,9 @@ export default class Buttons extends Component {
   handleButton(e) {
     e.preventDefault()
     const { name } = e.target
-    if (name === 'popit') {
-      this.brain.tell.MyModal.toggle(name)
-      // this.brain.tell.Canvas.popIt('test1')
-    } else if (name === 'options') {
+    // first check for one of the default buttons
+    // like options, help, about, etc
+    if (name === 'options') {
       this.brain.tell.MyModal.toggle(name)
     } else {
       // game buttons
@@ -109,7 +108,6 @@ export default class Buttons extends Component {
               // users can load buttons into the menu dynamically
               <DropdownItem name={item.name} onClick={this.handleButton}>{item.text}</DropdownItem>
             ))}
-            <DropdownItem name="popit" onClick={this.handleButton}>Pop It!</DropdownItem>
             <DropdownItem name="options" onClick={this.handleButton}>Options</DropdownItem>
             <DropdownItem>Support</DropdownItem>
           </DropdownMenu>
