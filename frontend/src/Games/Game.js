@@ -21,6 +21,12 @@ export default class Game {
     this.defaultLayer = new LayerName('base')
   }
 
+  // endGame() {
+  //   Object.keys(this.layers).forEach((key) => {
+
+  //   })
+  // }
+
   getButtons() {
     return this.buttons
   }
@@ -53,6 +59,10 @@ export default class Game {
 
     if (typeof name !== 'string') {
       throw new Error('must provide a name for the layer')
+    }
+
+    if (name === 'input') {
+      throw new Error('cannot use name: input')
     }
 
     if (has.call(this.layers, name)) {
