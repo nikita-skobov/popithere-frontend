@@ -24,6 +24,12 @@ export default class MyModal extends Component {
     this.toggle = this.toggle.bind(this)
   }
 
+  // FUNCTIONS ACCESSIBLE BY GAME CLASS
+  isOpen() {
+    const { modal } = this.state
+    return modal
+  }
+
   toggle(type) {
     this.setState((prevState) => {
       const tempState = prevState
@@ -36,6 +42,7 @@ export default class MyModal extends Component {
       return tempState
     })
   }
+  // END OF FUNCTIONS ACCESSIBLE BY GAME CLASS
 
   render() {
     const { modal } = this.state
