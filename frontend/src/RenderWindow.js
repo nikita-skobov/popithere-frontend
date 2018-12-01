@@ -8,7 +8,6 @@ export default class RenderWindow {
   constructor(props) {
     this.brain = props.brain
     this.size = props.size
-    this.aspectRatio = this.size[0] / this.size[1]
 
     this.baseLayer = new RenderLayer({
       size: this.size,
@@ -24,11 +23,6 @@ export default class RenderWindow {
     const oldCanvas = document.getElementsByTagName('canvas')[0]
     this.renderer.view.classList.add('canvas')
     oldCanvas.replaceWith(this.renderer.view)
-
-    this.stage = new PIXI.Container()
-    this.maxSprites = props.maxSprites
-    this.currentlyPopping = false
-    this.poppingName = null
 
     // creates a seperate renderer element to handle all inputs
     this.inputLayer = new RenderLayer({
@@ -87,17 +81,6 @@ export default class RenderWindow {
     this.brain.tell.Canvas.newGame(this.currentGame)
   }
 
-  render() {
-    const numSprites = this.stage.children.length
-    if (numSprites > this.maxSprites) {
-      // remove the oldest sprites
-      const diff = numSprites - this.maxSprites
-      console.log(`removing ${diff} sprites`)
-      this.stage.removeChildren(0, diff)
-    }
-    this.renderer.render(this.stage)
-  }
-
   afterLoad() {
     console.log('Assets loaded!')
 
@@ -105,10 +88,6 @@ export default class RenderWindow {
       console.log('chaning game:')
       this.changeGame('PopItHere')
     }, 3000)
-  }
-
-  changeMaxSprites(newMax) {
-    this.maxSprites = newMax
   }
 
   loadAssets(assetArray, cb) {
