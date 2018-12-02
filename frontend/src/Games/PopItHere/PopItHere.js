@@ -29,6 +29,9 @@ export default class PopItHere extends Game {
     this.currentlyPopping = false
     this.poppingName = null
 
+    this.TEST1 = this.addLayer('test1')
+    console.log(this.TEST1)
+    this.TEST2 = this.addLayer('test2', this.TEST1)
 
     setTimeout(() => {
       console.log('ending GAME!')
