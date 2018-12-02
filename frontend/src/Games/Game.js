@@ -16,6 +16,8 @@ export default class Game {
       container: this.base.root,
     })
 
+    this.rootLayer = this.addLayer('root')
+    this.layer0.addLayer(this.rootLayer)
 
     // when game resets it removes interactions,
     // set to true for each new game instance
@@ -55,8 +57,8 @@ export default class Game {
   }
 
   addImage(name, pos) {
-    // when adding image to game, its assumed user wants to add to layer0
-    this.layer0.addImage(name, pos)
+    // when adding image to game, its assumed user wants to add to root
+    this.rootLayer.addImage(name, pos)
   }
 
   draw() {
