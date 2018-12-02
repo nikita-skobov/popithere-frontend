@@ -22,7 +22,7 @@ export default class Layer {
     this.container.removeChildren()
   }
 
-  addChildLayer(layer) {
+  addLayer(layer) {
     this.container.addChild(layer.container)
   }
 }
