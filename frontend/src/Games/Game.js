@@ -23,12 +23,20 @@ export default class Game {
     this.inputHandler.toggleInteractions(true)
   }
 
-  addLayer(name) {
+  addLayer(name, to = this.layers.base) {
     if (has.call(this.layers, name)) {
       throw new Error(`layer name: ${name} already exists`)
     }
 
-    this.layers[name] = new Layer(name)
+    this.layers[name] = new Layer({ name })
+
+    if (this.layerExists(to)) {
+      to.addChildLayer(this.layers[name])
+    } else {
+      throw new Error(`Cannot add ${name} to ${to.name}. does not exist`)
+    }
+
+    return this.layers[name]
   }
 
   endGame() {
