@@ -21,4 +21,8 @@ export default class Layer {
   removeAllChildren() {
     this.container.removeChildren()
   }
+
+  addChildLayer(layer) {
+    this.container.addChild(layer.container)
+  }
 }
