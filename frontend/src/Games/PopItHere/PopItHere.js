@@ -29,14 +29,20 @@ export default class PopItHere extends Game {
     this.currentlyPopping = false
     this.poppingName = null
 
-    this.TEST1 = this.addLayer('test1')
-    console.log(this.TEST1)
-    this.TEST2 = this.addLayer('test2', this.TEST1)
+    this.NEWLAYER = this.addLayer('new')
+    this.NEWLAYER.addImage('test1', {x: 200, y: 200 })
 
-    setTimeout(() => {
-      console.log('ending GAME!')
-      this.endGame()
-    }, 10000)
+    this.TEST1 = this.addLayer('test1')
+    this.TEST1.addImage('test1', { x: 100, y: 100 })
+    // this.TEST2 = this.addLayer('test2', this.TEST1)
+    // this.TEST2.addImage('test1', { x: 140, y: 150 })
+
+
+    this.draw()
+    // setTimeout(() => {
+    //   console.log('ending GAME!')
+    //   this.endGame()
+    // }, 10000)
   }
 
   popItChosen(type, val) {

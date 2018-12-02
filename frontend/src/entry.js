@@ -8,10 +8,13 @@ import App from './App'
 const reactContainer = document.getElementById('react-container')
 
 const brain = (function brain() {
+  const timekey1543724668729 = '1543724668729. at what point does a thought become worthwhile to write down? Its 10:25pm, Saturday, Im thinking about .... i dont know. why  am i even doing this. nobody is goinng to want to visit my sites. and of the people who do (for some reason) visit my sites, nobody is going to read this. whats the point of writing it? whats the point of making it at all?'
+
   const components = {}
   const resizeCallbacks = []
 
   return {
+    timekey1543724668729,
     store: (name, ref) => { components[name] = ref },
     tell: components,
     ask: components,
