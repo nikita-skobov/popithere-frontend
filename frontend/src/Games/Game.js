@@ -11,41 +11,31 @@ export default class Game {
 
     this.buttons = []
 
-    this.layers = {
-      base: new Layer({
-        name: 'base',
-        container: this.base.root,
-      }),
-    }
+    this.layer0 = new Layer({
+      name: '0',
+      container: this.base.root,
+    })
+
+    this.rootLayer = this.addLayer('root')
+    this.layer0.addLayer(this.rootLayer)
 
     // when game resets it removes interactions,
     // set to true for each new game instance
     this.inputHandler.toggleInteractions(true)
   }
 
-  addLayer(name, to = this.layers.base) {
-    if (has.call(this.layers, name)) {
-      throw new Error(`layer name: ${name} already exists`)
-    }
+  addLayer(name) {
+    const newLayer = new Layer({ name })
+    this.layer0.addLayer(newLayer)
 
-    this.layers[name] = new Layer({ name })
-
-    if (this.layerExists(to)) {
-      to.addChildLayer(this.layers[name])
-    } else {
-      throw new Error(`Cannot add ${name} to ${to.name}. does not exist`)
-    }
-
-    return this.layers[name]
+    return newLayer
   }
 
   endGame() {
     this.inputHandler.removeAllListeners()
     this.base.stopAnimating()
 
-    Object.keys(this.layers).forEach((key) => {
-      this.layers[key].removeAllChildren()
-    })
+    this.layer0.removeAllChildren()
 
     this.base.renderer.backgroundColor = 0x000000
     this.base.renderer.clear()
@@ -66,19 +56,9 @@ export default class Game {
     renderer.render(this.base.root)
   }
 
-  layerExists(layer) {
-    if (layer instanceof Layer) {
-      return has.call(this.layers, layer.name)
-    }
-    throw new Error('layer must be an instance of a Layer')
-  }
-
-  addImage(name, pos, layer = this.layers.base) {
-    if (this.layerExists(layer)) {
-      this.layers[layer.name].addImage(name, pos)
-    } else {
-      throw new Error(`layer: ${layer.name} does not exist`)
-    }
+  addImage(name, pos) {
+    // when adding image to game, its assumed user wants to add to root
+    this.rootLayer.addImage(name, pos)
   }
 
   draw() {

@@ -103,11 +103,6 @@ export default class RenderWindow {
     setTimeout(() => {
       console.log('chaning game:')
       this.changeGame('PopItHere')
-
-      setTimeout(() => {
-        console.log('changing game again!')
-        this.changeGame('PopItHere')
-      }, 15000)
     }, 3000)
   }
 
