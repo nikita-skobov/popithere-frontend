@@ -1,6 +1,3 @@
-
-
-
 ## Requirements:
 ## custom:
 ##    account (the aws account id)
@@ -80,4 +77,4 @@ WebAppDistribution:
       Logging:
         IncludeCookies: 'false'
         Bucket: ${self:custom.cloudfront-app.logbucket}
-        Prefix: ${self:custom.cloudfront-app.logbucket-prefix} # "${self:provider.stage}-${self:service}"
+        Prefix: ${self:custom.cloudfront-app.logbucket-prefix}
