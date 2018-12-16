@@ -1,0 +1,52 @@
+## Requirements:
+## custom:
+##    account (the aws account id)
+##    cloudfront-app:
+##      region (the region where the s3 bucket/website is set up)
+##      bucketName (the name of the s3 bucket set up as a website)
+##      useragentsecret (a secret header that cloudfront passes to S3)
+##      aliases (a list of aliases to be used as the cloudfront public endpoint)
+##      acm-region (the region where the acm cert was made)
+##      certid (the hex id of the acm cert)
+##      logbucket (the name of an s3 bucket to use as a logging bucket)
+##      logbucket-prefix (the prefix to use for logging)
+
+
+WebAppDistribution:
+  Type: AWS::CloudFront::Distribution
+  Properties:
+    DistributionConfig:
+      HttpVersion: "http2"
+      Origins:
+        - DomainName: "${self:custom.cloudfront-app.bucketName}.s3-website.${self:custom.cloudfront-app.region}.amazonaws.com"
+          Id: "S3-ID=${self:custom.cloudfront-app.bucketName}"
+          OriginCustomHeaders:
+            - HeaderName: User-Agent
+              HeaderValue: ${self:custom.cloudfront-app.useragentsecret}
+          CustomOriginConfig:
+            HTTPPort: 80
+            HTTPSPort: 443
+            ## note this needs to be http only because it is using an s3 website bucket
+            ## as an origin. S3 as a website only allows http...
+            OriginProtocolPolicy: http-only
+      Enabled: 'true'
+      Aliases: ${self:custom.cloudfront-app.aliases}
+      DefaultCacheBehavior:
+        AllowedMethods:
+          - GET
+          - HEAD
+        ## The origin id defined above
+        TargetOriginId: "S3-ID=${self:custom.cloudfront-app.bucketName}"
+        ForwardedValues:
+          QueryString: 'false'
+          Cookies:
+            Forward: none
+        ViewerProtocolPolicy: redirect-to-https
+      ViewerCertificate:
+        AcmCertificateArn: "arn:aws:acm:${self:custom.cloudfront-app.acm-region}:${self:custom.account}:certificate/${self:custom.cloudfront-app.certid}"
+        SslSupportMethod: sni-only
+        MinimumProtocolVersion: TLSv1.1_2016
+      Logging:
+        IncludeCookies: 'false'
+        Bucket: ${self:custom.cloudfront-app.logbucket}
+        Prefix: ${self:custom.cloudfront-app.logbucket-prefix} # "${self:provider.stage}-${self:service}"
