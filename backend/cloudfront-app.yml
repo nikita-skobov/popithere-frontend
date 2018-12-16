@@ -1,3 +1,6 @@
+
+
+
 ## Requirements:
 ## custom:
 ##    account (the aws account id)
@@ -11,6 +14,34 @@
 ##      logbucket (the name of an s3 bucket to use as a logging bucket)
 ##      logbucket-prefix (the prefix to use for logging)
 
+WebAppS3Bucket:
+  Type: AWS::S3::Bucket
+  Properties:
+    BucketName: ${self:custom.cloudfront-app.bucketName}
+    WebsiteConfiguration:
+      IndexDocument: index.html
+      ErrorDocument: index.html
+
+WebAppS3BucketPolicy:
+  Type: AWS::S3::BucketPolicy
+  Properties:
+    Bucket:
+      Ref: WebAppS3Bucket
+    PolicyDocument:
+      Statement:
+        - Sid: PublicReadGetObject
+          Effect: Allow
+          Principal: "*"
+          Action:
+          - s3:GetObject
+          Resource: arn:aws:s3:::${self:custom.cloudfront-app.bucketName}/*
+          Condition:
+            StringLike:
+              ## only allow get requests to this bucket if they include a
+              ## secret user agent string... this is an easy way to only allow
+              ## access from a designated cloudfront distribution, but a poor
+              ## security solution, because it relies on security by obfuscration
+              aws:UserAgent: ${self:custom.cloudfront-app.useragentsecret}
 
 WebAppDistribution:
   Type: AWS::CloudFront::Distribution
