@@ -3,3 +3,4 @@ frontend/dist/main.js
 backend/.gitignore
 frontend/dist/scripts/**
 frontend/dist/index.html
+backend/.serverless
