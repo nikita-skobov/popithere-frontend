@@ -1,7 +1,9 @@
-service: aws-nodejs # NOTE: update this with your service name
+service: popithere # NOTE: update this with your service name
 provider:
   name: aws
   runtime: nodejs8.10
+  stage: ${opt:stage, 'dev'}
+  region: ${opt:region, 'us-east-1'}
 custom:
   account: ${opt:account}
   cloudfront-app:
@@ -10,10 +12,13 @@ custom:
     useragentsecret: ${opt:uasecret}
     acm-region: us-east-1
     certid: ${opt:certid}
-    logbucket: ${opt:logbucket}
-    prefix: "${self:provider.stage}-${self:service}"
+    logbucket: "${opt:logbucket}.s3.amazonaws.com"
+    logbucket-prefix: "${self:provider.stage}-${self:service}"
+    alias: ${opt:bucket}
+    hostedzonename: ${opt:hzname}
 resources:
   Resources:
+    WebAppRecord: ${file(cloudfront-app.yml):WebAppRecord}
     WebAppS3Bucket: ${file(cloudfront-app.yml):WebAppS3Bucket}
     WebAppS3BucketPolicy: ${file(cloudfront-app.yml):WebAppS3BucketPolicy}
     WebAppDistribution: ${file(cloudfront-app.yml):WebAppDistribution}

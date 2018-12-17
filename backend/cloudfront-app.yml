@@ -5,11 +5,12 @@
 ##      region (the region where the s3 bucket/website is set up)
 ##      bucketName (the name of the s3 bucket set up as a website)
 ##      useragentsecret (a secret header that cloudfront passes to S3)
-##      aliases (a list of aliases to be used as the cloudfront public endpoint)
+##      alias (the name of the cloudfront public endpoint, your acm domain)
 ##      acm-region (the region where the acm cert was made)
 ##      certid (the hex id of the acm cert)
 ##      logbucket (the name of an s3 bucket to use as a logging bucket)
 ##      logbucket-prefix (the prefix to use for logging)
+##      hostedzonename (if your alias is test.example.com, your hostedzonename should be example.com)
 
 WebAppS3Bucket:
   Type: AWS::S3::Bucket
@@ -40,6 +41,21 @@ WebAppS3BucketPolicy:
               ## security solution, because it relies on security by obfuscration
               aws:UserAgent: ${self:custom.cloudfront-app.useragentsecret}
 
+WebAppRecord:
+  DependsOn:
+    - WebAppDistribution
+  Type: AWS::Route53::RecordSet
+  Properties:
+    AliasTarget:
+      DNSName:
+        Fn::GetAtt:
+          - WebAppDistribution
+          - DomainName
+      HostedZoneId: Z2FDTNDATAQYW2 # I think this is the same for all cloudfront distributions
+    HostedZoneName: "${self:custom.cloudfront-app.hostedzonename}."
+    Name: "${self:custom.cloudfront-app.alias}."
+    Type: 'A'
+
 WebAppDistribution:
   Type: AWS::CloudFront::Distribution
   Properties:
@@ -58,7 +74,8 @@ WebAppDistribution:
             ## as an origin. S3 as a website only allows http...
             OriginProtocolPolicy: http-only
       Enabled: 'true'
-      Aliases: ${self:custom.cloudfront-app.aliases}
+      Aliases:
+        - ${self:custom.cloudfront-app.alias}
       DefaultCacheBehavior:
         AllowedMethods:
           - GET
