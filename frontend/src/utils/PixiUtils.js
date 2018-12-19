@@ -47,3 +47,11 @@ export function replaceCanvas(view) {
   view.classList.add('canvas')
   oldCanvas.parentElement.replaceChild(view, oldCanvas)
 }
+
+export function loadAssets(assetArray, cb) {
+  let callback = cb
+  if (!callback) {
+    callback = () => {}
+  }
+  PIXI.loader.add(assetArray).load(callback())
+}
