@@ -31,5 +31,5 @@ export function createRoot(renderer, { interactive }) {
   // initial render so it shows up
   renderer.render(root)
 
-  return { root }
+  return root
 }
