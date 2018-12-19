@@ -56,7 +56,7 @@ export function loadAssets(assetArray, cb) {
   PIXI.loader.add(assetArray).load(callback())
 }
 
-export function createImg({ file, alreadyURL, makeTexture = true }) {
+export function createImage({ file, alreadyURL, makeTexture = true }) {
   return new Promise((res) => {
     const img = new Image()
     img.onload = () => {

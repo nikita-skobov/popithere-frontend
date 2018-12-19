@@ -18,7 +18,7 @@ import RowGenerator from './RowGenerator'
 
 import { assetList } from '../../customConfig'
 
-import { createImg, createGifTextures } from '../../utils/PixiUtils'
+import { createImage, createGifTextures } from '../../utils/PixiUtils'
 
 export default class PopItSelection extends Component {
   constructor(props) {
@@ -50,11 +50,11 @@ export default class PopItSelection extends Component {
     const { files } = target
     const [file] = files
     if (file.type === 'image/gif') {
-      const gif = await createImg({ file, makeTexture: false })
+      const gif = await createImage({ file, makeTexture: false })
       const textures = await createGifTextures(gif)
       this.textureLoaded(textures)
     } else {
-      const val = await createImg({ file })
+      const val = await createImage({ file })
       this.textureLoaded(val)
     }
   }
