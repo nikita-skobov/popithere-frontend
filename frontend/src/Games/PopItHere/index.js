@@ -1,7 +1,7 @@
 import React from 'react'
 import * as PIXI from 'pixi.js'
 
-import Game from '../Game2'
+import Game from '../Game'
 import PopItSelection from './PopItSelection'
 
 import { getLocalPosition, calculateCenterPosition } from '../../utils/GameUtils'
