@@ -53,6 +53,7 @@ export default class PopItHere extends Game {
         console.log('is array')
         const { x, y } = calculateCenterPosition(this.poppingName[0], clickPos)
         this.addGif(this.poppingName, { x, y })
+        this.animate()
       } else {
         // otherwise, treat it like an image
         const { x, y } = calculateCenterPosition(this.poppingName, clickPos)
