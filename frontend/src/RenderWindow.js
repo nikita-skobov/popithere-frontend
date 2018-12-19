@@ -25,15 +25,6 @@ export default class RenderWindow {
     this.renderer.view.classList.add('canvas')
     oldCanvas.parentElement.replaceChild(this.renderer.view, oldCanvas)
 
-    // creates an 'ad' layer for popup advertisenments above the game
-    // kind of like twitch cheers/subscribe messsages
-    this.adLayer = new RenderLayer({
-      size: this.size,
-      interactive: false,
-      transparent: true,
-      addToPage: true,
-    })
-
     // creates a seperate renderer element to handle all inputs
     this.inputLayer = new RenderLayer({
       size: this.size,
