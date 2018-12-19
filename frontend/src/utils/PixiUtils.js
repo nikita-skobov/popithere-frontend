@@ -56,12 +56,20 @@ export function loadAssets(assetArray, cb) {
   PIXI.loader.add(assetArray).load(callback())
 }
 
-export function createImg(file, cb, alreadyURL) {
+export function createImg({ file, alreadyURL, makeTexture = true }, cb) {
   const img = new Image()
   img.onload = () => {
-    const base = new PIXI.BaseTexture(img)
-    const texture = new PIXI.Texture(base)
-    cb(texture, img)
+    if (makeTexture) {
+      const base = new PIXI.BaseTexture(img)
+      const texture = new PIXI.Texture(base)
+      cb(texture)
+    } else {
+      cb(img)
+    }
   }
   img.src = alreadyURL ? file : URL.createObjectURL(file)
+}
+
+export function createGifTextures(gif) {
+  
 }
