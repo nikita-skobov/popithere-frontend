@@ -6,6 +6,7 @@ export function createRenderer({
   size,
   preserveDrawingBuffer,
   transparent,
+  backgroundColor,
 }) {
   const renderer = PIXI.autoDetectRenderer(
     size[0],
@@ -13,6 +14,7 @@ export function createRenderer({
     {
       preserveDrawingBuffer,
       transparent,
+      backgroundColor,
     },
   )
 
