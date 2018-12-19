@@ -48,8 +48,17 @@ export default class Canvas extends Component {
     // empty for now
   }
 
+  endGame(game) {
+    game.endGame()
+    this.brain.tell.Buttons.newButtons([])
+  }
+
   newGame(game) {
     this.brain.tell.Buttons.newButtons(game.getButtons())
+
+    setTimeout(() => {
+      this.endGame(game)
+    }, 20000)
   }
 
   render() {
