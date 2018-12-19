@@ -3,6 +3,10 @@ import {
   Row,
   Col,
   Button,
+  CustomInput,
+  Form,
+  FormGroup,
+  Label,
 } from 'reactstrap'
 
 import PropTypes from 'prop-types'
@@ -65,6 +69,24 @@ export default class PopItSelection extends Component {
           </Col>
           <Col fluid>
             <Button onClick={this.handleButton} name="image" block>Image</Button>
+          </Col>
+          <Col fluid>
+            <Button onClick={this.handleButton} name="custom" block>Make your own!</Button>
+          </Col>
+        </Row>
+      )
+    }
+
+    if (choice === 'custom') {
+      return (
+        <Row>
+          <Col fluid>
+            <Form>
+              <FormGroup>
+                <Label for="filebrowser">Choose an image</Label>
+                <CustomInput type="file" label="Choose an image" id="filebrowser" name="customFileBrowser" />
+              </FormGroup>
+            </Form>
           </Col>
         </Row>
       )
