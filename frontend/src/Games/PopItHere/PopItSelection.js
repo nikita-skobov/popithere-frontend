@@ -34,6 +34,7 @@ export default class PopItSelection extends Component {
     this.popItChosen = this.popItChosen.bind(this)
     this.handleFile = this.handleFile.bind(this)
     this.createImg = this.createImg.bind(this)
+    this.textureLoaded = this.textureLoaded.bind(this)
   }
 
   // eslint-disable-next-line
@@ -48,7 +49,8 @@ export default class PopItSelection extends Component {
   }
 
   textureLoaded(txt) {
-    console.log(txt)
+    this.game.popItChosen('image', txt)
+    this.game.modal.toggle()
   }
 
   handleFile(e) {

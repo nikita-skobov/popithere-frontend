@@ -44,7 +44,13 @@ export default class PopItHere extends Game {
 
   // eslint-disable-next-line
   calculatePos(name, clickPos) {
-    const { width, height } = PIXI.loader.resources[name].texture
+    let width
+    let height
+    if (typeof name === 'string') {
+      ({ width, height } = PIXI.loader.resources[name].texture)
+    } else {
+      ({ width, height } = name)
+    }
     return { x: clickPos.x - (width / 2), y: clickPos.y - (height / 2) }
   }
 
