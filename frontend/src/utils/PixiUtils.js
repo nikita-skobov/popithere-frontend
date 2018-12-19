@@ -88,7 +88,7 @@ export function createGifTextures(gif) {
     sg.load({
       success: async () => {
         const images = sg.getFrames().map(frame => createImageFromData(frame.data))
-        const textures = images.map(imgUrl => createImg({ file: imgUrl, alreadyURL: true }))
+        const textures = images.map(imgUrl => createImage({ file: imgUrl, alreadyURL: true }))
         const resolvedTextures = await Promise.all(textures)
         res(resolvedTextures)
       },
