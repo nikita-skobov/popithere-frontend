@@ -1,16 +1,19 @@
 import React from 'react'
 import * as PIXI from 'pixi.js'
 
-import Game from '../Game'
+import Game from '../Game2'
 import PopItSelection from './PopItSelection'
+
+import { getLocalPosition, calculateCenterPosition } from '../../utils/GameUtils'
 
 export default class PopItHere extends Game {
   constructor(props) {
     super(props)
 
-    this.setBackgroundColor(0xab1212)
+    this.setBackgroundColor(0xfb2ab4)
 
-    this.on('pointerdown', (event) => {
+    this.root.on('pointerdown', (event) => {
+      console.log('pointerdown')
       this.pointerDown(event)
     })
 
@@ -42,22 +45,10 @@ export default class PopItHere extends Game {
     this.currentlyPopping = true
   }
 
-  // eslint-disable-next-line
-  calculatePos(name, clickPos) {
-    let width
-    let height
-    if (typeof name === 'string') {
-      ({ width, height } = PIXI.loader.resources[name].texture)
-    } else {
-      ({ width, height } = name)
-    }
-    return { x: clickPos.x - (width / 2), y: clickPos.y - (height / 2) }
-  }
-
   pointerDown(event) {
     if (this.currentlyPopping) {
-      const clickPos = this.getLocalPosition(event)
-      const { x, y } = this.calculatePos(this.poppingName, clickPos)
+      const clickPos = getLocalPosition(event, this.root)
+      const { x, y } = calculateCenterPosition(this.poppingName, clickPos)
       this.addImage(this.poppingName, { x, y })
       this.draw()
     }
