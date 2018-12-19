@@ -1,3 +1,4 @@
+/* global Image */
 import React, { Component } from 'react'
 import {
   Row,
@@ -10,6 +11,8 @@ import {
 } from 'reactstrap'
 
 import PropTypes from 'prop-types'
+
+import * as PIXI from 'pixi.js'
 
 import RowGenerator from './RowGenerator'
 
@@ -29,6 +32,31 @@ export default class PopItSelection extends Component {
 
     this.handleButton = this.handleButton.bind(this)
     this.popItChosen = this.popItChosen.bind(this)
+    this.handleFile = this.handleFile.bind(this)
+    this.createImg = this.createImg.bind(this)
+  }
+
+  // eslint-disable-next-line
+  createImg(file, cb) {
+    const img = new Image()
+    img.onload = () => {
+      const base = new PIXI.BaseTexture(img)
+      const texture = new PIXI.Texture(base)
+      cb(texture)
+    }
+    img.src = URL.createObjectURL(file)
+  }
+
+  textureLoaded(txt) {
+    console.log(txt)
+  }
+
+  handleFile(e) {
+    e.preventDefault()
+    const { target } = e
+    const { files } = target
+    const [file] = files
+    this.createImg(file, this.textureLoaded)
   }
 
   handleButton(e) {
@@ -84,7 +112,7 @@ export default class PopItSelection extends Component {
             <Form>
               <FormGroup>
                 <Label for="filebrowser">Choose an image</Label>
-                <CustomInput type="file" label="Choose an image" id="filebrowser" name="customFileBrowser" />
+                <CustomInput onChange={this.handleFile} type="file" label="Choose an image" id="filebrowser" name="customFileBrowser" />
               </FormGroup>
             </Form>
           </Col>
