@@ -3,6 +3,8 @@ import PropTypes from 'prop-types'
 
 import RenderWindow from '../RenderWindow'
 import { assetList } from '../customConfig'
+import { createRenderer, createRoot, replaceCanvas } from '../utils/PixiUtils'
+import { getCurrentGame } from '../utils/GameUtils'
 
 export default class Canvas extends Component {
   constructor(props) {
@@ -22,14 +24,24 @@ export default class Canvas extends Component {
     } catch (e) {
       // do nothing
     }
-    const { brain, maxSprites } = this
-    this.RW = new RenderWindow({
-      brain,
-      maxSprites,
-      size: [1069, 1069],
+    // const { brain, maxSprites } = this
+    // this.RW = new RenderWindow({
+    //   brain,
+    //   maxSprites,
+    //   size: [1069, 1069],
+    //   backgroundColor: 0x000000,
+    // })
+    // this.RW.loadAssets(assetList)
+
+    const renderer = createRenderer({
+      size: [1024, 1024],
       backgroundColor: 0x000000,
     })
-    this.RW.loadAssets(assetList)
+    const root = createRoot(renderer)
+    replaceCanvas(renderer.view)
+    const modal = this.brain.ask.MyModal
+    const game = getCurrentGame({ renderer, root, modal })
+    this.newGame(game)
   }
 
   settingsChange(type, value) {
