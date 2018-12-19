@@ -48,9 +48,14 @@ export default class PopItHere extends Game {
   pointerDown(event) {
     if (this.currentlyPopping) {
       const clickPos = getLocalPosition(event, this.root)
-      const { x, y } = calculateCenterPosition(this.poppingName, clickPos)
-      this.addImage(this.poppingName, { x, y })
-      this.draw()
+      if (Array.isArray(this.poppingName)) {
+        // if an array of textures, then treat it as a gif
+      } else {
+        // otherwise, treat it like an image
+        const { x, y } = calculateCenterPosition(this.poppingName, clickPos)
+        this.addImage(this.poppingName, { x, y })
+        this.draw()
+      }
     }
   }
 }
