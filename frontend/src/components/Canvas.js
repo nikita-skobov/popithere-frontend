@@ -37,7 +37,7 @@ export default class Canvas extends Component {
       size: [1024, 1024],
       backgroundColor: 0x000000,
     })
-    const root = createRoot(renderer)
+    const root = createRoot(renderer, { interactive: true })
     replaceCanvas(renderer.view)
     const modal = this.brain.ask.MyModal
     const game = getCurrentGame({ renderer, root, modal })
