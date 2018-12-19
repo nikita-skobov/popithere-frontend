@@ -1,4 +1,4 @@
-/* global document */
+/* global document Image */
 
 import * as PIXI from 'pixi.js'
 
@@ -54,4 +54,14 @@ export function loadAssets(assetArray, cb) {
     callback = () => {}
   }
   PIXI.loader.add(assetArray).load(callback())
+}
+
+export function createImg(file, cb, alreadyURL) {
+  const img = new Image()
+  img.onload = () => {
+    const base = new PIXI.BaseTexture(img)
+    const texture = new PIXI.Texture(base)
+    cb(texture, img)
+  }
+  img.src = alreadyURL ? file : URL.createObjectURL(file)
 }

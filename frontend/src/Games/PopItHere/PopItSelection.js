@@ -18,6 +18,8 @@ import RowGenerator from './RowGenerator'
 
 import { assetList } from '../../customConfig'
 
+import { createImg } from '../../utils/PixiUtils'
+
 export default class PopItSelection extends Component {
   constructor(props) {
     super(props)
@@ -71,7 +73,7 @@ export default class PopItSelection extends Component {
     console.log(file)
     if (file.type === 'image/gif') {
       console.log('its a gif')
-      this.createImg(file, (txt, gif) => {
+      createImg(file, (txt, gif) => {
         console.log(gif)
         const sg = new window.SuperGif({ gif })
         console.log(sg)
@@ -81,7 +83,7 @@ export default class PopItSelection extends Component {
             const images = sg.getFrames().map(frame => this.createImageFromData(frame.data))
             console.log(images)
             console.log(images[0])
-            this.createImg(images[30], (txt2) => {
+            createImg(images[0], (txt2) => {
               this.game.popItChosen('image', txt2)
               this.game.modal.toggle()
             }, true)
@@ -95,7 +97,7 @@ export default class PopItSelection extends Component {
         })
       })
     } else {
-      this.createImg(file, this.textureLoaded)
+      createImg(file, this.textureLoaded)
     }
   }
 
