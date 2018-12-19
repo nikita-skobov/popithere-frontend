@@ -18,7 +18,7 @@ import RowGenerator from './RowGenerator'
 
 import { assetList } from '../../customConfig'
 
-import { createImg } from '../../utils/PixiUtils'
+import { createImg, createGifTextures } from '../../utils/PixiUtils'
 
 export default class PopItSelection extends Component {
   constructor(props) {
@@ -65,7 +65,7 @@ export default class PopItSelection extends Component {
     this.game.modal.toggle()
   }
 
-  handleFile(e) {
+  async handleFile(e) {
     e.preventDefault()
     const { target } = e
     const { files } = target
@@ -73,31 +73,40 @@ export default class PopItSelection extends Component {
     console.log(file)
     if (file.type === 'image/gif') {
       console.log('its a gif')
-      createImg(file, (txt, gif) => {
-        console.log(gif)
-        const sg = new window.SuperGif({ gif })
-        console.log(sg)
-        sg.load({
-          success: () => {
-            console.log('successfully loaded')
-            const images = sg.getFrames().map(frame => this.createImageFromData(frame.data))
-            console.log(images)
-            console.log(images[0])
-            createImg(images[0], (txt2) => {
-              this.game.popItChosen('image', txt2)
-              this.game.modal.toggle()
-            }, true)
-            // images.forEach(data => this.createImg(data, (txt2) => {
-            //   console.log(txt2)
-            // }, true))
-          },
-          error: () => {
-            console.log('load failed :(')
-          },
+      createImg({ file, makeTexture: false }, (gif) => {
+        createGifTextures(gif, (textures) => {
+
         })
       })
+      // createImg({ file, makeTexture: false }, (gif) => {
+      //   console.log(gif)
+      //   const sg = new window.SuperGif({ gif })
+      //   console.log(sg)
+      //   sg.load({
+      //     success: () => {
+      //       console.log('successfully loaded')
+      //       const images = sg.getFrames().map(frame => this.createImageFromData(frame.data))
+      //       console.log(images)
+      //       console.log(images[0])
+      //       createImg({ file: images[0], alreadyURL: true }, (txt2) => {
+      //         this.game.popItChosen('image', txt2)
+      //         this.game.modal.toggle()
+      //       }, true)
+      //       // images.forEach(data => this.createImg(data, (txt2) => {
+      //       //   console.log(txt2)
+      //       // }, true))
+      //     },
+      //     error: () => {
+      //       console.log('load failed :(')
+      //     },
+      //   })
+      // })
     } else {
-      createImg(file, this.textureLoaded)
+      console.log('awaiting val!')
+      const val = await createImg({ file })
+      console.log('awaited done!')
+      console.log(val)
+      this.textureLoaded(val)
     }
   }
 
