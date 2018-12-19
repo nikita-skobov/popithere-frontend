@@ -35,7 +35,6 @@ export default class PopItSelection extends Component {
     this.handleButton = this.handleButton.bind(this)
     this.popItChosen = this.popItChosen.bind(this)
     this.handleFile = this.handleFile.bind(this)
-    this.createImg = this.createImg.bind(this)
     this.textureLoaded = this.textureLoaded.bind(this)
   }
 
