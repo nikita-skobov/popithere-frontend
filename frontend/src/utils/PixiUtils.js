@@ -73,12 +73,15 @@ export function createImage({ file, alreadyURL, makeTexture = true }) {
 }
 
 export function createImageFromData(data) {
-  const canvas = document.createElement('canvas')
+  let canvas = document.createElement('canvas')
   canvas.setAttribute('width', data.width)
   canvas.setAttribute('height', data.height)
-  const context = canvas.getContext('2d')
+  let context = canvas.getContext('2d')
   context.putImageData(data, 0, 0)
-  return canvas.toDataURL()
+  const url = canvas.toDataURL()
+  canvas = null
+  context = null
+  return url
 }
 
 export function createGifTextures(gif) {
@@ -86,11 +89,11 @@ export function createGifTextures(gif) {
     const sg = new window.SuperGif({ gif })
 
     sg.load({
-      success: async () => {
+      success: () => {
         const images = sg.getFrames().map(frame => createImageFromData(frame.data))
         const textures = images.map(imgUrl => createImage({ file: imgUrl, alreadyURL: true }))
-        const resolvedTextures = await Promise.all(textures)
-        res(resolvedTextures)
+        Promise.all(textures)
+          .then(resolvedTextures => res(resolvedTextures))
       },
       error: (e) => {
         rej(e)
