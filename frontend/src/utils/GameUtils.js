@@ -1,4 +1,5 @@
-import PopItHere from '../Games/PopItHere2'
+import * as PIXI from 'pixi.js'
+import PopItHere from '../Games/PopItHere'
 
 /**
  * @todo write a fetch helper
@@ -16,6 +17,23 @@ export function getCurrentGame({ renderer, root, modal }) {
   return new PopItHere({
     renderer,
     root,
-    modal,
+    modal: modalInner,
   })
+}
+
+export function getLocalPosition(event, root) {
+  return event.data.getLocalPosition(root)
+}
+
+export function calculateCenterPosition(name, clickPos) {
+  let width
+  let height
+  if (typeof name === 'string') {
+    ({ width, height } = PIXI.loader.resources[name].texture)
+  } else {
+    // in this case, name is already a texture
+    ({ width, height } = name)
+  }
+  // calculate the center by dividing the texture width & height half
+  return { x: clickPos.x - (width / 2), y: clickPos.y - (height / 2) }
 }
