@@ -1,74 +1,47 @@
-import Layer from './Layer'
+import * as PIXI from 'pixi.js'
 
 const has = Object.prototype.hasOwnProperty
 
 export default class Game {
   constructor(props) {
-    this.base = props.baseLayer
-    this.inputHandler = props.inputHandler
-    this.size = props.size
+    this.renderer = props.renderer
+    this.root = props.root
     this.modal = props.modal
-
     this.buttons = []
-
-    this.layer0 = new Layer({
-      name: '0',
-      container: this.base.root,
-    })
-
-    this.rootLayer = this.addLayer('root')
-    this.layer0.addLayer(this.rootLayer)
-
-    // when game resets it removes interactions,
-    // set to true for each new game instance
-    this.inputHandler.toggleInteractions(true)
   }
 
-  addLayer(name) {
-    const newLayer = new Layer({ name })
-    this.layer0.addLayer(newLayer)
-
-    return newLayer
-  }
-
-  endGame() {
-    this.inputHandler.removeAllListeners()
-    this.base.stopAnimating()
-
-    this.layer0.removeAllChildren()
-
-    this.base.renderer.backgroundColor = 0x000000
-    this.base.renderer.clear()
-    this.inputHandler.toggleInteractions(false)
+  setBackgroundColor(color) {
+    const { renderer, root } = this
+    renderer.backgroundColor = color
+    renderer.render(root)
   }
 
   getButtons() {
     return this.buttons
   }
 
-  getLocalPosition(event) {
-    return this.inputHandler.getLocalPosition(event)
-  }
-
-  setBackgroundColor(color) {
-    const { renderer } = this.base
-    renderer.backgroundColor = color
-    renderer.render(this.base.root)
-  }
-
-  addImage(name, pos) {
-    // when adding image to game, its assumed user wants to add to root
-    this.rootLayer.addImage(name, pos)
-  }
-
   draw() {
-    this.base.draw()
+    this.renderer.render(this.root)
   }
 
-  on(event, callback) {
-    this.inputHandler.on(event, (e) => {
-      callback(e)
-    })
+  endGame() {
+    this.root.removeAllListeners()
+    this.root.removeChildren()
+
+    this.renderer.backgroundColor = 0x000000
+    this.renderer.clear()
+  }
+
+  addImage(name, { x, y }) {
+    let img
+    if (typeof name === 'string') {
+      img = new PIXI.Sprite(PIXI.loader.resources[name].texture)
+    } else {
+      img = new PIXI.Sprite(name)
+    }
+    img.x = x
+    img.y = y
+    this.root.addChild(img)
   }
 
   addButton(btn) {
