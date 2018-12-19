@@ -81,16 +81,20 @@ export function createImageFromData(data) {
   return canvas.toDataURL()
 }
 
-export function createGifTextures(gif, cb) {
-  const sg = new window.SuperGif({ gif })
+export function createGifTextures(gif) {
+  return new Promise((res, rej) => {
+    const sg = new window.SuperGif({ gif })
 
-  sg.load({
-    success: () => {
-      const images = sg.getFrames().map(frame => createImageFromData(frame.data))
-      //
-    },
-    error: (e) => {
-      cb(e, null)
-    },
+    sg.load({
+      success: async () => {
+        const images = sg.getFrames().map(frame => createImageFromData(frame.data))
+        const textures = images.map(imgUrl => createImg({ file: imgUrl, alreadyURL: true }))
+        const resolvedTextures = await Promise.all(textures)
+        res(resolvedTextures)
+      },
+      error: (e) => {
+        rej(e)
+      },
+    })
   })
 }
