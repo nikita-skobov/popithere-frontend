@@ -32,6 +32,14 @@ export default class Game {
     this.renderer.clear()
   }
 
+  addGif(textures, { x, y }) {
+    const anim = new PIXI.extras.AnimatedSprite(textures)
+    anim.x = x
+    anim.y = y
+    this.root.addChild(anim)
+    anim.play()
+  }
+
   addImage(name, { x, y }) {
     let img
     if (typeof name === 'string') {
