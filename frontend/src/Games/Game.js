@@ -7,7 +7,10 @@ export default class Game {
     this.renderer = props.renderer
     this.root = props.root
     this.modal = props.modal
+    this.ticker = PIXI.ticker.shared
     this.buttons = []
+
+    this.draw = this.draw.bind(this)
   }
 
   setBackgroundColor(color) {
@@ -20,8 +23,13 @@ export default class Game {
     return this.buttons
   }
 
-  draw() {
+  draw(time) {
+    console.log(time)
     this.renderer.render(this.root)
+  }
+
+  animate() {
+    this.ticker.add(this.draw)
   }
 
   endGame() {
@@ -30,6 +38,8 @@ export default class Game {
 
     this.renderer.backgroundColor = 0x000000
     this.renderer.clear()
+
+    this.ticker.remove(this.draw)
   }
 
   addGif(textures, { x, y }) {
