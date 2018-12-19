@@ -9,6 +9,7 @@ export default class Game {
     this.modal = props.modal
     this.ticker = PIXI.ticker.shared
     this.buttons = []
+    this.animating = false
 
     this.draw = this.draw.bind(this)
   }
@@ -29,6 +30,7 @@ export default class Game {
   }
 
   animate() {
+    this.animating = true
     this.ticker.add(this.draw)
   }
 
@@ -40,6 +42,7 @@ export default class Game {
     this.renderer.clear()
 
     this.ticker.remove(this.draw)
+    this.animating = false
   }
 
   addGif(textures, { x, y }) {

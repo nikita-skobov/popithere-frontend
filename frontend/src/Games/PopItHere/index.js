@@ -50,10 +50,11 @@ export default class PopItHere extends Game {
       const clickPos = getLocalPosition(event, this.root)
       if (Array.isArray(this.poppingName)) {
         // if an array of textures, then treat it as a gif
-        console.log('is array')
         const { x, y } = calculateCenterPosition(this.poppingName[0], clickPos)
         this.addGif(this.poppingName, { x, y })
-        this.animate()
+        if (!this.animating) {
+          this.animate()
+        }
       } else {
         // otherwise, treat it like an image
         const { x, y } = calculateCenterPosition(this.poppingName, clickPos)
