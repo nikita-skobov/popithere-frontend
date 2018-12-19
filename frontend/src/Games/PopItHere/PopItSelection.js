@@ -70,42 +70,12 @@ export default class PopItSelection extends Component {
     const { target } = e
     const { files } = target
     const [file] = files
-    console.log(file)
     if (file.type === 'image/gif') {
-      console.log('its a gif')
-      createImg({ file, makeTexture: false }, (gif) => {
-        createGifTextures(gif, (textures) => {
-
-        })
-      })
-      // createImg({ file, makeTexture: false }, (gif) => {
-      //   console.log(gif)
-      //   const sg = new window.SuperGif({ gif })
-      //   console.log(sg)
-      //   sg.load({
-      //     success: () => {
-      //       console.log('successfully loaded')
-      //       const images = sg.getFrames().map(frame => this.createImageFromData(frame.data))
-      //       console.log(images)
-      //       console.log(images[0])
-      //       createImg({ file: images[0], alreadyURL: true }, (txt2) => {
-      //         this.game.popItChosen('image', txt2)
-      //         this.game.modal.toggle()
-      //       }, true)
-      //       // images.forEach(data => this.createImg(data, (txt2) => {
-      //       //   console.log(txt2)
-      //       // }, true))
-      //     },
-      //     error: () => {
-      //       console.log('load failed :(')
-      //     },
-      //   })
-      // })
+      const gif = await createImg({ file, makeTexture: false })
+      const textures = await createGifTextures(gif)
+      this.textureLoaded(textures)
     } else {
-      console.log('awaiting val!')
       const val = await createImg({ file })
-      console.log('awaited done!')
-      console.log(val)
       this.textureLoaded(val)
     }
   }
