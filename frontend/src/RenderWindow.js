@@ -1,7 +1,7 @@
 /* global document */
 import * as PIXI from 'pixi.js'
 
-import PopItHere from './Games/PopItHere/PopItHere'
+// import PopItHere from './Games/PopItHere/PopItHere'
 import RenderLayer from './RenderLayer'
 import InputHandler from './Games/InputHandler'
 
