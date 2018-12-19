@@ -1,4 +1,4 @@
-/* global document Image */
+/* global document Image window */
 
 import * as PIXI from 'pixi.js'
 
@@ -56,20 +56,41 @@ export function loadAssets(assetArray, cb) {
   PIXI.loader.add(assetArray).load(callback())
 }
 
-export function createImg({ file, alreadyURL, makeTexture = true }, cb) {
-  const img = new Image()
-  img.onload = () => {
-    if (makeTexture) {
-      const base = new PIXI.BaseTexture(img)
-      const texture = new PIXI.Texture(base)
-      cb(texture)
-    } else {
-      cb(img)
+export function createImg({ file, alreadyURL, makeTexture = true }) {
+  return new Promise((res) => {
+    const img = new Image()
+    img.onload = () => {
+      if (makeTexture) {
+        const base = new PIXI.BaseTexture(img)
+        const texture = new PIXI.Texture(base)
+        res(texture)
+      } else {
+        res(img)
+      }
     }
-  }
-  img.src = alreadyURL ? file : URL.createObjectURL(file)
+    img.src = alreadyURL ? file : URL.createObjectURL(file)
+  })
 }
 
-export function createGifTextures(gif) {
-  
+export function createImageFromData(data) {
+  const canvas = document.createElement('canvas')
+  canvas.setAttribute('width', data.width)
+  canvas.setAttribute('height', data.height)
+  const context = canvas.getContext('2d')
+  context.putImageData(data, 0, 0)
+  return canvas.toDataURL()
+}
+
+export function createGifTextures(gif, cb) {
+  const sg = new window.SuperGif({ gif })
+
+  sg.load({
+    success: () => {
+      const images = sg.getFrames().map(frame => createImageFromData(frame.data))
+      //
+    },
+    error: (e) => {
+      cb(e, null)
+    },
+  })
 }
