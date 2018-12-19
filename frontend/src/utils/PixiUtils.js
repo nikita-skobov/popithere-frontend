@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js'
 
-function createRenderer({
+export function createRenderer({
   size,
   preserveDrawingBuffer,
   transparent,
@@ -17,7 +17,7 @@ function createRenderer({
   return renderer
 }
 
-function createRoot(renderer, { interactive }) {
+export function createRoot(renderer, { interactive }) {
   // everything rendered will go inside root
   const root = new PIXI.Container()
 
@@ -32,9 +32,4 @@ function createRoot(renderer, { interactive }) {
   renderer.render(root)
 
   return { root }
-}
-
-module.exports = {
-  createRenderer,
-  createRoot,
 }
