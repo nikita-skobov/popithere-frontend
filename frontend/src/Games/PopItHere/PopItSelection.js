@@ -38,14 +38,24 @@ export default class PopItSelection extends Component {
   }
 
   // eslint-disable-next-line
-  createImg(file, cb) {
+  createImg(file, cb, alreadyURL) {
     const img = new Image()
     img.onload = () => {
       const base = new PIXI.BaseTexture(img)
       const texture = new PIXI.Texture(base)
-      cb(texture)
+      cb(texture, img)
     }
-    img.src = URL.createObjectURL(file)
+    img.src = alreadyURL ? file : URL.createObjectURL(file)
+  }
+
+  // eslint-disable-next-line
+  createImageFromData(data) {
+    const canvas = document.createElement('canvas')
+    canvas.setAttribute('width', data.width)
+    canvas.setAttribute('height', data.height)
+    const context = canvas.getContext('2d')
+    context.putImageData(data, 0, 0)
+    return canvas.toDataURL()
   }
 
   textureLoaded(txt) {
@@ -58,7 +68,35 @@ export default class PopItSelection extends Component {
     const { target } = e
     const { files } = target
     const [file] = files
-    this.createImg(file, this.textureLoaded)
+    console.log(file)
+    if (file.type === 'image/gif') {
+      console.log('its a gif')
+      this.createImg(file, (txt, gif) => {
+        console.log(gif)
+        const sg = new window.SuperGif({ gif })
+        console.log(sg)
+        sg.load({
+          success: () => {
+            console.log('successfully loaded')
+            const images = sg.getFrames().map(frame => this.createImageFromData(frame.data))
+            console.log(images)
+            console.log(images[0])
+            this.createImg(images[30], (txt2) => {
+              this.game.popItChosen('image', txt2)
+              this.game.modal.toggle()
+            }, true)
+            // images.forEach(data => this.createImg(data, (txt2) => {
+            //   console.log(txt2)
+            // }, true))
+          },
+          error: () => {
+            console.log('load failed :(')
+          },
+        })
+      })
+    } else {
+      this.createImg(file, this.textureLoaded)
+    }
   }
 
   handleButton(e) {
