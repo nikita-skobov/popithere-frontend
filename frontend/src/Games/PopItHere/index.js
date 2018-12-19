@@ -29,6 +29,15 @@ export default class PopItHere extends Game {
       modalTitle: 'Choose your PopIt',
     })
 
+    this.addButton({
+      name: 'endgame',
+      text: 'End Game',
+      on: () => {
+        console.log('ending game')
+        this.endGame()
+      },
+    })
+
     this.currentlyPopping = false
     this.poppingName = null
     this.draw()

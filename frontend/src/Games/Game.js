@@ -25,7 +25,6 @@ export default class Game {
   }
 
   draw(time) {
-    console.log(time)
     this.renderer.render(this.root)
   }
 

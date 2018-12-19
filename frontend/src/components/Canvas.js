@@ -52,9 +52,9 @@ export default class Canvas extends Component {
   newGame(game) {
     this.brain.tell.Buttons.newButtons(game.getButtons())
 
-    setTimeout(() => {
-      this.endGame(game)
-    }, 20000)
+    // setTimeout(() => {
+    //   this.endGame(game)
+    // }, 20000)
   }
 
   render() {

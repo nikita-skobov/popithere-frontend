@@ -50,11 +50,15 @@ export default class PopItSelection extends Component {
     const [file] = files
     if (file.type === 'image/gif') {
       const gif = await createImage({ file, makeTexture: false })
-      const textures = await createGifTextures(gif)
-      this.textureLoaded(textures)
+      let textures = await createGifTextures(gif)
+      textures = 15
+      // window.tempa2 = textures
+      // this.textureLoaded(textures)
+      return null
     } else {
       const texture = await createImage({ file })
       this.textureLoaded(texture)
+      return null
     }
   }
 
