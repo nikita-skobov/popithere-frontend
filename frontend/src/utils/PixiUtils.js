@@ -37,3 +37,9 @@ export function createRoot(renderer, opts) {
 
   return root
 }
+
+export function replaceCanvas(view) {
+  const oldCanvas = document.getElementsByTagName('canvas')[0]
+  view.classList.add('canvas')
+  oldCanvas.parentElement.replaceChild(view, oldCanvas)
+}
