@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 import App from './App'
+import './libgif'
 
 const reactContainer = document.getElementById('react-container')
 
