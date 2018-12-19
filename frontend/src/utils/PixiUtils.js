@@ -17,11 +17,15 @@ export function createRenderer({
   return renderer
 }
 
-export function createRoot(renderer, { interactive }) {
+export function createRoot(renderer, opts) {
   // everything rendered will go inside root
   const root = new PIXI.Container()
 
-  console.log(renderer)
+  let interactive
+
+  if (opts) {
+    ({ interactive } = opts)
+  }
 
   if (interactive) {
     root.interactive = true
