@@ -39,27 +39,6 @@ export default class PopItSelection extends Component {
     this.textureLoaded = this.textureLoaded.bind(this)
   }
 
-  // eslint-disable-next-line
-  createImg(file, cb, alreadyURL) {
-    const img = new Image()
-    img.onload = () => {
-      const base = new PIXI.BaseTexture(img)
-      const texture = new PIXI.Texture(base)
-      cb(texture, img)
-    }
-    img.src = alreadyURL ? file : URL.createObjectURL(file)
-  }
-
-  // eslint-disable-next-line
-  createImageFromData(data) {
-    const canvas = document.createElement('canvas')
-    canvas.setAttribute('width', data.width)
-    canvas.setAttribute('height', data.height)
-    const context = canvas.getContext('2d')
-    context.putImageData(data, 0, 0)
-    return canvas.toDataURL()
-  }
-
   textureLoaded(txt) {
     this.game.popItChosen('image', txt)
     this.game.modal.toggle()
