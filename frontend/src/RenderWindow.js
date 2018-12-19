@@ -94,7 +94,7 @@ export default class RenderWindow {
     setTimeout(() => {
       console.log('chaning game:')
       this.changeGame('PopItHere')
-    }, 3000)
+    }, 2000)
   }
 
   loadAssets(assetArray, cb) {
