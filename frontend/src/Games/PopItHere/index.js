@@ -12,10 +12,15 @@ export default class PopItHere extends Game {
 
     this.setBackgroundColor(0xfb2ab4)
 
-    this.root.on('pointerdown', (event) => {
-      console.log('pointerdown')
-      this.pointerDown(event)
-    })
+    // this.root.on('pointerdown', (event) => {
+    //   console.log('pointerdown')
+    //   this.modal.toggle({
+    //     modal: () => (
+    //       <PopItSelection game={this} />
+    //     ),
+    //   })
+    //   this.pointerDown(event)
+    // })
 
     this.addButton({
       name: 'popit',
@@ -38,38 +43,43 @@ export default class PopItHere extends Game {
       },
     })
 
-    this.currentlyPopping = false
     this.poppingName = null
     this.draw()
+
+    this.pointerDown = this.pointerDown.bind(this)
   }
 
   popItChosen(type, val) {
     if (type === 'image') {
       this.startPopping(val)
+      this.root.on('pointerdown', this.pointerDown)
     }
+  }
+
+  stopPopping() {
+    this.poppingName = null
+    this.root.off('pointerdown', this.pointerDown)
   }
 
   startPopping(name) {
     this.poppingName = name
-    this.currentlyPopping = true
   }
 
   pointerDown(event) {
-    if (this.currentlyPopping) {
-      const clickPos = getLocalPosition(event, this.root)
-      if (Array.isArray(this.poppingName)) {
-        // if an array of textures, then treat it as a gif
-        const { x, y } = calculateCenterPosition(this.poppingName[0], clickPos)
-        this.addGif(this.poppingName, { x, y })
-        if (!this.animating) {
-          this.animate()
-        }
-      } else {
-        // otherwise, treat it like an image
-        const { x, y } = calculateCenterPosition(this.poppingName, clickPos)
-        this.addImage(this.poppingName, { x, y })
-        this.draw()
+    console.log('pointer down')
+    const clickPos = getLocalPosition(event, this.root)
+    if (Array.isArray(this.poppingName)) {
+      // if an array of textures, then treat it as a gif
+      const { x, y } = calculateCenterPosition(this.poppingName[0], clickPos)
+      this.addGif(this.poppingName, { x, y })
+      if (!this.animating) {
+        this.animate()
       }
+    } else {
+      // otherwise, treat it like an image
+      const { x, y } = calculateCenterPosition(this.poppingName, clickPos)
+      this.addImage(this.poppingName, { x, y })
+      this.draw()
     }
   }
 }
