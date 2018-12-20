@@ -46,7 +46,6 @@ export default class PopItHere extends Game {
     this.addButton(this.endGameButton)
 
     this.poppingName = null
-    this.draw()
 
     this.stage = new PIXI.Container()
     this.root.addChild(this.stage)
@@ -54,6 +53,8 @@ export default class PopItHere extends Game {
     this.pointerDown = this.pointerDown.bind(this)
     this.customAddImage = this.customAddImage.bind(this)
     this.customAddText = this.customAddText.bind(this)
+
+    this.animate()
   }
 
   popItChosen(type, val) {
@@ -70,9 +71,6 @@ export default class PopItHere extends Game {
 
   clearCanvas() {
     this.stage.removeChildren()
-    if (!this.animating) {
-      this.draw()
-    }
   }
 
   customAddImage(event) {
@@ -109,10 +107,6 @@ export default class PopItHere extends Game {
       }
       myButtons.push(btn)
     })
-
-    if (!this.animating) {
-      this.draw()
-    }
   }
 
   startPopping(name) {
@@ -126,14 +120,10 @@ export default class PopItHere extends Game {
       // if an array of textures, then treat it as a gif
       const { x, y } = calculateCenterPosition(this.poppingName[0], clickPos)
       this.addGif(this.poppingName, { x, y, container: this.stage })
-      if (!this.animating) {
-        this.animate()
-      }
     } else {
       // otherwise, treat it like an image
       const { x, y } = calculateCenterPosition(this.poppingName, clickPos)
       this.addImage(this.poppingName, { x, y, container: this.stage })
-      this.draw()
     }
   }
 }

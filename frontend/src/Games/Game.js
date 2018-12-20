@@ -30,8 +30,10 @@ export default class Game {
   }
 
   animate() {
-    this.animating = true
-    this.ticker.add(this.draw)
+    if (!this.animating) {
+      this.animating = true
+      this.ticker.add(this.draw)
+    }
   }
 
   endGame() {
