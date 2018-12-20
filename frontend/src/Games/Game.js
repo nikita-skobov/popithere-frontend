@@ -52,6 +52,36 @@ export default class Game {
     anim.play()
   }
 
+  addCanvasButton(text, {
+    x,
+    y,
+    textAlpha,
+    container = this.root,
+    alpha = 0.3,
+    lineWidth = 4,
+    lineColor = 0x000000,
+    buttonColor = 0xffffff,
+    radius = 10,
+    paddingPercentX = 0.04,
+    paddingPercentY = 0.07,
+  }) {
+    const message = new PIXI.Text(text)
+    message.alpha = textAlpha || alpha
+    const roundBox = new PIXI.Graphics()
+    roundBox.lineStyle(lineWidth, lineColor, alpha)
+    roundBox.beginFill(buttonColor, alpha)
+    const rectWidth = message.width * (1 + (2 * paddingPercentX))
+    const rectHeight = message.height * (1 + (2 * paddingPercentY))
+    roundBox.drawRoundedRect(0, 0, rectWidth, rectHeight, radius)
+    roundBox.endFill()
+    roundBox.x = x
+    roundBox.y = y
+    container.addChild(roundBox)
+    message.x = (rectWidth - message.width) / 2
+    message.y = (rectHeight - message.height) / 2
+    roundBox.addChild(message)
+  }
+
   addImage(name, { x, y, container = this.root }) {
     let img
     if (typeof name === 'string') {
