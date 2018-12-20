@@ -702,7 +702,6 @@
   
 
   var Stream = function (data) {
-    console.log('inside MY stream')
     this.data = data
     this.len = this.data.length
     this.pos = 0
@@ -793,15 +792,12 @@
         var data = gif.src.substring(gif.src.indexOf(',')+1)
         res(new Stream(window.atob(data)))
       } else {
-        console.log('making xmlhttp req')
         var h = new XMLHttpRequest()
         h.overrideMimeType('text/plain; charset=x-user-defined')
         h.onload = function() {
-          console.log('successful load')
           res(new Stream(h.responseText))
         }
         h.onerror = function(e) {
-          console.log('failed load')
           rej(e)
         }
         h.open('GET', gif.getAttribute('data-animated-src') || gif.src, true)
@@ -956,7 +952,6 @@
   }
 
   function lzwDecode(minCodeSize, data) {
-    console.log('calling lazy decode')
     // TODO: Now that the GIF parser is a bit different, maybe this should get an array of bytes instead of a String?
     var pos = 0; // Maybe this streaming thing should be merged with the Stream?
     var readCode = function (size) {
@@ -1094,7 +1089,6 @@
   }
 
   function parseImg(img, st, opts) {
-    console.log('parsing img')
     var deinterlace = function (pixels, width) {
       // Of course this defeats the purpose of interlacing. And it's *probably*
       // the least efficient way it's ever been implemented. But nevertheless...
@@ -1150,7 +1144,6 @@
   }
 
   function parseBlock(st, opts) {
-    console.log('calling parse blcok')
     var block = {}
     block.sentinel = st.readByte()
     const { frame, frames, hdr, delay } = opts.locals
