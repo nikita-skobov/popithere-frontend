@@ -35,13 +35,12 @@ export default class Game {
   }
 
   endGame() {
+    this.animating = false
+    this.ticker.remove(this.draw)
     this.root.destroy(true)
 
     this.renderer.backgroundColor = 0x000000
     this.renderer.clear()
-
-    this.ticker.remove(this.draw)
-    this.animating = false
   }
 
   addGif(textures, { x, y, container = this.root }) {
