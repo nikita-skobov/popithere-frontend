@@ -84,20 +84,44 @@ export function createImageFromData(data) {
   return url
 }
 
+// MEMORY LEAK!!!
+// export function createGifTextures2(gif) {
+//   return new Promise((res, rej) => {
+//     let sg = new window.SuperGif({ gif })
+
+//     sg.load({
+//       success: () => {
+//         let images = sg.getFrames().map(frame => createImageFromData(frame.data))
+//         let textures = images.map(imgUrl => createImage({ file: imgUrl, alreadyURL: true }))
+//         Promise.all(textures)
+//           .then(resolvedTextures => res(resolvedTextures))
+//         // images = null
+//         // textures = null
+//       },
+//       error: (e) => {
+//         rej(e)
+//       },
+//     })
+//   })
+// }
+
 export function createGifTextures(gif) {
   return new Promise((res, rej) => {
-    const sg = new window.SuperGif({ gif })
-
-    sg.load({
-      success: () => {
-        const images = sg.getFrames().map(frame => createImageFromData(frame.data))
-        const textures = images.map(imgUrl => createImage({ file: imgUrl, alreadyURL: true }))
+    const opts = window.mySuperGif.init({ gif })
+    window.mySuperGif.load(opts)
+      .then((stream) => {
+        const newOpts = window.mySuperGif.parseHeader(stream, opts)
+        let frames = window.mySuperGif.parseBlock(stream, newOpts)
+        let images = frames.map(frame => createImageFromData(frame.data))
+        let textures = images.map(imgUrl => createImage({ file: imgUrl, alreadyURL: true }))
         Promise.all(textures)
-          .then(resolvedTextures => res(resolvedTextures))
-      },
-      error: (e) => {
-        rej(e)
-      },
-    })
+          .then((resolvedTextures) => {
+            res(resolvedTextures)
+            frames = null
+            images = null
+            textures = null
+          })
+      })
+      .catch(err => rej(err))
   })
 }
