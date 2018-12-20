@@ -12,6 +12,8 @@ export default class Game {
     this.buttons = []
     this.animating = false
 
+    this.center = { x: this.renderer.width / 2, y: this.renderer.height / 2 }
+
     this.background = new PIXI.Sprite(PIXI.Texture.EMPTY)
     this.background.x = 0
     this.background.y = 0
