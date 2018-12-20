@@ -44,15 +44,15 @@ export default class Game {
     this.animating = false
   }
 
-  addGif(textures, { x, y }) {
+  addGif(textures, { x, y, container = this.root }) {
     const anim = new PIXI.extras.AnimatedSprite(textures)
     anim.x = x
     anim.y = y
-    this.root.addChild(anim)
+    container.addChild(anim)
     anim.play()
   }
 
-  addImage(name, { x, y }) {
+  addImage(name, { x, y, container = this.root }) {
     let img
     if (typeof name === 'string') {
       img = new PIXI.Sprite(PIXI.loader.resources[name].texture)
@@ -61,7 +61,7 @@ export default class Game {
     }
     img.x = x
     img.y = y
-    this.root.addChild(img)
+    container.addChild(img)
   }
 
   addButton(btn) {
