@@ -15,6 +15,8 @@ export default class Canvas extends Component {
     this.brain.store('Canvas', this)
     this.settingsChange = this.settingsChange.bind(this)
     this.newGame = this.newGame.bind(this)
+
+    this.currentGame = null
   }
 
   componentDidMount() {
@@ -40,21 +42,18 @@ export default class Canvas extends Component {
     const root = createRoot(renderer, { interactive: true })
     replaceCanvas(renderer.view)
     const modal = this.brain.ask.MyModal
-    const game = getCurrentGame({ renderer, root, modal })
-    this.newGame(game)
+    this.currentGame = getCurrentGame({ renderer, root, modal, canvas: this })
+    this.newGame()
   }
 
-  endGame(game) {
-    game.endGame()
+  endGame() {
+    this.currentGame.endGame()
     this.brain.tell.Buttons.newButtons([])
+    this.currentGame = null
   }
 
-  newGame(game) {
-    this.brain.tell.Buttons.newButtons(game.getButtons())
-
-    // setTimeout(() => {
-    //   this.endGame(game)
-    // }, 20000)
+  newGame() {
+    this.brain.tell.Buttons.newButtons(this.currentGame.getButtons())
   }
 
   render() {

@@ -5,7 +5,7 @@ import PopItHere from '../Games/PopItHere'
  * @todo write a fetch helper
  * to fetch the current game from a server
  */
-export function getCurrentGame({ renderer, root, modal }) {
+export function getCurrentGame({ renderer, root, modal, canvas }) {
   const modalInner = {
     // here we only want the Game instance
     // to have access to isOpen and toggle. we don't want
@@ -14,10 +14,16 @@ export function getCurrentGame({ renderer, root, modal }) {
     toggle: modal.toggle,
   }
 
+  const canvasInner = {
+    // only give game access to certain canvas methods
+    endGame: canvas.endGame,
+  }
+
   return new PopItHere({
     renderer,
     root,
     modal: modalInner,
+    canvas: canvasInner,
   })
 }
 
