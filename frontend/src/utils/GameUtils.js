@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js'
-import { createRoot } from '../utils/PixiUtils'
+import { createRoot } from './PixiUtils'
 import PopItHere from '../Games/PopItHere'
 
 /**
