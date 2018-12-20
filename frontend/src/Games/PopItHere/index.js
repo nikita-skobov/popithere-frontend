@@ -42,6 +42,7 @@ export default class PopItHere extends Game {
     this.pointerDown = this.pointerDown.bind(this)
     this.customAddImage = this.customAddImage.bind(this)
     this.customAddText = this.customAddText.bind(this)
+    this.customNewImage = this.customNewImage.bind(this)
 
     this.animate()
 
@@ -66,16 +67,32 @@ export default class PopItHere extends Game {
 
   customAddImage(event) {
     console.log('clicked on add image')
+    this.modal.toggle({
+      modal: () => (
+        <PopItSelection game={this} startingChoice="custom" />
+      ),
+      modalTitle: 'Choose An Image',
+    })
   }
 
   customAddText(event) {
     console.log('clicked on add tesxt')
   }
 
+  customNewImage(image) {
+    if (Array.isArray(image)) {
+      console.log('gif')
+    } else {
+      console.log('img')
+    }
+  }
+
   setupCustomBuilder() {
     this.removeButtons()
     this.addButton(this.endGameButton)
     this.canvas.newButtons(this.getButtons())
+    this.buttonLayer = new PIXI.Container()
+    this.root.addChild(this.buttonLayer)
 
     let yOffset = 20
     const xOffset = 12
@@ -85,7 +102,7 @@ export default class PopItHere extends Game {
       const btn = this.addCanvasButton(txt, {
         x: xOffset,
         y: yOffset,
-        container: this.stage,
+        container: this.buttonLayer,
         paddingPercentY: 0.1,
         textAlpha: 1,
       })

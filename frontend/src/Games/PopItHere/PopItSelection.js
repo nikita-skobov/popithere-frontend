@@ -28,7 +28,7 @@ export default class PopItSelection extends Component {
     this.maxImages = 10
 
     this.state = {
-      choice: 'none',
+      choice: props.startingChoice || 'none',
       offset: 0,
     }
 
@@ -40,7 +40,7 @@ export default class PopItSelection extends Component {
   }
 
   textureLoaded(txt) {
-    this.game.popItChosen('image', txt)
+    this.game.customNewImage(txt)
     this.game.modal.toggle()
   }
 
@@ -150,6 +150,11 @@ export default class PopItSelection extends Component {
   }
 }
 
+PopItSelection.defaultProps = {
+  startingChoice: '',
+}
+
 PopItSelection.propTypes = {
   game: PropTypes.instanceOf(Object).isRequired,
+  startingChoice: PropTypes.string,
 }
