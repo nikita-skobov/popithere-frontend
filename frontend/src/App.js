@@ -41,7 +41,6 @@ export default class App extends Component {
   render() {
     return [
       <Canvas brain={this.brain} />,
-      <Buttons buttonsWidth={80} brain={this.brain} />,
       <Chat brain={this.brain} />,
       <MyModal brain={this.brain} />,
     ]
