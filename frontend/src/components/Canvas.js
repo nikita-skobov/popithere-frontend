@@ -18,6 +18,7 @@ export default class Canvas extends Component {
     this.endGame = this.endGame.bind(this)
 
     this.currentGame = null
+    this.renderer = null
   }
 
   componentDidMount() {
@@ -36,14 +37,13 @@ export default class Canvas extends Component {
   }
 
   afterLoad() {
-    const renderer = createRenderer({
+    this.renderer = createRenderer({
       size: [1024, 1024],
       backgroundColor: 0x000000,
     })
-    const root = createRoot(renderer, { interactive: true })
-    replaceCanvas(renderer.view)
+    replaceCanvas(this.renderer.view)
     const modal = this.brain.ask.MyModal
-    this.currentGame = getCurrentGame({ renderer, root, modal, canvas: this })
+    this.currentGame = getCurrentGame({ renderer: this.renderer, modal, canvas: this })
     this.newGame()
   }
 
@@ -51,6 +51,12 @@ export default class Canvas extends Component {
     this.currentGame.endGame()
     this.brain.tell.Buttons.newButtons([])
     this.currentGame = null
+
+    setTimeout(() => {
+      const modal = this.brain.ask.MyModal
+      this.currentGame = getCurrentGame({ renderer: this.renderer, modal, canvas: this })
+      this.newGame()
+    }, 10000)
   }
 
   newGame() {

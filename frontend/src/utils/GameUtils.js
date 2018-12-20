@@ -1,11 +1,14 @@
 import * as PIXI from 'pixi.js'
+import { createRoot } from '../utils/PixiUtils'
 import PopItHere from '../Games/PopItHere'
 
 /**
  * @todo write a fetch helper
  * to fetch the current game from a server
  */
-export function getCurrentGame({ renderer, root, modal, canvas }) {
+export function getCurrentGame({ renderer, modal, canvas }) {
+  const root = createRoot(renderer, { interactive: true })
+
   const modalInner = {
     // here we only want the Game instance
     // to have access to isOpen and toggle. we don't want
