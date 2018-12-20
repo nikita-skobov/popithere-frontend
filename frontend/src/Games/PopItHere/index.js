@@ -34,7 +34,7 @@ export default class PopItHere extends Game {
       text: 'End Game',
       on: () => {
         console.log('ending game')
-        this.endGame()
+        this.canvas.endGame()
       },
     })
 

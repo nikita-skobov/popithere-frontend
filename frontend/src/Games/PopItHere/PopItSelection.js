@@ -33,6 +33,7 @@ export default class PopItSelection extends Component {
     }
 
     this.handleButton = this.handleButton.bind(this)
+    this.handleCustom = this.handleCustom.bind(this)
     this.popItChosen = this.popItChosen.bind(this)
     this.handleFile = this.handleFile.bind(this)
     this.textureLoaded = this.textureLoaded.bind(this)
@@ -56,6 +57,12 @@ export default class PopItSelection extends Component {
       const texture = await createImage({ file })
       this.textureLoaded(texture)
     }
+  }
+
+  handleCustom(e) {
+    e.preventDefault()
+    // this.game.modal.toggle()
+    // this.game.canvas.endGame()
   }
 
   handleButton(e) {

@@ -15,6 +15,7 @@ export default class Canvas extends Component {
     this.brain.store('Canvas', this)
     this.settingsChange = this.settingsChange.bind(this)
     this.newGame = this.newGame.bind(this)
+    this.endGame = this.endGame.bind(this)
 
     this.currentGame = null
   }
