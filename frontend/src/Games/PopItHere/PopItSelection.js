@@ -61,8 +61,8 @@ export default class PopItSelection extends Component {
 
   handleCustom(e) {
     e.preventDefault()
-    // this.game.modal.toggle()
-    // this.game.canvas.endGame()
+    this.game.modal.toggle()
+    this.game.stopPopping()
   }
 
   handleButton(e) {
@@ -105,7 +105,7 @@ export default class PopItSelection extends Component {
             <Button onClick={this.handleButton} name="image" block>Image</Button>
           </Col>
           <Col fluid>
-            <Button onClick={this.handleButton} name="custom" block>Make your own!</Button>
+            <Button onClick={this.handleCustom} name="custom" block>Make your own!</Button>
           </Col>
         </Row>
       )
