@@ -35,8 +35,7 @@ export default class Game {
   }
 
   endGame() {
-    this.root.removeAllListeners()
-    this.root.removeChildren()
+    this.root.destroy(true)
 
     this.renderer.backgroundColor = 0x000000
     this.renderer.clear()
