@@ -72,7 +72,22 @@ export default class PopItHere extends Game {
   }
 
   setupCustomBuilder() {
-    this.addCanvasButton('this is some shit dawggg', { x: 0, y: 0, container: this.stage, paddingPercentY: 0.1 })
+    let yOffset = 20
+    const xOffset = 12
+    const myButtons = []
+    const buttonTexts = ['Add Image', 'Add Text']
+    buttonTexts.forEach((txt) => {
+      const btn = this.addCanvasButton(txt, {
+        x: xOffset,
+        y: yOffset,
+        container: this.stage,
+        paddingPercentY: 0.1,
+        textAlpha: 1,
+      })
+      yOffset = btn.y + btn.height + 20
+      myButtons.push(btn)
+    })
+
     if (!this.animating) {
       this.draw()
     }
