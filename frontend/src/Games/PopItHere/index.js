@@ -10,17 +10,6 @@ export default class PopItHere extends Game {
   constructor(props) {
     super(props)
 
-    this.setBackgroundColor(0xfb2ab4)
-
-    // this.root.on('pointerdown', (event) => {
-    //   console.log('pointerdown')
-    //   this.modal.toggle({
-    //     modal: () => (
-    //       <PopItSelection game={this} />
-    //     ),
-    //   })
-    //   this.pointerDown(event)
-    // })
     this.popItButton = {
       name: 'popit',
       text: 'Pop It!',
