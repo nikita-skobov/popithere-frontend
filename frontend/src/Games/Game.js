@@ -12,13 +12,22 @@ export default class Game {
     this.buttons = []
     this.animating = false
 
+    this.background = new PIXI.Sprite(PIXI.Texture.EMPTY)
+    this.background.x = 0
+    this.background.y = 0
+    this.background.width = this.renderer.width
+    this.background.height = this.renderer.height
+    this.root.addChild(this.background)
     this.draw = this.draw.bind(this)
   }
 
   setBackgroundColor(color) {
-    const { renderer, root } = this
-    renderer.backgroundColor = color
-    renderer.render(root)
+    if (color === 'alpha') {
+      this.background.texture = PIXI.Texture.EMPTY
+      return
+    }
+    this.background.texture = PIXI.Texture.WHITE
+    this.background.tint = color
   }
 
   getButtons() {
