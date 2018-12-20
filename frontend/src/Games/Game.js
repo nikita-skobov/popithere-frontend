@@ -50,6 +50,8 @@ export default class Game {
     anim.y = y
     container.addChild(anim)
     anim.play()
+
+    return anim
   }
 
   addCanvasButton(text, {
@@ -80,6 +82,8 @@ export default class Game {
     message.x = (rectWidth - message.width) / 2
     message.y = (rectHeight - message.height) / 2
     roundBox.addChild(message)
+
+    return roundBox
   }
 
   addImage(name, { x, y, container = this.root }) {
@@ -92,6 +96,8 @@ export default class Game {
     img.x = x
     img.y = y
     container.addChild(img)
+
+    return img
   }
 
   addButton(btn) {
