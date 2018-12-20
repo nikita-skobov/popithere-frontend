@@ -71,6 +71,13 @@ export default class PopItHere extends Game {
     }
   }
 
+  setupCustomBuilder() {
+    this.addCanvasButton('this is some shit dawggg', { x: 0, y: 0, container: this.stage, paddingPercentY: 0.1 })
+    if (!this.animating) {
+      this.draw()
+    }
+  }
+
   startPopping(name) {
     this.poppingName = name
   }
