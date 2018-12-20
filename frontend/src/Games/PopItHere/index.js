@@ -44,6 +44,8 @@ export default class PopItHere extends Game {
     this.customAddText = this.customAddText.bind(this)
 
     this.animate()
+
+    // this.setBackgroundColor(0x1af22e)
   }
 
   popItChosen(type, val) {
