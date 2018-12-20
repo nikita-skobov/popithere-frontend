@@ -15,6 +15,7 @@ export default class Canvas extends Component {
     this.brain.store('Canvas', this)
     this.settingsChange = this.settingsChange.bind(this)
     this.newGame = this.newGame.bind(this)
+    this.newButtons = this.newButtons.bind(this)
     this.endGame = this.endGame.bind(this)
 
     this.currentGame = null
@@ -60,7 +61,11 @@ export default class Canvas extends Component {
   }
 
   newGame() {
-    this.brain.tell.Buttons.newButtons(this.currentGame.getButtons())
+    this.newButtons(this.currentGame.getButtons())
+  }
+
+  newButtons(buttons) {
+    this.brain.tell.Buttons.newButtons(buttons)
   }
 
   render() {

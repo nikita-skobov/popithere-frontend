@@ -20,6 +20,7 @@ export function getCurrentGame({ renderer, modal, canvas }) {
   const canvasInner = {
     // only give game access to certain canvas methods
     endGame: canvas.endGame,
+    newButtons: canvas.newButtons,
   }
 
   return new PopItHere({
