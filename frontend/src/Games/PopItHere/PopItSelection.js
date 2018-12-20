@@ -63,6 +63,7 @@ export default class PopItSelection extends Component {
     e.preventDefault()
     this.game.modal.toggle()
     this.game.stopPopping()
+    this.game.clearCanvas()
   }
 
   handleButton(e) {

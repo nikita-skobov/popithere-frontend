@@ -61,6 +61,13 @@ export default class PopItHere extends Game {
     this.root.off('pointerdown', this.pointerDown)
   }
 
+  clearCanvas() {
+    this.root.removeChildren()
+    if (!this.animating) {
+      this.draw()
+    }
+  }
+
   startPopping(name) {
     this.poppingName = name
   }
