@@ -99,6 +99,10 @@ export default class Game {
     return img
   }
 
+  removeButtons() {
+    this.buttons = []
+  }
+
   addButton(btn) {
     // can either be an obj or string
     if (typeof btn === 'string') {

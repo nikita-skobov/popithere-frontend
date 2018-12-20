@@ -21,8 +21,7 @@ export default class PopItHere extends Game {
     //   })
     //   this.pointerDown(event)
     // })
-
-    this.addButton({
+    this.popItButton = {
       name: 'popit',
       text: 'Pop It!',
       on: () => {
@@ -32,16 +31,19 @@ export default class PopItHere extends Game {
         <PopItSelection game={this} />
       ),
       modalTitle: 'Choose your PopIt',
-    })
+    }
 
-    this.addButton({
+    this.endGameButton = {
       name: 'endgame',
       text: 'End Game',
       on: () => {
         console.log('ending game')
         this.canvas.endGame()
       },
-    })
+    }
+
+    this.addButton(this.popItButton)
+    this.addButton(this.endGameButton)
 
     this.poppingName = null
     this.draw()
@@ -50,6 +52,8 @@ export default class PopItHere extends Game {
     this.root.addChild(this.stage)
 
     this.pointerDown = this.pointerDown.bind(this)
+    this.customAddImage = this.customAddImage.bind(this)
+    this.customAddText = this.customAddText.bind(this)
   }
 
   popItChosen(type, val) {
@@ -71,7 +75,19 @@ export default class PopItHere extends Game {
     }
   }
 
+  customAddImage(event) {
+    console.log('clicked on add image')
+  }
+
+  customAddText(event) {
+    console.log('clicked on add tesxt')
+  }
+
   setupCustomBuilder() {
+    this.removeButtons()
+    this.addButton(this.endGameButton)
+    this.canvas.newButtons(this.getButtons())
+
     let yOffset = 20
     const xOffset = 12
     const myButtons = []
@@ -85,6 +101,12 @@ export default class PopItHere extends Game {
         textAlpha: 1,
       })
       yOffset = btn.y + btn.height + 20
+      btn.interactive = true
+      if (txt === 'Add Image') {
+        btn.on('pointerdown', this.customAddImage)
+      } else if (txt === 'Add Text') {
+        btn.on('pointerdown', this.customAddText)
+      }
       myButtons.push(btn)
     })
 
