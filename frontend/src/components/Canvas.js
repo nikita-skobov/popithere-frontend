@@ -40,7 +40,8 @@ export default class Canvas extends Component {
   afterLoad() {
     this.renderer = createRenderer({
       size: [1024, 1024],
-      backgroundColor: 0x000000,
+      transparent: true,
+      preserveDrawingBuffer: true,
     })
     replaceCanvas(this.renderer.view)
     const modal = this.brain.ask.MyModal
