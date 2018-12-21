@@ -98,23 +98,32 @@ export default class PopItHere extends Game {
 
   customEnd() {
     this.clearDrawHooks()
-    this.buttonLayer.destroy(true)
-
-    this.controlLayer.destroy(true)
+    this.clearCanvas()
+    this.buttonLayer.removeChildren()
+    this.controlLayer.removeChildren()
+    this.root.removeChildren()
+    this.root.addChild(this.background)
+    this.root.addChild(this.stage)
 
     this.background.interactive = false
     this.background.off('pointerdown', this.customClearActiveSprite)
 
-    this.customGifSprites.forEach(sprite => sprite.destroy(true))
+    this.customGifSprites.forEach((sprite) => {
+      try {
+        sprite.destroy(true)
+      } catch (e) {
+        // do nothing
+      }
+    })
 
-    this.clearCanvas()
     this.removeButtons()
     this.addButton(this.popItButton)
     this.addButton(this.endGameButton)
     this.canvas.newButtons(this.getButtons())
-    this.buttonLayer = null
-    this.customControls = null
-    this.activeSprite = null
+    this.buttonLayer = undefined
+    this.controlLayer = undefined
+    this.customControls = undefined
+    this.activeSprite = undefined
   }
 
   customAddText(event) {
