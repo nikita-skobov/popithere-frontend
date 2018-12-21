@@ -45,6 +45,7 @@ export default class PopItHere extends Game {
     this.customAddImage = this.customAddImage.bind(this)
     this.customRotate = this.customRotate.bind(this)
     this.customResize = this.customResize.bind(this)
+    this.customToggleControls = this.customToggleControls.bind(this)
     this.customButtons = {}
     this.customCancel = this.customCancel.bind(this)
     this.customEnd = this.customEnd.bind(this)
@@ -79,6 +80,23 @@ export default class PopItHere extends Game {
 
   clearCanvas() {
     this.stage.removeChildren()
+  }
+
+  customToggleControls() {
+    this.customControls.toggle = !this.customControls.toggle
+    const bool = this.customControls.toggle
+    this.customControls.left.visible = bool
+    this.customControls.top.visible = bool
+    this.customControls.right.visible = bool
+    this.customControls.bottom.visible = bool
+    this.customControls.resizeH.visible = bool
+    this.customControls.resizeH2.visible = bool
+    this.customControls.resizeV.visible = bool
+    this.customControls.resizeV2.visible = bool
+    this.customControls.resizeD.visible = bool
+    this.customControls.resizeD2.visible = bool
+    this.customControls.resizeD3.visible = bool
+    this.customControls.resizeD4.visible = bool
   }
 
   customRotate() {
@@ -234,24 +252,29 @@ export default class PopItHere extends Game {
   }
 
   customSetControlVisibility(bool) {
-    this.customControls.left.visible = bool
-    this.customControls.top.visible = bool
-    this.customControls.right.visible = bool
-    this.customControls.bottom.visible = bool
-    this.customControls.resizeH.visible = bool
-    this.customControls.resizeH2.visible = bool
-    this.customControls.resizeV.visible = bool
-    this.customControls.resizeV2.visible = bool
-    this.customControls.resizeD.visible = bool
-    this.customControls.resizeD2.visible = bool
-    this.customControls.resizeD3.visible = bool
-    this.customControls.resizeD4.visible = bool
+    if (this.customControls.toggle) {
+      this.customControls.left.visible = bool
+      this.customControls.top.visible = bool
+      this.customControls.right.visible = bool
+      this.customControls.bottom.visible = bool
+      this.customControls.resizeH.visible = bool
+      this.customControls.resizeH2.visible = bool
+      this.customControls.resizeV.visible = bool
+      this.customControls.resizeV2.visible = bool
+      this.customControls.resizeD.visible = bool
+      this.customControls.resizeD2.visible = bool
+      this.customControls.resizeD3.visible = bool
+      this.customControls.resizeD4.visible = bool
+    }
 
     if (this.customButtons.rotate) {
       this.customButtons.rotate.visible = bool
     }
     if (this.customButtons.resize) {
       this.customButtons.resize.visible = bool
+    }
+    if (this.customButtons.toggleControls) {
+      this.customButtons.toggleControls.visible = bool
     }
   }
 
@@ -457,6 +480,7 @@ export default class PopItHere extends Game {
       resizeH,
       resizeH2,
       visible: false,
+      toggle: true,
       left: leftSprite,
       top: topSprite,
       right: rightSprite,
@@ -496,7 +520,7 @@ export default class PopItHere extends Game {
     let yOffset = 20
     const xOffset = 12
     const myButtons = []
-    const buttonTexts = ['Add Image', 'Add Text', 'Cancel', 'Rotate', 'Resize']
+    const buttonTexts = ['Cancel', 'Submit', 'Add Image', 'Add Text', 'Toggle Controls', 'Rotate', 'Resize']
     buttonTexts.forEach((txt) => {
       const btn = this.addCanvasButton(txt, {
         x: xOffset,
@@ -523,6 +547,10 @@ export default class PopItHere extends Game {
         btn.visible = false
         btn.on('pointerdown', this.customResize)
         this.customButtons.resize = btn
+      } else if (txt === 'Toggle Controls') {
+        btn.visible = false
+        btn.on('pointerdown', this.customToggleControls)
+        this.customButtons.toggleControls = btn
       }
       myButtons.push(btn)
     })
