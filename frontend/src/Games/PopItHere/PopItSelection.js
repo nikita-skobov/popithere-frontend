@@ -249,6 +249,7 @@ export default class PopItSelection extends Component {
     }
 
     if (choice === 'text') {
+      const { fontSize } = this.state
       return (
         <Col fluid>
           <Form>
@@ -261,7 +262,7 @@ export default class PopItSelection extends Component {
             <Row>
               <FormGroup>
                 <Label for="textinputsize">Size: </Label>
-                <CustomInput onChange={this.handleText} type="number" id="textinputsize" name="size" />
+                <CustomInput onChange={this.handleText} defaultValue={fontSize} type="number" id="textinputsize" name="size" />
               </FormGroup>
             </Row>
             <Row>
