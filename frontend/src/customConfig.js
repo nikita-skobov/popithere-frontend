@@ -1,5 +1,9 @@
 exports.assetList = [
   {
+    name: 'P_rotate',
+    url: 'images/rotateBetter.png',
+  },
+  {
     name: '8panels',
     url: 'images/8panels.png',
   },
