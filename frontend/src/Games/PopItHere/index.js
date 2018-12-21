@@ -104,6 +104,16 @@ export default class PopItHere extends Game {
   }
 
   customDelete() {
+    const id = this.activeSprite.customId
+    let gifIndex = -1
+    this.customGifSprites.forEach((sprite, index) => {
+      if (sprite.customId === id) {
+        gifIndex = index
+      }
+    })
+    if (gifIndex >= 0) {
+      this.customGifSprites.splice(gifIndex, 1)
+    }
     const index = this.stage.getChildIndex(this.activeSprite)
     this.stage.removeChildAt(index)
     this.customClearActiveSprite()
