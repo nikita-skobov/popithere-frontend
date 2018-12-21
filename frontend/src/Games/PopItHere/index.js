@@ -154,6 +154,10 @@ export default class PopItHere extends Game {
       this.controlLayer.addChild(this.customControls.resizeH2)
       this.controlLayer.addChild(this.customControls.resizeV)
       this.controlLayer.addChild(this.customControls.resizeV2)
+      this.controlLayer.addChild(this.customControls.resizeD)
+      this.controlLayer.addChild(this.customControls.resizeD2)
+      this.controlLayer.addChild(this.customControls.resizeD3)
+      this.controlLayer.addChild(this.customControls.resizeD4)
       this.customControls.visible = true
     }
 
@@ -207,6 +211,10 @@ export default class PopItHere extends Game {
     this.customControls.resizeH2.visible = bool
     this.customControls.resizeV.visible = bool
     this.customControls.resizeV2.visible = bool
+    this.customControls.resizeD.visible = bool
+    this.customControls.resizeD2.visible = bool
+    this.customControls.resizeD3.visible = bool
+    this.customControls.resizeD4.visible = bool
   }
 
   customClearActiveSprite() {
@@ -255,6 +263,18 @@ export default class PopItHere extends Game {
 
     controls.resizeV2.x = controls.bottom.x + controls.bottom.width / 2 - circleOffsetW
     controls.resizeV2.y = controls.bottom.y - circleOffsetH
+
+    controls.resizeD.x = controls.left.x - circleOffsetW
+    controls.resizeD.y = controls.left.y - circleOffsetH
+
+    controls.resizeD2.x = controls.right.x - circleOffsetW
+    controls.resizeD2.y = controls.right.y - circleOffsetH
+
+    controls.resizeD3.x = controls.right.x - circleOffsetW
+    controls.resizeD3.y = controls.right.y + controls.right.height - circleOffsetH
+
+    controls.resizeD4.x = controls.left.x - circleOffsetW
+    controls.resizeD4.y = controls.left.y + controls.left.height - circleOffsetH
   }
 
   customCreateControls() {
@@ -296,7 +316,27 @@ export default class PopItHere extends Game {
         const newPos = item.dragData.getLocalPosition(this.stage)
         item.lastPos = item.lastPos || newPos
         let dir
-        let scaleVal
+        let scaleVal = 0
+
+        if (item.customId.substr(0, 7) === 'resizeD') {
+          // diagonals are special case
+          const diffX = newPos.x - item.lastPos.x
+          const diffY = newPos.y - item.lastPos.y
+
+          if (item.customId === 'resizeD') {
+            scaleVal = ((diffX < 0 && diffY < 0) && 0.01) || ((diffX > 0 && diffY > 0) && -0.01)
+          } else if (item.customId === 'resizeD2') {
+            scaleVal = ((diffX > 0 && diffY < 0) && 0.01) || ((diffX < 0 && diffY > 0) && -0.01)
+          } else if (item.customId === 'resizeD3') {
+            scaleVal = ((diffX > 0 && diffY > 0) && 0.01) || ((diffX < 0 && diffY < 0) && -0.01)
+          } else if (item.customId === 'resizeD4') {
+            scaleVal = ((diffX < 0 && diffY > 0) && 0.01) || ((diffX > 0 && diffY < 0) && -0.01)
+          }
+          this.activeSprite.scale.x *= 1 + scaleVal
+          this.activeSprite.scale.y *= 1 + scaleVal
+          item.lastPos = newPos
+          return null
+        }
 
         if (item.customId === 'resizeH' || item.customId === 'resizeH2') {
           scaleVal = item.customId === 'resizeH' ? -0.01 : 0.01
@@ -325,10 +365,17 @@ export default class PopItHere extends Game {
         .on('pointerupoutside', onDragEnd.bind(this, item))
         .on('pointermove', onDragMove.bind(this, item))
     }
+    // resize diagonal
+    const resizeD = new PIXI.Sprite(circleTexture)
+    const resizeD2 = new PIXI.Sprite(circleTexture)
+    const resizeD3 = new PIXI.Sprite(circleTexture)
+    const resizeD4 = new PIXI.Sprite(circleTexture)
 
+    // resize horizontal
     const resizeH = new PIXI.Sprite(circleTexture)
     const resizeH2 = new PIXI.Sprite(circleTexture)
 
+    // resize vertical
     const resizeV = new PIXI.Sprite(circleTexture)
     const resizeV2 = new PIXI.Sprite(circleTexture)
 
@@ -341,13 +388,25 @@ export default class PopItHere extends Game {
     resizeH2.customId = 'resizeH2'
     resizeV.customId = 'resizeV'
     resizeV2.customId = 'resizeV2'
+    resizeD.customId = 'resizeD'
+    resizeD2.customId = 'resizeD2'
+    resizeD3.customId = 'resizeD3'
+    resizeD4.customId = 'resizeD4'
 
+    makeInteractive(resizeD)
+    makeInteractive(resizeD2)
+    makeInteractive(resizeD3)
+    makeInteractive(resizeD4)
     makeInteractive(resizeH)
     makeInteractive(resizeH2)
     makeInteractive(resizeV)
     makeInteractive(resizeV2)
 
     return {
+      resizeD,
+      resizeD2,
+      resizeD3,
+      resizeD4,
       resizeV,
       resizeV2,
       resizeH,
