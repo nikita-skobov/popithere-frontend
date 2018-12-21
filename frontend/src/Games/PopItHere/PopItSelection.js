@@ -8,6 +8,7 @@ import {
   Form,
   FormGroup,
   Label,
+  Progress,
 } from 'reactstrap'
 
 import PropTypes from 'prop-types'
@@ -28,6 +29,7 @@ export default class PopItSelection extends Component {
     this.maxImages = 10
 
     this.state = {
+      loadingError: '',
       choice: props.startingChoice || 'none',
       offset: 0,
     }
@@ -50,13 +52,20 @@ export default class PopItSelection extends Component {
     const { target } = e
     const { files } = target
     const [file] = files
-    if (file.type === 'image/gif') {
-      const gif = await createImage({ file, makeTexture: false })
-      const textures = await createGifTextures(gif)
-      this.textureLoaded(textures)
-    } else {
-      const texture = await createImage({ file })
-      this.textureLoaded(texture)
+
+    this.setState({ choice: 'loading' })
+
+    try {
+      if (file.type === 'image/gif') {
+        const gif = await createImage({ file, makeTexture: false })
+        const textures = await createGifTextures(gif)
+        this.textureLoaded(textures)
+      } else {
+        const texture = await createImage({ file })
+        this.textureLoaded(texture)
+      }
+    } catch (err) {
+      this.setState({ loadingError: err.message })
     }
   }
 
@@ -107,7 +116,7 @@ export default class PopItSelection extends Component {
   }
 
   render() {
-    const { choice } = this.state
+    const { choice, loadingError } = this.state
 
     if (choice === 'none') {
       return (
@@ -120,6 +129,16 @@ export default class PopItSelection extends Component {
           </Col>
           <Col fluid>
             <Button onClick={this.handleCustom} name="custom" block>Make your own!</Button>
+          </Col>
+        </Row>
+      )
+    }
+
+    if (choice === 'loading') {
+      return (
+        <Row>
+          <Col fluid>
+            <Progress animated value={100} color={loadingError ? 'danger' : 'success'}>{loadingError ? `Error: ${loadingError}` : 'Loading'}</Progress>
           </Col>
         </Row>
       )
