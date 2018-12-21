@@ -75,11 +75,12 @@ export default class Game {
     this.renderer.clear()
   }
 
-  addGif(textures, { x, y, container = this.root }) {
+  addGif(textures, { x, y, atIndex = null, container = this.root }) {
     const anim = new PIXI.extras.AnimatedSprite(textures)
     anim.x = x
     anim.y = y
-    container.addChild(anim)
+    const addCommand = atIndex === null ? 'addChild' : 'addChildAt'
+    container[addCommand](anim, atIndex)
     anim.play()
 
     return anim
@@ -117,7 +118,7 @@ export default class Game {
     return roundBox
   }
 
-  addImage(name, { x, y, container = this.root }) {
+  addImage(name, { x, y, atIndex = null, container = this.root }) {
     let img
     if (typeof name === 'string') {
       img = new PIXI.Sprite(PIXI.loader.resources[name].texture)
@@ -126,7 +127,8 @@ export default class Game {
     }
     img.x = x
     img.y = y
-    container.addChild(img)
+    const addCommand = atIndex === null ? 'addChild' : 'addChildAt'
+    container[addCommand](img, atIndex)
 
     return img
   }
