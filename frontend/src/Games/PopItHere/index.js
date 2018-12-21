@@ -271,6 +271,7 @@ export default class PopItHere extends Game {
       })
       yOffset = btn.y + btn.height + 20
       btn.interactive = true
+      btn.buttonMode = true
       if (txt === 'Add Image') {
         btn.on('pointerdown', this.customAddImage)
       } else if (txt === 'Add Text') {
