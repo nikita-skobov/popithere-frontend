@@ -49,6 +49,8 @@ export default class PopItHere extends Game {
     this.customNewImage = this.customNewImage.bind(this)
     this.customPreDraw = this.customPreDraw.bind(this)
     this.customClearActiveSprite = this.customClearActiveSprite.bind(this)
+    this.customGifSprites = []
+    this.customGifFrameCounter = 0
 
     this.animate()
 
@@ -118,7 +120,8 @@ export default class PopItHere extends Game {
     if (Array.isArray(image)) {
       const { x, y } = calculateCenterPosition(image[0], this.center)
       const newFrames = reduceFrames(image, this.maxGifFrames)
-      myImg = this.addGif(newFrames, { x, y, container: this.stage, atIndex: 0, play: true })
+      myImg = this.addGif(newFrames, { x, y, container: this.stage, atIndex: 0, play: false })
+      this.customGifSprites.push(myImg)
     } else {
       const { x, y } = calculateCenterPosition(image, this.center)
       myImg = this.addImage(image, { x, y, container: this.stage, atIndex: 0 })
@@ -372,6 +375,11 @@ export default class PopItHere extends Game {
   }
 
   customPreDraw(timeDelta) {
+    if (this.customGifSprites.length) {
+      this.customGifSprites.forEach(sprite => sprite.gotoAndPlay(this.customGifFrameCounter))
+      this.customGifFrameCounter += 1
+      if (this.customGifFrameCounter >= this.maxGifFrames) this.customGifFrameCounter = 0
+    }
     if (this.activeSprite) {
       this.customAlignControls()
     }
