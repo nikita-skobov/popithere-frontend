@@ -6,6 +6,8 @@ import PopItSelection from './PopItSelection'
 
 import { getLocalPosition, calculateCenterPosition, makeRandomId, reduceFrames } from '../../utils/GameUtils'
 
+const has = Object.prototype.hasOwnProperty
+
 export default class PopItHere extends Game {
   constructor(props) {
     super(props)
@@ -45,6 +47,7 @@ export default class PopItHere extends Game {
     this.customAddImage = this.customAddImage.bind(this)
     this.customRotate = this.customRotate.bind(this)
     this.customResize = this.customResize.bind(this)
+    this.customCopy = this.customCopy.bind(this)
     this.customToggleControls = this.customToggleControls.bind(this)
     this.customButtons = {}
     this.customCancel = this.customCancel.bind(this)
@@ -97,6 +100,34 @@ export default class PopItHere extends Game {
     this.customControls.resizeD2.visible = bool
     this.customControls.resizeD3.visible = bool
     this.customControls.resizeD4.visible = bool
+  }
+
+  customCopy() {
+    let newSprite
+    if (has.call(this.activeSprite, 'animationSpeed')) {
+      // it is an animated sprite
+      const textures = [...this.activeSprite._textures]
+      newSprite = this.addGif(textures, { x: this.center.x, y: this.center.y, container: this.stage, atIndex: this.stage.children.length, play: false })
+      this.customGifSprites.push(newSprite)
+    } else {
+      // it is a regular sprite
+      const texture = this.activeSprite._texture
+      newSprite = this.addImage(texture, { x: this.center.x, y: this.center.y, container: this.stage, atIndex: this.stage.children.length })
+    }
+    newSprite.interactive = true
+    newSprite.anchor.set(0.5, 0.5)
+    newSprite.position.set(this.center.x, this.center.y)
+    newSprite.customId = `${this.activeSprite.customId}_copy_${makeRandomId(8)}`
+    newSprite.rotation = this.activeSprite.rotation
+    newSprite.scale.x = this.activeSprite.scale.x
+    newSprite.scale.y = this.activeSprite.scale.y
+
+    newSprite.on('pointerdown', this.customNewActiveSprite.bind(this, newSprite))
+      .on('pointerup', this.onDragEnd.bind(this, newSprite))
+      .on('pointerupoutside', this.onDragEnd.bind(this, newSprite))
+      .on('pointermove', this.onDragMove.bind(this, newSprite))
+
+    this.activeSprite = newSprite
   }
 
   customRotate() {
@@ -275,6 +306,9 @@ export default class PopItHere extends Game {
     }
     if (this.customButtons.toggleControls) {
       this.customButtons.toggleControls.visible = bool
+    }
+    if (this.customButtons.copy) {
+      this.customButtons.copy.visible = bool
     }
   }
 
@@ -520,7 +554,7 @@ export default class PopItHere extends Game {
     let yOffset = 20
     const xOffset = 12
     const myButtons = []
-    const buttonTexts = ['Cancel', 'Submit', 'Add Image', 'Add Text', 'Toggle Controls', 'Rotate', 'Resize']
+    const buttonTexts = ['Cancel', 'Submit', 'Add Image', 'Add Text', 'Toggle Controls', 'Copy', 'Rotate', 'Resize']
     buttonTexts.forEach((txt) => {
       const btn = this.addCanvasButton(txt, {
         x: xOffset,
@@ -551,6 +585,10 @@ export default class PopItHere extends Game {
         btn.visible = false
         btn.on('pointerdown', this.customToggleControls)
         this.customButtons.toggleControls = btn
+      } else if (txt === 'Copy') {
+        btn.visible = false
+        btn.on('pointerdown', this.customCopy)
+        this.customButtons.copy = btn
       }
       myButtons.push(btn)
     })
