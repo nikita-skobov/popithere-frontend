@@ -254,12 +254,112 @@ export default class PopItHere extends Game {
     line2.x = 0
     line2.y = 0
     const texture2 = this.renderer.generateTexture(line2)
+
+    const circle = new PIXI.Graphics()
+    circle.beginFill(lineColor)
+    circle.drawEllipse(0, 0, 20, 5)
+    circle.endFill()
+    circle.x = 0
+    circle.y = 0
+    const circleTexture = this.renderer.generateTexture(circle)
+
+    const circle2 = new PIXI.Graphics()
+    circle2.beginFill(lineColor)
+    circle2.drawEllipse(0, 0, 5, 20)
+    circle2.endFill()
+    circle2.x = 0
+    circle2.y = 0
+    const circleTexture2 = this.renderer.generateTexture(circle2)
+
+    const onDragStart = (item, event) => {
+      item.dragData = event.data
+      item.isDragging = true
+    }
+
+    const onDragEnd = (item, event) => {
+      item.dragData = null
+      item.isDragging = false
+    }
+
+    const onDragMove = (item, event) => {
+      if (item.isDragging) {
+        const newPos = item.dragData.getLocalPosition(this.stage)
+        item.lastPos = item.lastPos || newPos
+        let dir
+        let scaleVal
+
+        if (item.customId === 'resizeH' || item.customId === 'resizeH2') {
+          scaleVal = item.customId === 'resizeH' ? -0.01 : 0.01
+          dir = 'x'
+        } else if (item.customId === 'resizeV' || item.customId === 'resizeV2') {
+          scaleVal = item.customId === 'resizeV' ? -0.01 : 0.01
+          dir = 'y'
+        }
+
+        const diff = newPos[dir] - item.lastPos[dir]
+
+        if (diff > 0) {
+          this.activeSprite.scale[dir] += scaleVal
+        } else if (diff < 0) {
+          this.activeSprite.scale[dir] -= scaleVal
+        }
+
+        item.lastPos = newPos
+      }
+    }
+
+    const makeInteractive = (item) => {
+      item.interactive = true
+      item.on('pointerdown', onDragStart.bind(this, item))
+        .on('pointerup', onDragEnd.bind(this, item))
+        .on('pointerupoutside', onDragEnd.bind(this, item))
+        .on('pointermove', onDragMove.bind(this, item))
+    }
+
+    const resizeH = new PIXI.Sprite(circleTexture)
+    const resizeH2 = new PIXI.Sprite(circleTexture)
+
+    const resizeV = new PIXI.Sprite(circleTexture2)
+    const resizeV2 = new PIXI.Sprite(circleTexture2)
+
+    const bottomSprite = new PIXI.Sprite(texture2)
+    const topSprite = new PIXI.Sprite(texture2)
+    const leftSprite = new PIXI.Sprite(texture1)
+    const rightSprite = new PIXI.Sprite(texture1)
+
+    resizeV.x = 50 - resizeV.width / 2
+    resizeV.y = -18
+
+    resizeV2.x = resizeV.x
+    resizeV2.y = resizeV.y
+
+    resizeH2.x = -18
+    resizeH2.y = 50 - resizeH2.height / 2
+
+    resizeH.x = -18
+    resizeH.y = 50 - resizeH.height / 2
+
+    resizeH.customId = 'resizeH'
+    resizeH2.customId = 'resizeH2'
+    resizeV.customId = 'resizeV'
+    resizeV2.customId = 'resizeV2'
+
+    makeInteractive(resizeH)
+    makeInteractive(resizeH2)
+    makeInteractive(resizeV)
+    makeInteractive(resizeV2)
+
+    leftSprite.addChild(resizeH)
+    rightSprite.addChild(resizeH2)
+    topSprite.addChild(resizeV)
+    bottomSprite.addChild(resizeV2)
+
     return {
       visible: false,
-      left: new PIXI.Sprite(texture1),
-      top: new PIXI.Sprite(texture2),
-      right: new PIXI.Sprite(texture1),
-      bottom: new PIXI.Sprite(texture2),
+      left: leftSprite,
+      top: topSprite,
+      right: rightSprite,
+      bottom: bottomSprite,
     }
   }
 
