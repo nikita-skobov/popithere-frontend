@@ -41,6 +41,8 @@ export default class PopItHere extends Game {
 
     this.pointerDown = this.pointerDown.bind(this)
     this.customAddImage = this.customAddImage.bind(this)
+    this.customCancel = this.customCancel.bind(this)
+    this.customEnd = this.customEnd.bind(this)
     this.customAddText = this.customAddText.bind(this)
     this.customNewImage = this.customNewImage.bind(this)
     this.customPreDraw = this.customPreDraw.bind(this)
@@ -74,6 +76,30 @@ export default class PopItHere extends Game {
       ),
       modalTitle: 'Choose An Image',
     })
+  }
+
+  customCancel() {
+    this.modal.toggle({
+      modal: () => (
+        <PopItSelection game={this} startingChoice="cancel" />
+      ),
+      modalTitle: 'Are you sure you want to discard your popit creation?',
+    })
+  }
+
+  customEnd() {
+    this.clearDrawHooks()
+    this.buttonLayer.destroy(true)
+    this.background.interactive = false
+    this.background.off('pointerdown', this.customClearActiveSprite)
+    this.clearCanvas()
+    this.removeButtons()
+    this.addButton(this.popItButton)
+    this.addButton(this.endGameButton)
+    this.canvas.newButtons(this.getButtons())
+    this.buttonLayer = null
+    this.customControls = null
+    this.activeSprite = null
   }
 
   customAddText(event) {
@@ -208,7 +234,7 @@ export default class PopItHere extends Game {
     let yOffset = 20
     const xOffset = 12
     const myButtons = []
-    const buttonTexts = ['Add Image', 'Add Text']
+    const buttonTexts = ['Add Image', 'Add Text', 'Cancel']
     buttonTexts.forEach((txt) => {
       const btn = this.addCanvasButton(txt, {
         x: xOffset,
@@ -223,6 +249,8 @@ export default class PopItHere extends Game {
         btn.on('pointerdown', this.customAddImage)
       } else if (txt === 'Add Text') {
         btn.on('pointerdown', this.customAddText)
+      } else if (txt === 'Cancel') {
+        btn.on('pointerdown', this.customCancel)
       }
       myButtons.push(btn)
     })

@@ -34,6 +34,7 @@ export default class PopItSelection extends Component {
 
     this.handleButton = this.handleButton.bind(this)
     this.handleCustom = this.handleCustom.bind(this)
+    this.handleCancel = this.handleCancel.bind(this)
     this.popItChosen = this.popItChosen.bind(this)
     this.handleFile = this.handleFile.bind(this)
     this.textureLoaded = this.textureLoaded.bind(this)
@@ -56,6 +57,17 @@ export default class PopItSelection extends Component {
     } else {
       const texture = await createImage({ file })
       this.textureLoaded(texture)
+    }
+  }
+
+  handleCancel(e) {
+    e.preventDefault()
+    const { name } = e.target
+    if (name === 'no') {
+      this.game.modal.toggle()
+    } else if (name === 'yes') {
+      this.game.modal.toggle()
+      this.game.customEnd()
     }
   }
 
@@ -123,6 +135,19 @@ export default class PopItSelection extends Component {
                 <CustomInput onChange={this.handleFile} type="file" label="Choose an image" id="filebrowser" name="customFileBrowser" />
               </FormGroup>
             </Form>
+          </Col>
+        </Row>
+      )
+    }
+
+    if (choice === 'cancel') {
+      return (
+        <Row>
+          <Col fluid>
+            <Button onClick={this.handleCancel} name="yes" block>Yes</Button>
+          </Col>
+          <Col fluid>
+            <Button onClick={this.handleCancel} name="no" block>No</Button>
           </Col>
         </Row>
       )
