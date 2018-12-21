@@ -43,6 +43,7 @@ export default class PopItHere extends Game {
     this.customAddImage = this.customAddImage.bind(this)
     this.customAddText = this.customAddText.bind(this)
     this.customNewImage = this.customNewImage.bind(this)
+    this.customPreDraw = this.customPreDraw.bind(this)
     this.customClearActiveSprite = this.customClearActiveSprite.bind(this)
 
     this.animate()
@@ -67,7 +68,6 @@ export default class PopItHere extends Game {
   }
 
   customAddImage(event) {
-    console.log('clicked on add image')
     this.modal.toggle({
       modal: () => (
         <PopItSelection game={this} startingChoice="custom" />
@@ -89,6 +89,20 @@ export default class PopItHere extends Game {
       myGif.customId = makeRandomId(5)
       myGif.on('pointerdown', this.customNewActiveSprite.bind(this, myGif))
       this.activeSprite = myGif
+      if (!this.customControls.visible) {
+        // first time an image was added, so add controls to stage
+        this.stage.addChild(this.customControls.left)
+        this.stage.addChild(this.customControls.bottom)
+        this.stage.addChild(this.customControls.right)
+        this.stage.addChild(this.customControls.top)
+        this.customControls.visible = true
+      }
+
+      if (!this.customControls.left.visible) {
+        // if one of them is not visible, all are not visible
+        // reset visibility to true for newly added sprite
+        this.customSetControlVisibility(true)
+      }
       console.log(myGif.height)
       console.log(myGif.width)
     } else {
@@ -99,18 +113,82 @@ export default class PopItHere extends Game {
   customNewActiveSprite(mySprite) {
     if (!this.activeSprite) {
       this.activeSprite = mySprite
+      this.customSetControlVisibility(true)
       return null
     }
     if (mySprite.customId !== this.activeSprite.customId) {
       this.activeSprite = mySprite
+      this.customSetControlVisibility(true)
     }
     return null
   }
 
+  customSetControlVisibility(bool) {
+    this.customControls.left.visible = bool
+    this.customControls.top.visible = bool
+    this.customControls.right.visible = bool
+    this.customControls.bottom.visible = bool
+  }
+
   customClearActiveSprite() {
     // when clicking anywhere other than a sprite, or a button
-    // it should remove any active tools
+    // it should remove any active controls
     this.activeSprite = null
+    this.customSetControlVisibility(false)
+  }
+
+  customAlignControls() {
+    const { customControls, activeSprite } = this
+    const controls = customControls
+    const offSet = 10
+    controls.left.x = activeSprite.x - offSet
+    controls.left.y = activeSprite.y - offSet
+    controls.left.height = activeSprite.height + (2 * offSet)
+
+    controls.top.x = activeSprite.x - offSet
+    controls.top.y = activeSprite.y - offSet
+    controls.top.width = activeSprite.width + (2 * offSet)
+
+    // -4 at the end because thats the width of the line
+    controls.right.x = activeSprite.x + activeSprite.width + offSet - 4
+    controls.right.y = activeSprite.y - offSet
+    controls.right.height = activeSprite.height + (2 * offSet)
+
+    controls.bottom.x = activeSprite.x - offSet
+    controls.bottom.y = activeSprite.y + activeSprite.height + offSet - 4
+    controls.bottom.width = activeSprite.width + (2 * offSet)
+  }
+
+  customCreateControls() {
+    const line = new PIXI.Graphics()
+    const lineWidth = 4
+    const lineColor = 0x000000
+    line.lineStyle(lineWidth, lineColor, 1)
+    line.moveTo(0, 0)
+    line.lineTo(0, 100)
+    line.x = 0
+    line.y = 0
+    const texture1 = this.renderer.generateTexture(line)
+    const line2 = new PIXI.Graphics()
+    line2.lineStyle(lineWidth, lineColor, 1)
+    line2.moveTo(0, 0)
+    line2.lineTo(100, 0)
+    line2.x = 0
+    line2.y = 0
+    const texture2 = this.renderer.generateTexture(line2)
+    return {
+      visible: false,
+      left: new PIXI.Sprite(texture1),
+      top: new PIXI.Sprite(texture2),
+      right: new PIXI.Sprite(texture1),
+      bottom: new PIXI.Sprite(texture2),
+    }
+  }
+
+  customPreDraw(timeDelta) {
+    if (this.activeSprite) {
+      this.customAlignControls()
+    }
   }
 
   setupCustomBuilder() {
@@ -120,7 +198,9 @@ export default class PopItHere extends Game {
     this.buttonLayer = new PIXI.Container()
     this.root.addChild(this.buttonLayer)
 
+    this.customControls = this.customCreateControls()
     this.activeSprite = null
+    this.addDrawHook(this.customPreDraw)
 
     this.background.interactive = true
     this.background.on('pointerdown', this.customClearActiveSprite)
