@@ -337,18 +337,6 @@ export default class PopItHere extends Game {
     const leftSprite = new PIXI.Sprite(texture1)
     const rightSprite = new PIXI.Sprite(texture1)
 
-    // resizeV.x = 50 - resizeV.width / 2
-    // resizeV.y = -18
-
-    // resizeV2.x = resizeV.x
-    // resizeV2.y = resizeV.y
-
-    // resizeH2.x = -18
-    // resizeH2.y = 50 - resizeH2.height / 2
-
-    // resizeH.x = -18
-    // resizeH.y = 50 - resizeH.height / 2
-
     resizeH.customId = 'resizeH'
     resizeH2.customId = 'resizeH2'
     resizeV.customId = 'resizeV'
@@ -358,11 +346,6 @@ export default class PopItHere extends Game {
     makeInteractive(resizeH2)
     makeInteractive(resizeV)
     makeInteractive(resizeV2)
-
-    // leftSprite.addChild(resizeH)
-    // rightSprite.addChild(resizeH2)
-    // topSprite.addChild(resizeV)
-    // bottomSprite.addChild(resizeV2)
 
     return {
       resizeV,
