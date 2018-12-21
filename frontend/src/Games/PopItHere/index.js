@@ -119,7 +119,12 @@ export default class PopItHere extends Game {
       const myGif = this.addGif(image, { x, y, container: this.stage })
       myGif.interactive = true
       myGif.customId = makeRandomId(5)
+
       myGif.on('pointerdown', this.customNewActiveSprite.bind(this, myGif))
+        .on('pointerup', this.onDragEnd.bind(this, myGif))
+        .on('pointerupoutside', this.onDragEnd.bind(this, myGif))
+        .on('pointermove', this.onDragMove.bind(this, myGif))
+
       this.activeSprite = myGif
       if (!this.customControls.visible) {
         // first time an image was added, so add controls to stage
@@ -143,7 +148,12 @@ export default class PopItHere extends Game {
       const myImg = this.addImage(image, { x, y, container: this.stage })
       myImg.interactive = true
       myImg.customId = makeRandomId(5)
+
       myImg.on('pointerdown', this.customNewActiveSprite.bind(this, myImg))
+        .on('pointerup', this.onDragEnd.bind(this, myImg))
+        .on('pointerupoutside', this.onDragEnd.bind(this, myImg))
+        .on('pointermove', this.onDragMove.bind(this, myImg))
+
       this.activeSprite = myImg
       if (!this.customControls.visible) {
         // first time an image was added, so add controls to stage
@@ -162,7 +172,23 @@ export default class PopItHere extends Game {
     }
   }
 
-  customNewActiveSprite(mySprite) {
+  onDragEnd(sprite, event) {
+    sprite.isDragging = false
+    sprite.dragData = null
+  }
+
+  onDragMove(sprite) {
+    if (sprite.isDragging) {
+      const newPos = sprite.dragData.getLocalPosition(this.stage)
+      sprite.x = newPos.x - (sprite.width / 2)
+      sprite.y = newPos.y - (sprite.height / 2)
+    }
+  }
+
+  customNewActiveSprite(mySprite, event) {
+    mySprite.dragData = event.data
+    mySprite.isDragging = true
+
     if (!this.activeSprite) {
       this.activeSprite = mySprite
       this.customSetControlVisibility(true)
