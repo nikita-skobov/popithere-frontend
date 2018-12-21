@@ -48,6 +48,7 @@ export default class PopItHere extends Game {
     this.customRotate = this.customRotate.bind(this)
     this.customResize = this.customResize.bind(this)
     this.customCopy = this.customCopy.bind(this)
+    this.customDelete = this.customDelete.bind(this)
     this.customToggleControls = this.customToggleControls.bind(this)
     this.customButtons = {}
     this.customCancel = this.customCancel.bind(this)
@@ -100,6 +101,12 @@ export default class PopItHere extends Game {
     this.customControls.resizeD2.visible = bool
     this.customControls.resizeD3.visible = bool
     this.customControls.resizeD4.visible = bool
+  }
+
+  customDelete() {
+    const index = this.stage.getChildIndex(this.activeSprite)
+    this.stage.removeChildAt(index)
+    this.customClearActiveSprite()
   }
 
   customCopy() {
@@ -309,6 +316,9 @@ export default class PopItHere extends Game {
     }
     if (this.customButtons.copy) {
       this.customButtons.copy.visible = bool
+    }
+    if (this.customButtons.delete) {
+      this.customButtons.delete.visible = bool
     }
   }
 
@@ -555,7 +565,7 @@ export default class PopItHere extends Game {
     const xOffset = 12
     const textStyle = { fontSize: 40 }
     const myButtons = []
-    const buttonTexts = ['Cancel', 'Submit', 'Add Image', 'Add Text', 'Toggle Controls', 'Copy', 'Rotate', 'Resize']
+    const buttonTexts = ['Cancel', 'Submit', 'Add Image', 'Add Text', 'Toggle Controls', 'Copy', 'Rotate', 'Resize', 'Delete']
     buttonTexts.forEach((txt) => {
       const btn = this.addCanvasButton(txt, {
         x: xOffset,
@@ -591,6 +601,10 @@ export default class PopItHere extends Game {
         btn.visible = false
         btn.on('pointerdown', this.customCopy)
         this.customButtons.copy = btn
+      } else if (txt === 'Delete') {
+        btn.visible = false
+        btn.on('pointerdown', this.customDelete)
+        this.customButtons.delete = btn
       }
       myButtons.push(btn)
     })
