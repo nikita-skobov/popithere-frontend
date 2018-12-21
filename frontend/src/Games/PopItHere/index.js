@@ -101,6 +101,9 @@ export default class PopItHere extends Game {
     this.buttonLayer.destroy(true)
     this.background.interactive = false
     this.background.off('pointerdown', this.customClearActiveSprite)
+
+    this.customGifSprites.forEach(sprite => sprite.destroy(true))
+
     this.clearCanvas()
     this.removeButtons()
     this.addButton(this.popItButton)
