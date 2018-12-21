@@ -123,7 +123,7 @@ export default class PopItHere extends Game {
     }
 
     myImg.interactive = true
-    myImg.customId = makeRandomId(5)
+    myImg.customId = makeRandomId(8)
 
     myImg.on('pointerdown', this.customNewActiveSprite.bind(this, myImg))
       .on('pointerup', this.onDragEnd.bind(this, myImg))
