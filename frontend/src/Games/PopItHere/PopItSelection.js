@@ -30,6 +30,7 @@ export default class PopItSelection extends Component {
 
     this.state = {
       textInput: '',
+      fontSize: 26,
       loadingError: '',
       choice: props.startingChoice || 'none',
       offset: 0,
@@ -90,9 +91,11 @@ export default class PopItSelection extends Component {
     if (name === 'text') {
       this.setState({ textInput: value })
     } else if (name === 'submit') {
-      const { textInput } = this.state
-      this.game.customNewImage(textInput, 'text', {})
+      const { textInput, fontSize } = this.state
+      this.game.customNewImage(textInput, 'text', { fontSize })
       this.game.modal.toggle()
+    } else if (name === 'size') {
+      this.setState({ fontSize: parseInt(value, 10) })
     }
   }
 
@@ -251,8 +254,14 @@ export default class PopItSelection extends Component {
           <Form>
             <Row>
               <FormGroup>
-                <Label for="textinput">Enter your text</Label>
+                <Label for="textinput">Enter your text: </Label>
                 <CustomInput onChange={this.handleText} type="text" placeholder="Your Text Here..." id="textinput" name="text" />
+              </FormGroup>
+            </Row>
+            <Row>
+              <FormGroup>
+                <Label for="textinputsize">Size: </Label>
+                <CustomInput onChange={this.handleText} type="number" id="textinputsize" name="size" />
               </FormGroup>
             </Row>
             <Row>
