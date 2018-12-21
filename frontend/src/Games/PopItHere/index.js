@@ -116,7 +116,7 @@ export default class PopItHere extends Game {
     let myImg
     if (Array.isArray(image)) {
       const { x, y } = calculateCenterPosition(image[0], this.center)
-      myImg = this.addGif(image, { x, y, container: this.stage, atIndex: 0 })
+      myImg = this.addGif(image, { x, y, container: this.stage, atIndex: 0, play: false })
     } else {
       const { x, y } = calculateCenterPosition(image, this.center)
       myImg = this.addImage(image, { x, y, container: this.stage, atIndex: 0 })

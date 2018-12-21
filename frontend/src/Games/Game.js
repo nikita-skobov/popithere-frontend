@@ -75,13 +75,15 @@ export default class Game {
     this.renderer.clear()
   }
 
-  addGif(textures, { x, y, atIndex = null, container = this.root }) {
+  addGif(textures, { x, y, play = true, atIndex = null, container = this.root }) {
     const anim = new PIXI.extras.AnimatedSprite(textures)
     anim.x = x
     anim.y = y
     const addCommand = atIndex === null ? 'addChild' : 'addChildAt'
     container[addCommand](anim, atIndex)
-    anim.play()
+    if (play) {
+      anim.play()
+    }
 
     return anim
   }
