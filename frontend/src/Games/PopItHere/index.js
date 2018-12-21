@@ -116,7 +116,7 @@ export default class PopItHere extends Game {
     if (Array.isArray(image)) {
       console.log('gif')
       const { x, y } = calculateCenterPosition(image[0], this.center)
-      const myGif = this.addGif(image, { x, y, container: this.stage })
+      const myGif = this.addGif(image, { x, y, atIndex: 0, container: this.stage })
       myGif.interactive = true
       myGif.customId = makeRandomId(5)
 
@@ -142,10 +142,11 @@ export default class PopItHere extends Game {
       }
       console.log(myGif.height)
       console.log(myGif.width)
+      this.placeSpriteOnTop(myGif)
     } else {
       console.log('img')
       const { x, y } = calculateCenterPosition(image, this.center)
-      const myImg = this.addImage(image, { x, y, container: this.stage })
+      const myImg = this.addImage(image, { x, y, container: this.stage, atIndex: 0 })
       myImg.interactive = true
       myImg.customId = makeRandomId(5)
 
@@ -169,6 +170,8 @@ export default class PopItHere extends Game {
         // reset visibility to true for newly added sprite
         this.customSetControlVisibility(true)
       }
+
+      this.placeSpriteOnTop(myImg)
     }
   }
 
@@ -185,7 +188,36 @@ export default class PopItHere extends Game {
     }
   }
 
+  findIndexOfChild(sprite) {
+    let index = -1
+    this.stage.children.forEach((sp, ind) => {
+      if (sp.customId && sp.customId === sprite.customId) {
+        index = ind
+      }
+    })
+    return index
+  }
+
+  findLastCustomSpriteIndex() {
+    let index = -1
+    this.stage.children.forEach((sp, ind) => {
+      if (sp.customId) {
+        index = ind
+      }
+    })
+    return index
+  }
+
+  placeSpriteOnTop(sprite) {
+    const newIndex = this.findLastCustomSpriteIndex()
+    const currentIndex = this.findIndexOfChild(sprite)
+    const temp = this.stage.children[newIndex]
+    this.stage.children[newIndex] = this.stage.children[currentIndex]
+    this.stage.children[currentIndex] = temp
+  }
+
   customNewActiveSprite(mySprite, event) {
+    this.placeSpriteOnTop(mySprite)
     mySprite.dragData = event.data
     mySprite.isDragging = true
 
