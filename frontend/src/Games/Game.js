@@ -126,6 +126,19 @@ export default class Game {
     return roundBox
   }
 
+  addText(txt, { x, y, textStyle, atIndex = null, container = this.root }) {
+    const message = new PIXI.Text(txt, textStyle)
+    message.x = x
+    message.y = y
+    if (atIndex === null) {
+      container.addChild(message)
+    } else {
+      container.addChildAt(message, atIndex)
+    }
+
+    return message
+  }
+
   addImage(name, { x, y, atIndex = null, container = this.root }) {
     let img
     if (typeof name === 'string') {

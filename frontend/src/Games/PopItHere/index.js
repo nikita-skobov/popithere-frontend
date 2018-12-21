@@ -204,12 +204,21 @@ export default class PopItHere extends Game {
   }
 
   customAddText(event) {
-    console.log('clicked on add tesxt')
+    this.modal.toggle({
+      modal: () => (
+        <PopItSelection game={this} startingChoice="text" />
+      ),
+      modalTitle: 'Add Text',
+    })
   }
 
-  customNewImage(image) {
+  customNewImage(image, type, opts) {
+    // opts are a special case, only used for addText
     let myImg
-    if (Array.isArray(image)) {
+    if (type === 'text') {
+      // in this case, 'image' is a text string
+      myImg = this.addText(image, { x: 0, y: 0, container: this.stage, atIndex: this.stage.children.length, textStyle: opts })
+    } else if (Array.isArray(image)) {
       const { x, y } = calculateCenterPosition(image[0], this.center)
       const newFrames = reduceFrames(image, this.maxGifFrames)
       myImg = this.addGif(newFrames, { x, y, container: this.stage, atIndex: this.stage.children.length, play: false })

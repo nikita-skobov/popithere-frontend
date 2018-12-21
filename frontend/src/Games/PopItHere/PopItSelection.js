@@ -29,6 +29,7 @@ export default class PopItSelection extends Component {
     this.maxImages = 10
 
     this.state = {
+      textInput: '',
       loadingError: '',
       choice: props.startingChoice || 'none',
       offset: 0,
@@ -38,6 +39,7 @@ export default class PopItSelection extends Component {
     this.handleCustom = this.handleCustom.bind(this)
     this.handleCancel = this.handleCancel.bind(this)
     this.handleRotate = this.handleRotate.bind(this)
+    this.handleText = this.handleText.bind(this)
     this.handleResize = this.handleResize.bind(this)
     this.popItChosen = this.popItChosen.bind(this)
     this.handleFile = this.handleFile.bind(this)
@@ -79,6 +81,18 @@ export default class PopItSelection extends Component {
     } else if (name === 'yes') {
       this.game.modal.toggle()
       this.game.customEnd()
+    }
+  }
+
+  handleText(e) {
+    e.preventDefault()
+    const { name, value } = e.target
+    if (name === 'text') {
+      this.setState({ textInput: value })
+    } else if (name === 'submit') {
+      const { textInput } = this.state
+      this.game.customNewImage(textInput, 'text', {})
+      this.game.modal.toggle()
     }
   }
 
@@ -228,6 +242,24 @@ export default class PopItSelection extends Component {
             <Button onClick={this.handleCancel} name="no" block>No</Button>
           </Col>
         </Row>
+      )
+    }
+
+    if (choice === 'text') {
+      return (
+        <Col fluid>
+          <Form>
+            <Row>
+              <FormGroup>
+                <Label for="textinput">Enter your text</Label>
+                <CustomInput onChange={this.handleText} type="text" placeholder="Your Text Here..." id="textinput" name="text" />
+              </FormGroup>
+            </Row>
+            <Row>
+              <Button onClick={this.handleText} name="submit">Submit</Button>
+            </Row>
+          </Form>
+        </Col>
       )
     }
 
