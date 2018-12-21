@@ -99,6 +99,9 @@ export default class PopItHere extends Game {
   customEnd() {
     this.clearDrawHooks()
     this.buttonLayer.destroy(true)
+
+    this.controlLayer.destroy(true)
+
     this.background.interactive = false
     this.background.off('pointerdown', this.customClearActiveSprite)
 
@@ -141,10 +144,10 @@ export default class PopItHere extends Game {
     this.activeSprite = myImg
     if (!this.customControls.visible) {
       // first time an image was added, so add controls to stage
-      this.stage.addChild(this.customControls.left)
-      this.stage.addChild(this.customControls.bottom)
-      this.stage.addChild(this.customControls.right)
-      this.stage.addChild(this.customControls.top)
+      this.controlLayer.addChild(this.customControls.left)
+      this.controlLayer.addChild(this.customControls.bottom)
+      this.controlLayer.addChild(this.customControls.right)
+      this.controlLayer.addChild(this.customControls.top)
       this.customControls.visible = true
     }
 
@@ -155,6 +158,10 @@ export default class PopItHere extends Game {
     }
 
     this.placeSpriteOnTop(myImg)
+    console.log(this.root)
+    console.log(this.buttonLayer)
+    console.log(this.controlLayer)
+    console.log(this.stage)
   }
 
   onDragEnd(sprite, event) {
@@ -392,6 +399,10 @@ export default class PopItHere extends Game {
     this.removeButtons()
     this.addButton(this.endGameButton)
     this.canvas.newButtons(this.getButtons())
+
+    this.controlLayer = new PIXI.Container()
+    this.root.addChild(this.controlLayer)
+
     this.buttonLayer = new PIXI.Container()
     this.root.addChild(this.buttonLayer)
 
