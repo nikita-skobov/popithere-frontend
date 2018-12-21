@@ -4,7 +4,7 @@ import * as PIXI from 'pixi.js'
 import Game from '../Game'
 import PopItSelection from './PopItSelection'
 
-import { getLocalPosition, calculateCenterPosition } from '../../utils/GameUtils'
+import { getLocalPosition, calculateCenterPosition, makeRandomId } from '../../utils/GameUtils'
 
 export default class PopItHere extends Game {
   constructor(props) {
@@ -43,6 +43,7 @@ export default class PopItHere extends Game {
     this.customAddImage = this.customAddImage.bind(this)
     this.customAddText = this.customAddText.bind(this)
     this.customNewImage = this.customNewImage.bind(this)
+    this.customClearActiveSprite = this.customClearActiveSprite.bind(this)
 
     this.animate()
 
@@ -82,9 +83,29 @@ export default class PopItHere extends Game {
   customNewImage(image) {
     if (Array.isArray(image)) {
       console.log('gif')
+      const { x, y } = calculateCenterPosition(image[0], this.center)
+      const myGif = this.addGif(image, { x, y, container: this.stage })
+      myGif.interactive = true
+      myGif.customId = makeRandomId(5)
+      myGif.on('pointerdown', this.customNewActiveSprite.bind(this, myGif))
+      this.activeSprite = myGif
+      console.log(myGif.height)
+      console.log(myGif.width)
     } else {
       console.log('img')
     }
+  }
+
+  customNewActiveSprite(mySprite) {
+    if (mySprite.customId !== this.activeSprite.customId) {
+      this.activeSprite = mySprite
+    }
+  }
+
+  customClearActiveSprite() {
+    // when clicking anywhere other than a sprite, or a button
+    // it should remove any active tools
+    this.activeSprite = null
   }
 
   setupCustomBuilder() {
@@ -93,6 +114,11 @@ export default class PopItHere extends Game {
     this.canvas.newButtons(this.getButtons())
     this.buttonLayer = new PIXI.Container()
     this.root.addChild(this.buttonLayer)
+
+    this.activeSprite = null
+
+    this.background.interactive = true
+    this.background.on('pointerdown', this.customClearActiveSprite)
 
     let yOffset = 20
     const xOffset = 12
