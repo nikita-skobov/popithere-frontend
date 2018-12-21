@@ -220,22 +220,26 @@ export default class PopItHere extends Game {
     const { customControls, activeSprite } = this
     const controls = customControls
     const offSet = 10
-    controls.left.x = activeSprite.x - offSet - (activeSprite.anchor.x * activeSprite.width)
-    controls.left.y = activeSprite.y - offSet - (activeSprite.anchor.y * activeSprite.height)
-    controls.left.height = activeSprite.height + (2 * offSet)
+    const doubleOffset = offSet * 2
+    const activeSpriteXWidth = (activeSprite.anchor.x * activeSprite.width)
+    const activeSpriteYHeight = (activeSprite.anchor.y * activeSprite.height)
 
-    controls.top.x = activeSprite.x - offSet - (activeSprite.anchor.x * activeSprite.width)
-    controls.top.y = activeSprite.y - offSet - (activeSprite.anchor.y * activeSprite.height)
-    controls.top.width = activeSprite.width + (2 * offSet)
+    controls.left.x = activeSprite.x - offSet - activeSpriteXWidth
+    controls.left.y = activeSprite.y - offSet - activeSpriteYHeight
+    controls.left.height = activeSprite.height + doubleOffset
+
+    controls.top.x = activeSprite.x - offSet - activeSpriteXWidth
+    controls.top.y = activeSprite.y - offSet - activeSpriteYHeight
+    controls.top.width = activeSprite.width + doubleOffset
 
     // -4 at the end because thats the width of the line
-    controls.right.x = activeSprite.x + activeSprite.width + offSet - 4 - (activeSprite.anchor.x * activeSprite.width)
-    controls.right.y = activeSprite.y - offSet - (activeSprite.anchor.y * activeSprite.height)
-    controls.right.height = activeSprite.height + (2 * offSet)
+    controls.right.x = activeSprite.x + activeSprite.width + offSet - 4 - activeSpriteXWidth
+    controls.right.y = activeSprite.y - offSet - activeSpriteYHeight
+    controls.right.height = activeSprite.height + doubleOffset
 
-    controls.bottom.x = activeSprite.x - offSet - (activeSprite.anchor.x * activeSprite.width)
-    controls.bottom.y = activeSprite.y + activeSprite.height + offSet - 4 - (activeSprite.anchor.y * activeSprite.height)
-    controls.bottom.width = activeSprite.width + (2 * offSet)
+    controls.bottom.x = activeSprite.x - offSet - activeSpriteXWidth
+    controls.bottom.y = activeSprite.y + activeSprite.height + offSet - 4 - activeSpriteYHeight
+    controls.bottom.width = activeSprite.width + doubleOffset
 
     const circleOffsetW = controls.resizeH.width / 2
     const circleOffsetH = controls.resizeH.height / 2
