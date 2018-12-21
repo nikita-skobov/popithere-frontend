@@ -35,6 +35,15 @@ export function getLocalPosition(event, root) {
   return event.data.getLocalPosition(root)
 }
 
+export function makeRandomId(size) {
+  const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+  const iterator = [...Array(size).keys()]
+
+  const text = iterator.reduce(prevText => `${prevText}${possible.charAt(Math.floor(Math.random() * possible.length))}`)
+
+  return text
+}
+
 export function calculateCenterPosition(name, clickPos) {
   let width
   let height
