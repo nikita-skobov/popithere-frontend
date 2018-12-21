@@ -38,6 +38,7 @@ export default class PopItSelection extends Component {
     this.handleCustom = this.handleCustom.bind(this)
     this.handleCancel = this.handleCancel.bind(this)
     this.handleRotate = this.handleRotate.bind(this)
+    this.handleResize = this.handleResize.bind(this)
     this.popItChosen = this.popItChosen.bind(this)
     this.handleFile = this.handleFile.bind(this)
     this.textureLoaded = this.textureLoaded.bind(this)
@@ -94,6 +95,16 @@ export default class PopItSelection extends Component {
     const degrees = parseFloat(e.target.value)
     const radians = degrees * 3.14 / 180
     this.game.activeSprite.rotation = radians
+  }
+
+  handleResize(e) {
+    e.preventDefault()
+    const { name, value } = e.target
+    if (name === 'width') {
+      this.game.activeSprite.scale.x = parseFloat(value)
+    } else if (name === 'height') {
+      this.game.activeSprite.scale.y = parseFloat(value)
+    }
   }
 
   handleButton(e) {
@@ -160,6 +171,29 @@ export default class PopItSelection extends Component {
               <FormGroup>
                 <Label for="rotateControl">Enter a rotation value in degrees</Label>
                 <CustomInput onChange={this.handleRotate} type="number" id="rotateControl" name="customRotate" />
+              </FormGroup>
+            </Form>
+          </Col>
+        </Row>
+      )
+    }
+
+    if (choice === 'resize') {
+      return (
+        <Row>
+          <Col fluid>
+            <Form>
+              <FormGroup>
+                <Label for="rotateControl">Enter a scalar for width</Label>
+                <CustomInput onChange={this.handleResize} type="number" id="resizeControl" name="width" />
+              </FormGroup>
+            </Form>
+          </Col>
+          <Col fluid>
+            <Form>
+              <FormGroup>
+                <Label for="rotateControl">Enter a scalar for height</Label>
+                <CustomInput onChange={this.handleResize} type="number" id="resizeControl" name="height" />
               </FormGroup>
             </Form>
           </Col>

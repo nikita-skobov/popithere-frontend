@@ -44,6 +44,7 @@ export default class PopItHere extends Game {
     this.pointerDown = this.pointerDown.bind(this)
     this.customAddImage = this.customAddImage.bind(this)
     this.customRotate = this.customRotate.bind(this)
+    this.customResize = this.customResize.bind(this)
     this.customButtons = {}
     this.customCancel = this.customCancel.bind(this)
     this.customEnd = this.customEnd.bind(this)
@@ -86,6 +87,15 @@ export default class PopItHere extends Game {
         <PopItSelection game={this} startingChoice="rotate" />
       ),
       modalTitle: 'Rotation',
+    })
+  }
+
+  customResize() {
+    this.modal.toggle({
+      modal: () => (
+        <PopItSelection game={this} startingChoice="resize" />
+      ),
+      modalTitle: 'Resize',
     })
   }
 
@@ -239,6 +249,9 @@ export default class PopItHere extends Game {
 
     if (this.customButtons.rotate) {
       this.customButtons.rotate.visible = bool
+    }
+    if (this.customButtons.resize) {
+      this.customButtons.resize.visible = bool
     }
   }
 
@@ -483,7 +496,7 @@ export default class PopItHere extends Game {
     let yOffset = 20
     const xOffset = 12
     const myButtons = []
-    const buttonTexts = ['Add Image', 'Add Text', 'Cancel', 'Rotate']
+    const buttonTexts = ['Add Image', 'Add Text', 'Cancel', 'Rotate', 'Resize']
     buttonTexts.forEach((txt) => {
       const btn = this.addCanvasButton(txt, {
         x: xOffset,
@@ -506,6 +519,10 @@ export default class PopItHere extends Game {
         // initially, theres nothing to rotate
         btn.on('pointerdown', this.customRotate)
         this.customButtons.rotate = btn
+      } else if (txt === 'Resize') {
+        btn.visible = false
+        btn.on('pointerdown', this.customResize)
+        this.customButtons.resize = btn
       }
       myButtons.push(btn)
     })
