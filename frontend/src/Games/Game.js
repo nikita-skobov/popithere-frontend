@@ -97,6 +97,7 @@ export default class Game {
     x,
     y,
     textAlpha,
+    textStyle,
     container = this.root,
     alpha = 0.3,
     lineWidth = 4,
@@ -106,7 +107,7 @@ export default class Game {
     paddingPercentX = 0.04,
     paddingPercentY = 0.07,
   }) {
-    const message = new PIXI.Text(text)
+    const message = new PIXI.Text(text, textStyle)
     message.alpha = textAlpha || alpha
     const roundBox = new PIXI.Graphics()
     roundBox.lineStyle(lineWidth, lineColor, alpha)

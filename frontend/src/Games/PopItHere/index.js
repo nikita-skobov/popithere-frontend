@@ -553,12 +553,14 @@ export default class PopItHere extends Game {
 
     let yOffset = 20
     const xOffset = 12
+    const textStyle = { fontSize: 40 }
     const myButtons = []
     const buttonTexts = ['Cancel', 'Submit', 'Add Image', 'Add Text', 'Toggle Controls', 'Copy', 'Rotate', 'Resize']
     buttonTexts.forEach((txt) => {
       const btn = this.addCanvasButton(txt, {
         x: xOffset,
         y: yOffset,
+        textStyle,
         container: this.buttonLayer,
         paddingPercentY: 0.1,
         textAlpha: 1,
