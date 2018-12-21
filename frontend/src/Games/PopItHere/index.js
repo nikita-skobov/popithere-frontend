@@ -35,6 +35,7 @@ export default class PopItHere extends Game {
     this.addButton(this.endGameButton)
 
     this.poppingName = null
+    this.currentlyPopping = false
 
     this.stage = new PIXI.Container()
     this.root.addChild(this.stage)
@@ -56,11 +57,16 @@ export default class PopItHere extends Game {
   popItChosen(type, val) {
     if (type === 'image') {
       this.startPopping(val)
+    }
+    if (!this.currentlyPopping) {
+      // only register event callback once
+      this.currentlyPopping = true
       this.root.on('pointerdown', this.pointerDown)
     }
   }
 
   stopPopping() {
+    this.currentlyPopping = false
     this.poppingName = null
     this.root.off('pointerdown', this.pointerDown)
   }
