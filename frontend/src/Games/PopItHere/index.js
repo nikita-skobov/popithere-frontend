@@ -97,9 +97,14 @@ export default class PopItHere extends Game {
   }
 
   customNewActiveSprite(mySprite) {
+    if (!this.activeSprite) {
+      this.activeSprite = mySprite
+      return null
+    }
     if (mySprite.customId !== this.activeSprite.customId) {
       this.activeSprite = mySprite
     }
+    return null
   }
 
   customClearActiveSprite() {
