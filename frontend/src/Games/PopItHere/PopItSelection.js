@@ -37,6 +37,7 @@ export default class PopItSelection extends Component {
     this.handleButton = this.handleButton.bind(this)
     this.handleCustom = this.handleCustom.bind(this)
     this.handleCancel = this.handleCancel.bind(this)
+    this.handleRotate = this.handleRotate.bind(this)
     this.popItChosen = this.popItChosen.bind(this)
     this.handleFile = this.handleFile.bind(this)
     this.textureLoaded = this.textureLoaded.bind(this)
@@ -86,6 +87,13 @@ export default class PopItSelection extends Component {
     this.game.stopPopping()
     this.game.clearCanvas()
     this.game.setupCustomBuilder()
+  }
+
+  handleRotate(e) {
+    e.preventDefault()
+    const degrees = parseFloat(e.target.value)
+    const radians = degrees * 3.14 / 180
+    this.game.activeSprite.rotation = radians
   }
 
   handleButton(e) {
@@ -139,6 +147,21 @@ export default class PopItSelection extends Component {
         <Row>
           <Col fluid>
             <Progress animated value={100} color={loadingError ? 'danger' : 'success'}>{loadingError ? `Error: ${loadingError}` : 'Loading'}</Progress>
+          </Col>
+        </Row>
+      )
+    }
+
+    if (choice === 'rotate') {
+      return (
+        <Row>
+          <Col fluid>
+            <Form>
+              <FormGroup>
+                <Label for="rotateControl">Enter a rotation value in degrees</Label>
+                <CustomInput onChange={this.handleRotate} type="number" id="rotateControl" name="customRotate" />
+              </FormGroup>
+            </Form>
           </Col>
         </Row>
       )
