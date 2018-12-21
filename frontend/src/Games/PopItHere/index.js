@@ -134,6 +134,8 @@ export default class PopItHere extends Game {
     }
 
     myImg.interactive = true
+    myImg.anchor.set(0.5, 0.5)
+    myImg.position.set(this.center.x, this.center.y)
     myImg.customId = makeRandomId(8)
 
     myImg.on('pointerdown', this.customNewActiveSprite.bind(this, myImg))
@@ -210,21 +212,21 @@ export default class PopItHere extends Game {
     const { customControls, activeSprite } = this
     const controls = customControls
     const offSet = 10
-    controls.left.x = activeSprite.x - offSet
-    controls.left.y = activeSprite.y - offSet
+    controls.left.x = activeSprite.x - offSet - (activeSprite.anchor.x * activeSprite.width)
+    controls.left.y = activeSprite.y - offSet - (activeSprite.anchor.y * activeSprite.height)
     controls.left.height = activeSprite.height + (2 * offSet)
 
-    controls.top.x = activeSprite.x - offSet
-    controls.top.y = activeSprite.y - offSet
+    controls.top.x = activeSprite.x - offSet - (activeSprite.anchor.x * activeSprite.width)
+    controls.top.y = activeSprite.y - offSet - (activeSprite.anchor.y * activeSprite.height)
     controls.top.width = activeSprite.width + (2 * offSet)
 
     // -4 at the end because thats the width of the line
-    controls.right.x = activeSprite.x + activeSprite.width + offSet - 4
-    controls.right.y = activeSprite.y - offSet
+    controls.right.x = activeSprite.x + activeSprite.width + offSet - 4 - (activeSprite.anchor.x * activeSprite.width)
+    controls.right.y = activeSprite.y - offSet - (activeSprite.anchor.y * activeSprite.height)
     controls.right.height = activeSprite.height + (2 * offSet)
 
-    controls.bottom.x = activeSprite.x - offSet
-    controls.bottom.y = activeSprite.y + activeSprite.height + offSet - 4
+    controls.bottom.x = activeSprite.x - offSet - (activeSprite.anchor.x * activeSprite.width)
+    controls.bottom.y = activeSprite.y + activeSprite.height + offSet - 4 - (activeSprite.anchor.y * activeSprite.height)
     controls.bottom.width = activeSprite.width + (2 * offSet)
   }
 
