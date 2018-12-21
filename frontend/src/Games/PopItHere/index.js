@@ -178,7 +178,6 @@ export default class PopItHere extends Game {
       this.controlLayer.addChild(this.customControls.resizeD2)
       this.controlLayer.addChild(this.customControls.resizeD3)
       this.controlLayer.addChild(this.customControls.resizeD4)
-      this.controlLayer.addChild(this.customControls.rotate)
       this.customControls.visible = true
       this.customSetControlVisibility(true)
     }
@@ -237,7 +236,6 @@ export default class PopItHere extends Game {
     this.customControls.resizeD2.visible = bool
     this.customControls.resizeD3.visible = bool
     this.customControls.resizeD4.visible = bool
-    this.customControls.rotate.visible = bool
 
     if (this.customButtons.rotate) {
       this.customButtons.rotate.visible = bool
@@ -302,11 +300,6 @@ export default class PopItHere extends Game {
 
     controls.resizeD4.x = controls.left.x - circleOffsetW
     controls.resizeD4.y = controls.left.y + controls.left.height - circleOffsetH
-
-    controls.rotate.x = controls.resizeD.x - 4
-    controls.rotate.y = controls.resizeD.y - controls.resizeD.height - 8
-    controls.rotate.width = controls.resizeD.width * 1.3
-    controls.rotate.height = controls.resizeD.height * 1.3
 
     this.controlLayer.pivot.x = activeSprite.position.x
     this.controlLayer.pivot.y = activeSprite.position.y
@@ -403,7 +396,6 @@ export default class PopItHere extends Game {
         .on('pointerupoutside', onDragEnd.bind(this, item))
         .on('pointermove', onDragMove.bind(this, item))
     }
-    const rotate = new PIXI.Sprite(PIXI.loader.resources.P_rotate.texture)
 
     // resize diagonal
     const resizeD = new PIXI.Sprite(circleTexture)
@@ -432,9 +424,7 @@ export default class PopItHere extends Game {
     resizeD2.customId = 'resizeD2'
     resizeD3.customId = 'resizeD3'
     resizeD4.customId = 'resizeD4'
-    rotate.customId = 'rotate'
 
-    makeInteractive(rotate)
     makeInteractive(resizeD)
     makeInteractive(resizeD2)
     makeInteractive(resizeD3)
@@ -445,7 +435,6 @@ export default class PopItHere extends Game {
     makeInteractive(resizeV2)
 
     return {
-      rotate,
       resizeD,
       resizeD2,
       resizeD3,
