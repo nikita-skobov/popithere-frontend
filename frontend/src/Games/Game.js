@@ -21,6 +21,9 @@ export default class Game {
     this.background.height = this.renderer.height
     this.root.addChild(this.background)
     this.draw = this.draw.bind(this)
+
+    this.drawHooks = []
+    this.drawHooksActive = false
   }
 
   setBackgroundColor(color) {
@@ -36,8 +39,23 @@ export default class Game {
     return this.buttons
   }
 
+  addDrawHook(func) {
+    if (!this.drawHooksActive) {
+      this.drawHooksActive = true
+    }
+    this.drawHooks.push(func)
+  }
+
+  clearDrawHooks() {
+    this.drawHooks = []
+    this.drawHooksActive = false
+  }
+
   draw(time) {
     this.renderer.render(this.root)
+    if (this.drawHooksActive) {
+      this.drawHooks.forEach(hook => hook(time))
+    }
   }
 
   animate() {
@@ -49,6 +67,7 @@ export default class Game {
 
   endGame() {
     this.animating = false
+    this.clearDrawHooks()
     this.ticker.remove(this.draw)
     this.root.destroy(true)
 
