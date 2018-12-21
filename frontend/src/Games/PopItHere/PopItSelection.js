@@ -164,13 +164,14 @@ export default class PopItSelection extends Component {
     }
 
     if (choice === 'rotate') {
+      const { rotation } = this.game.activeSprite
       return (
         <Row>
           <Col fluid>
             <Form>
               <FormGroup>
                 <Label for="rotateControl">Enter a rotation value in degrees</Label>
-                <CustomInput onChange={this.handleRotate} type="number" id="rotateControl" name="customRotate" />
+                <CustomInput onChange={this.handleRotate} type="number" defaultValue={rotation * 180 / 3.14159} id="rotateControl" name="customRotate" />
               </FormGroup>
             </Form>
           </Col>
@@ -179,13 +180,14 @@ export default class PopItSelection extends Component {
     }
 
     if (choice === 'resize') {
+      const { x, y } = this.game.activeSprite.scale
       return (
         <Row>
           <Col fluid>
             <Form>
               <FormGroup>
                 <Label for="rotateControl">Enter a scalar for width</Label>
-                <CustomInput onChange={this.handleResize} type="number" id="resizeControl" name="width" />
+                <CustomInput onChange={this.handleResize} type="number" defaultValue={x} id="resizeControl" name="width" />
               </FormGroup>
             </Form>
           </Col>
@@ -193,7 +195,7 @@ export default class PopItSelection extends Component {
             <Form>
               <FormGroup>
                 <Label for="rotateControl">Enter a scalar for height</Label>
-                <CustomInput onChange={this.handleResize} type="number" id="resizeControl" name="height" />
+                <CustomInput onChange={this.handleResize} type="number" defaultValue={y} id="resizeControl" name="height" />
               </FormGroup>
             </Form>
           </Col>
