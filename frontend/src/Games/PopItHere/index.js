@@ -126,11 +126,11 @@ export default class PopItHere extends Game {
     if (Array.isArray(image)) {
       const { x, y } = calculateCenterPosition(image[0], this.center)
       const newFrames = reduceFrames(image, this.maxGifFrames)
-      myImg = this.addGif(newFrames, { x, y, container: this.stage, atIndex: 0, play: false })
+      myImg = this.addGif(newFrames, { x, y, container: this.stage, atIndex: this.stage.children.length, play: false })
       this.customGifSprites.push(myImg)
     } else {
       const { x, y } = calculateCenterPosition(image, this.center)
-      myImg = this.addImage(image, { x, y, container: this.stage, atIndex: 0 })
+      myImg = this.addImage(image, { x, y, container: this.stage, atIndex: this.stage.children.length })
     }
 
     myImg.interactive = true
@@ -156,12 +156,6 @@ export default class PopItHere extends Game {
       // reset visibility to true for newly added sprite
       this.customSetControlVisibility(true)
     }
-
-    this.placeSpriteOnTop(myImg)
-    console.log(this.root)
-    console.log(this.buttonLayer)
-    console.log(this.controlLayer)
-    console.log(this.stage)
   }
 
   onDragEnd(sprite, event) {
@@ -177,32 +171,8 @@ export default class PopItHere extends Game {
     }
   }
 
-  findIndexOfChild(sprite) {
-    let index = -1
-    this.stage.children.forEach((sp, ind) => {
-      if (sp.customId && sp.customId === sprite.customId) {
-        index = ind
-      }
-    })
-    return index
-  }
-
-  findLastCustomSpriteIndex() {
-    let index = -1
-    this.stage.children.forEach((sp, ind) => {
-      if (sp.customId) {
-        index = ind
-      }
-    })
-    return index
-  }
-
   placeSpriteOnTop(sprite) {
-    const newIndex = this.findLastCustomSpriteIndex()
-    const currentIndex = this.findIndexOfChild(sprite)
-    const temp = this.stage.children[newIndex]
-    this.stage.children[newIndex] = this.stage.children[currentIndex]
-    this.stage.children[currentIndex] = temp
+    this.stage.setChildIndex(sprite, this.stage.children.length - 1)
   }
 
   customNewActiveSprite(mySprite, event) {
