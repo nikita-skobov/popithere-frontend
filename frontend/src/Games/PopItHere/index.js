@@ -43,6 +43,8 @@ export default class PopItHere extends Game {
 
     this.pointerDown = this.pointerDown.bind(this)
     this.customAddImage = this.customAddImage.bind(this)
+    this.customRotate = this.customRotate.bind(this)
+    this.customButtons = {}
     this.customCancel = this.customCancel.bind(this)
     this.customEnd = this.customEnd.bind(this)
     this.customAddText = this.customAddText.bind(this)
@@ -76,6 +78,15 @@ export default class PopItHere extends Game {
 
   clearCanvas() {
     this.stage.removeChildren()
+  }
+
+  customRotate() {
+    this.modal.toggle({
+      modal: () => (
+        <PopItSelection game={this} startingChoice="rotate" />
+      ),
+      modalTitle: 'Rotation',
+    })
   }
 
   customAddImage(event) {
@@ -169,6 +180,7 @@ export default class PopItHere extends Game {
       this.controlLayer.addChild(this.customControls.resizeD4)
       this.controlLayer.addChild(this.customControls.rotate)
       this.customControls.visible = true
+      this.customSetControlVisibility(true)
     }
 
     if (!this.customControls.left.visible) {
@@ -226,6 +238,10 @@ export default class PopItHere extends Game {
     this.customControls.resizeD3.visible = bool
     this.customControls.resizeD4.visible = bool
     this.customControls.rotate.visible = bool
+
+    if (this.customButtons.rotate) {
+      this.customButtons.rotate.visible = bool
+    }
   }
 
   customClearActiveSprite() {
@@ -324,15 +340,6 @@ export default class PopItHere extends Game {
     const circleTexture = this.renderer.generateTexture(circle)
 
     const onDragStart = (item, event) => {
-      if (item.customId === 'rotate') {
-        this.modal.toggle({
-          modal: () => (
-            <PopItSelection game={this} startingChoice="rotate" />
-          ),
-          modalTitle: 'Rotation',
-        })
-        return null
-      }
       item.dragData = event.data
       item.isDragging = true
     }
@@ -487,7 +494,7 @@ export default class PopItHere extends Game {
     let yOffset = 20
     const xOffset = 12
     const myButtons = []
-    const buttonTexts = ['Add Image', 'Add Text', 'Cancel']
+    const buttonTexts = ['Add Image', 'Add Text', 'Cancel', 'Rotate']
     buttonTexts.forEach((txt) => {
       const btn = this.addCanvasButton(txt, {
         x: xOffset,
@@ -505,6 +512,11 @@ export default class PopItHere extends Game {
         btn.on('pointerdown', this.customAddText)
       } else if (txt === 'Cancel') {
         btn.on('pointerdown', this.customCancel)
+      } else if (txt === 'Rotate') {
+        btn.visible = false
+        // initially, theres nothing to rotate
+        btn.on('pointerdown', this.customRotate)
+        this.customButtons.rotate = btn
       }
       myButtons.push(btn)
     })
