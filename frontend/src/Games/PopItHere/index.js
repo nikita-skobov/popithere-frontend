@@ -4,7 +4,7 @@ import * as PIXI from 'pixi.js'
 import Game from '../Game'
 import PopItSelection from './PopItSelection'
 
-import { getLocalPosition, calculateCenterPosition, makeRandomId } from '../../utils/GameUtils'
+import { getLocalPosition, calculateCenterPosition, makeRandomId, reduceFrames } from '../../utils/GameUtils'
 
 export default class PopItHere extends Game {
   constructor(props) {
@@ -36,6 +36,7 @@ export default class PopItHere extends Game {
 
     this.poppingName = null
     this.currentlyPopping = false
+    this.maxGifFrames = 60
 
     this.stage = new PIXI.Container()
     this.root.addChild(this.stage)
@@ -116,7 +117,8 @@ export default class PopItHere extends Game {
     let myImg
     if (Array.isArray(image)) {
       const { x, y } = calculateCenterPosition(image[0], this.center)
-      myImg = this.addGif(image, { x, y, container: this.stage, atIndex: 0, play: false })
+      const newFrames = reduceFrames(image, this.maxGifFrames)
+      myImg = this.addGif(newFrames, { x, y, container: this.stage, atIndex: 0, play: true })
     } else {
       const { x, y } = calculateCenterPosition(image, this.center)
       myImg = this.addImage(image, { x, y, container: this.stage, atIndex: 0 })

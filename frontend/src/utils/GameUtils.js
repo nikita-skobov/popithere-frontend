@@ -56,3 +56,36 @@ export function calculateCenterPosition(name, clickPos) {
   // calculate the center by dividing the texture width & height half
   return { x: clickPos.x - (width / 2), y: clickPos.y - (height / 2) }
 }
+
+export function reduceFrames(frames, max) {
+  const avg = frames.length / max
+  const reduce = avg > 1
+  const spreadFactor = !reduce && Math.ceil(max / frames.length)
+  const newFrames = []
+  let runCount = avg
+  frames.forEach((frame, index) => {
+    if (index === 0) {
+      // always start with initial framme
+      newFrames.push(frame)
+      return
+    }
+
+    if (reduce) {
+      // if we are reducing a large array into a smaller array
+      if (index >= runCount && newFrames.length < max) {
+        newFrames.push(frame)
+        runCount += avg
+      }
+    } else {
+      // if we are taking a smaller array and spreading it out
+      const iterator = [...Array(spreadFactor).keys()]
+      // this puts in {spreadFactor} copies of the current frame
+      iterator.forEach(() => {
+        if (newFrames.length < max) {
+          newFrames.push(frame)
+        }
+      })
+    }
+  })
+  return newFrames
+}
