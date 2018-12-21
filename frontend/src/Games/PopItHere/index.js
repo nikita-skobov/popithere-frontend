@@ -139,6 +139,26 @@ export default class PopItHere extends Game {
       console.log(myGif.width)
     } else {
       console.log('img')
+      const { x, y } = calculateCenterPosition(image, this.center)
+      const myImg = this.addImage(image, { x, y, container: this.stage })
+      myImg.interactive = true
+      myImg.customId = makeRandomId(5)
+      myImg.on('pointerdown', this.customNewActiveSprite.bind(this, myImg))
+      this.activeSprite = myImg
+      if (!this.customControls.visible) {
+        // first time an image was added, so add controls to stage
+        this.stage.addChild(this.customControls.left)
+        this.stage.addChild(this.customControls.bottom)
+        this.stage.addChild(this.customControls.right)
+        this.stage.addChild(this.customControls.top)
+        this.customControls.visible = true
+      }
+
+      if (!this.customControls.left.visible) {
+        // if one of them is not visible, all are not visible
+        // reset visibility to true for newly added sprite
+        this.customSetControlVisibility(true)
+      }
     }
   }
 
