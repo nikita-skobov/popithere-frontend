@@ -150,6 +150,10 @@ export default class PopItHere extends Game {
       this.controlLayer.addChild(this.customControls.bottom)
       this.controlLayer.addChild(this.customControls.right)
       this.controlLayer.addChild(this.customControls.top)
+      this.controlLayer.addChild(this.customControls.resizeH)
+      this.controlLayer.addChild(this.customControls.resizeH2)
+      this.controlLayer.addChild(this.customControls.resizeV)
+      this.controlLayer.addChild(this.customControls.resizeV2)
       this.customControls.visible = true
     }
 
@@ -199,6 +203,10 @@ export default class PopItHere extends Game {
     this.customControls.top.visible = bool
     this.customControls.right.visible = bool
     this.customControls.bottom.visible = bool
+    this.customControls.resizeH.visible = bool
+    this.customControls.resizeH2.visible = bool
+    this.customControls.resizeV.visible = bool
+    this.customControls.resizeV2.visible = bool
   }
 
   customClearActiveSprite() {
@@ -228,6 +236,21 @@ export default class PopItHere extends Game {
     controls.bottom.x = activeSprite.x - offSet - (activeSprite.anchor.x * activeSprite.width)
     controls.bottom.y = activeSprite.y + activeSprite.height + offSet - 4 - (activeSprite.anchor.y * activeSprite.height)
     controls.bottom.width = activeSprite.width + (2 * offSet)
+
+    const circleOffsetW = controls.resizeH.width / 2
+    const circleOffsetH = controls.resizeH.height / 2
+
+    controls.resizeH.x = controls.left.x - circleOffsetW
+    controls.resizeH.y = controls.left.y + controls.left.height / 2 - circleOffsetH
+
+    controls.resizeH2.x = controls.right.x - circleOffsetW
+    controls.resizeH2.y = controls.right.y + controls.right.height / 2 - circleOffsetH
+
+    controls.resizeV.x = controls.top.x + controls.top.width / 2 - circleOffsetW
+    controls.resizeV.y = controls.top.y - circleOffsetH
+
+    controls.resizeV2.x = controls.bottom.x + controls.bottom.width / 2 - circleOffsetW
+    controls.resizeV2.y = controls.bottom.y - circleOffsetH
   }
 
   customCreateControls() {
@@ -250,19 +273,9 @@ export default class PopItHere extends Game {
 
     const circle = new PIXI.Graphics()
     circle.beginFill(lineColor)
-    circle.drawEllipse(0, 0, 20, 5)
+    circle.drawEllipse(0, 0, 12, 12)
     circle.endFill()
-    circle.x = 0
-    circle.y = 0
     const circleTexture = this.renderer.generateTexture(circle)
-
-    const circle2 = new PIXI.Graphics()
-    circle2.beginFill(lineColor)
-    circle2.drawEllipse(0, 0, 5, 20)
-    circle2.endFill()
-    circle2.x = 0
-    circle2.y = 0
-    const circleTexture2 = this.renderer.generateTexture(circle2)
 
     const onDragStart = (item, event) => {
       item.dragData = event.data
@@ -312,25 +325,25 @@ export default class PopItHere extends Game {
     const resizeH = new PIXI.Sprite(circleTexture)
     const resizeH2 = new PIXI.Sprite(circleTexture)
 
-    const resizeV = new PIXI.Sprite(circleTexture2)
-    const resizeV2 = new PIXI.Sprite(circleTexture2)
+    const resizeV = new PIXI.Sprite(circleTexture)
+    const resizeV2 = new PIXI.Sprite(circleTexture)
 
     const bottomSprite = new PIXI.Sprite(texture2)
     const topSprite = new PIXI.Sprite(texture2)
     const leftSprite = new PIXI.Sprite(texture1)
     const rightSprite = new PIXI.Sprite(texture1)
 
-    resizeV.x = 50 - resizeV.width / 2
-    resizeV.y = -18
+    // resizeV.x = 50 - resizeV.width / 2
+    // resizeV.y = -18
 
-    resizeV2.x = resizeV.x
-    resizeV2.y = resizeV.y
+    // resizeV2.x = resizeV.x
+    // resizeV2.y = resizeV.y
 
-    resizeH2.x = -18
-    resizeH2.y = 50 - resizeH2.height / 2
+    // resizeH2.x = -18
+    // resizeH2.y = 50 - resizeH2.height / 2
 
-    resizeH.x = -18
-    resizeH.y = 50 - resizeH.height / 2
+    // resizeH.x = -18
+    // resizeH.y = 50 - resizeH.height / 2
 
     resizeH.customId = 'resizeH'
     resizeH2.customId = 'resizeH2'
@@ -342,12 +355,16 @@ export default class PopItHere extends Game {
     makeInteractive(resizeV)
     makeInteractive(resizeV2)
 
-    leftSprite.addChild(resizeH)
-    rightSprite.addChild(resizeH2)
-    topSprite.addChild(resizeV)
-    bottomSprite.addChild(resizeV2)
+    // leftSprite.addChild(resizeH)
+    // rightSprite.addChild(resizeH2)
+    // topSprite.addChild(resizeV)
+    // bottomSprite.addChild(resizeV2)
 
     return {
+      resizeV,
+      resizeV2,
+      resizeH,
+      resizeH2,
       visible: false,
       left: leftSprite,
       top: topSprite,
