@@ -79,8 +79,13 @@ export default class Game {
     const anim = new PIXI.extras.AnimatedSprite(textures)
     anim.x = x
     anim.y = y
-    const addCommand = atIndex === null ? 'addChild' : 'addChildAt'
-    container[addCommand](anim, atIndex)
+
+    if (atIndex === null) {
+      container.addChild(anim)
+    } else {
+      container.addChildAt(anim, atIndex)
+    }
+
     if (play) {
       anim.play()
     }
@@ -129,8 +134,11 @@ export default class Game {
     }
     img.x = x
     img.y = y
-    const addCommand = atIndex === null ? 'addChild' : 'addChildAt'
-    container[addCommand](img, atIndex)
+    if (atIndex === null) {
+      container.addChild(img)
+    } else {
+      container.addChildAt(img, atIndex)
+    }
 
     return img
   }
