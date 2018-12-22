@@ -89,6 +89,7 @@ export default class PopItHere extends Game {
   }
 
   customPreview() {
+    this.customPreviewMode = true
     this.controlLayer.visible = false
     this.buttonLayer.visible = false
 
@@ -111,6 +112,8 @@ export default class PopItHere extends Game {
       if (this.customGifSprites.length) {
         // if there are any gifs, you must first create a new
         // animated sprite from all of the frames
+        newTextures = []
+        this.customGifSprites.forEach(sprite => console.log(sprite.currentFrame))
       } else {
         // otherwise create a single sprite from a single frame
         newTextures = this.renderer.generateTexture(this.stage, undefined, undefined, rect)
@@ -155,6 +158,7 @@ export default class PopItHere extends Game {
           // resets visibility on all user added sprites from before
           child.visible = true
         })
+        this.customPreviewMode = undefined
       }
 
       const goSubmit = () => {
@@ -655,13 +659,15 @@ export default class PopItHere extends Game {
   }
 
   customPreDraw(timeDelta) {
-    if (this.customGifSprites.length) {
-      this.customGifSprites.forEach(sprite => sprite.gotoAndPlay(this.customGifFrameCounter))
-      this.customGifFrameCounter += 1
-      if (this.customGifFrameCounter >= this.maxGifFrames) this.customGifFrameCounter = 0
-    }
-    if (this.activeSprite) {
-      this.customAlignControls()
+    if (!this.customPreviewMode) {
+      if (this.customGifSprites.length) {
+        this.customGifSprites.forEach(sprite => sprite.gotoAndStop(this.customGifFrameCounter))
+        this.customGifFrameCounter += 1
+        if (this.customGifFrameCounter >= this.maxGifFrames) this.customGifFrameCounter = 0
+      }
+      if (this.activeSprite) {
+        this.customAlignControls()
+      }
     }
   }
 
