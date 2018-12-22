@@ -113,7 +113,12 @@ export default class PopItHere extends Game {
         // if there are any gifs, you must first create a new
         // animated sprite from all of the frames
         newTextures = []
-        this.customGifSprites.forEach(sprite => console.log(sprite.currentFrame))
+        const iterator = [...Array(this.maxGifFrames).keys()]
+
+        iterator.forEach((ind) => {
+          this.customGifSprites.forEach(sprite => sprite.gotoAndStop(ind))
+          newTextures.push(this.renderer.generateTexture(this.stage, undefined, undefined, rect))
+        })
       } else {
         // otherwise create a single sprite from a single frame
         newTextures = this.renderer.generateTexture(this.stage, undefined, undefined, rect)
@@ -149,6 +154,7 @@ export default class PopItHere extends Game {
 
         if (Array.isArray(newTextures)) {
           // destroy each texture individually
+          newTextures.forEach(texture => texture.destroy(true))
         } else {
           // its a single texture
           newTextures.destroy(true)
