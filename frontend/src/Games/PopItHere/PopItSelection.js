@@ -9,6 +9,7 @@ import {
   FormGroup,
   Label,
   Progress,
+  Input,
 } from 'reactstrap'
 
 import PropTypes from 'prop-types'
@@ -29,6 +30,8 @@ export default class PopItSelection extends Component {
     this.maxImages = 10
 
     this.state = {
+      maxSize: 100,
+      invalidInput: false,
       textInput: '',
       fontSize: 26,
       loadingError: '',
@@ -40,6 +43,7 @@ export default class PopItSelection extends Component {
     this.handleCustom = this.handleCustom.bind(this)
     this.handleCancel = this.handleCancel.bind(this)
     this.handleRotate = this.handleRotate.bind(this)
+    this.handlePreview = this.handlePreview.bind(this)
     this.handleText = this.handleText.bind(this)
     this.handleResize = this.handleResize.bind(this)
     this.popItChosen = this.popItChosen.bind(this)
@@ -82,6 +86,24 @@ export default class PopItSelection extends Component {
     } else if (name === 'yes') {
       this.game.modal.toggle()
       this.game.customEnd()
+    }
+  }
+
+  handlePreview(e) {
+    e.preventDefault()
+    const { name, value } = e.target
+    if (name === 'maxSize') {
+      const val = parseFloat(value)
+      if (val >= 0 && val <= 100) {
+        this.setState({ maxSize: val, invalidInput: false })
+      } else {
+        this.setState({ invalidInput: true })
+      }
+    } else if (name === 'submit') {
+      const { invalidInput } = this.state
+      if (!invalidInput) {
+        this.game.modal.toggle()
+      }
     }
   }
 
@@ -217,6 +239,26 @@ export default class PopItSelection extends Component {
             </Form>
           </Col>
         </Row>
+      )
+    }
+
+    if (choice === 'preview') {
+      const { invalidInput, maxSize } = this.state
+      console.log(invalidInput)
+      return (
+        <Col fluid>
+          <Form>
+            <Row>
+              <FormGroup>
+                <Label for="maxSize">Enter your desired size (from 0 to 100)</Label>
+                <Input invalid={invalidInput} onChange={this.handlePreview} type="number" defaultValue={maxSize} id="maxSize" name="maxSize" />
+              </FormGroup>
+            </Row>
+            <Row>
+              <Button onClick={this.handlePreview} name="submit">Submit</Button>
+            </Row>
+          </Form>
+        </Col>
       )
     }
 

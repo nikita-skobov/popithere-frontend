@@ -50,6 +50,7 @@ export default class PopItHere extends Game {
     this.customResize = this.customResize.bind(this)
     this.customCopy = this.customCopy.bind(this)
     this.customDelete = this.customDelete.bind(this)
+    this.customPrePreview = this.customPrePreview.bind(this)
     this.customPreview = this.customPreview.bind(this)
     this.customToggleControls = this.customToggleControls.bind(this)
     this.customButtons = {}
@@ -86,6 +87,16 @@ export default class PopItHere extends Game {
 
   clearCanvas() {
     this.stage.removeChildren()
+  }
+
+  customPrePreview() {
+    // function that toggles a modal to ask user about max size before generating texture(s)
+    this.modal.toggle({
+      modal: () => (
+        <PopItSelection game={this} startingChoice="preview" />
+      ),
+      modalTitle: 'Preview Setup',
+    })
   }
 
   customPreview() {
@@ -746,7 +757,7 @@ export default class PopItHere extends Game {
         btn.on('pointerdown', this.customDelete)
         this.customButtons.delete = btn
       } else if (txt === 'Preview') {
-        btn.on('pointerdown', this.customPreview)
+        btn.on('pointerdown', this.customPrePreview)
       }
       myButtons.push(btn)
     })
