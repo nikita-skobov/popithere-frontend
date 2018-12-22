@@ -1,5 +1,5 @@
 {
-  "name": "frontend",
+  "name": "popithere-frontend",
   "version": "0.8.0",
   "description": "",
   "main": "index.js",
@@ -8,9 +8,17 @@
     "build": "webpack --mode production",
     "build:server": "webpack-dev-server --mode production --port 3000 --host 0.0.0.0"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "popithere",
+    "popit",
+    "here",
+    "pop",
+    "Nikita",
+    "Skobov",
+    "Equilateral"
+  ],
+  "author": "Nikita Skobov",
+  "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.1.2",
     "@babel/plugin-transform-runtime": "^7.2.0",
