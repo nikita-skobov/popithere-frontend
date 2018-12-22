@@ -28,12 +28,16 @@ export default class Game {
   }
 
   setBackgroundColor(color) {
-    if (color === 'alpha') {
-      this.background.texture = PIXI.Texture.EMPTY
-      return
+    if (typeof color === 'number') {
+      let hexString = color.toString(16)
+      while (hexString.length < 6) {
+        hexString = `0${hexString}`
+      }
+      this.renderer.view.style.backgroundColor = `#${hexString}`
+    } else {
+      this.renderer.view.style.backgroundColor = color
     }
-    this.background.texture = PIXI.Texture.WHITE
-    this.background.tint = color
+    return null
   }
 
   getButtons() {

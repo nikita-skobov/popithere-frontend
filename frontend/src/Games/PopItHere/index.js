@@ -144,6 +144,7 @@ export default class PopItHere extends Game {
         // finalized image
         child.visible = false
       })
+      this.setBackgroundColor('red')
       const childIndexBeforePopping = this.stage.children.length
       this.popItChosen('image', newTextures)
       // reset scale for drawing
@@ -161,6 +162,7 @@ export default class PopItHere extends Game {
         this.root.removeChildAt(ind)
         tempButtonLayer.destroy(true)
         this.stopPopping()
+        this.setBackgroundColor('white')
         this.controlLayer.visible = true
         this.buttonLayer.visible = true
         if (childIndexBeforePopping !== this.stage.children.length) {
