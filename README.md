@@ -8,3 +8,4 @@ I am releasing this publically for two reasons:
 - For other developers who enjoy the site to be able to make their own additions to it
   - I tried to structure the website in a modular way such that other developers can create their own 'Games' and addons. Feel free to [join the Discord](https://discord.gg/WgppuWr) to discuss features you'd like to add, and I'd be happy to help you get started.
 
+##
