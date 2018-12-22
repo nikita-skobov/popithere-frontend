@@ -4,6 +4,7 @@ import * as PIXI from 'pixi.js'
 import Game from '../Game'
 import PopItSelection from './PopItSelection'
 
+import { createImage } from '../../utils/PixiUtils'
 import { getLocalPosition, calculateCenterPosition, makeRandomId, reduceFrames } from '../../utils/GameUtils'
 
 const has = Object.prototype.hasOwnProperty
@@ -49,6 +50,7 @@ export default class PopItHere extends Game {
     this.customResize = this.customResize.bind(this)
     this.customCopy = this.customCopy.bind(this)
     this.customDelete = this.customDelete.bind(this)
+    this.customPreview = this.customPreview.bind(this)
     this.customToggleControls = this.customToggleControls.bind(this)
     this.customButtons = {}
     this.customCancel = this.customCancel.bind(this)
@@ -84,6 +86,98 @@ export default class PopItHere extends Game {
 
   clearCanvas() {
     this.stage.removeChildren()
+  }
+
+  customPreview() {
+    this.controlLayer.visible = false
+    this.buttonLayer.visible = false
+
+    // scale the stage down so when user pops their new image
+    // theyll see that it doesnt pop to the whole page.
+    // while creating a custom popit, it might seem that your creation
+    // would cover the whole screen, but thats not the case
+    const scaleFactor = 0.3
+    const previousScales = { x: this.stage.scale.x, y: this.stage.scale.y }
+    this.stage.scale.x = scaleFactor
+    this.stage.scale.y = scaleFactor
+    const rectSize = 1024 * scaleFactor
+    // this gives time for the visibility to take effect
+    setTimeout(async () => {
+      if (this.customGifSprites.length) {
+        // if there are any gifs, you must first create a new
+        // animated sprite from all of the frames
+      } else {
+        // otherwise create a single sprite from a single frame
+
+        // rectangle is specified so that this new texture isnt the size of
+        // the entire canvas
+        const rect = new PIXI.Rectangle(0, 0, rectSize, rectSize)
+        const newTexture = this.renderer.generateTexture(this.stage, undefined, undefined, rect)
+        this.stage.children.forEach((child) => {
+          // make all sprites invisible after generating texture
+          // so when user starts popping, they will only see their new
+          // finalized image
+          child.visible = false
+        })
+        const childIndexBeforePopping = this.stage.children.length
+        this.popItChosen('image', newTexture)
+        // reset scale for drawing
+        this.stage.scale.x = previousScales.x
+        this.stage.scale.y = previousScales.y
+        this.setBackgroundColor(0xaf12cb)
+
+        const tempButtonLayer = new PIXI.Container()
+        this.root.addChild(tempButtonLayer)
+
+        const goBack = () => {
+          // resets everything to how it was prior to starting preview mode
+          const ind = this.root.getChildIndex(tempButtonLayer)
+          this.root.removeChildAt(ind)
+          tempButtonLayer.destroy(true)
+          this.setBackgroundColor('alpha')
+          this.stopPopping()
+          this.controlLayer.visible = true
+          this.buttonLayer.visible = true
+          if (childIndexBeforePopping !== this.stage.children.length) {
+            this.stage.removeChildren(childIndexBeforePopping, this.stage.children.length)
+          }
+          this.stage.children.forEach((child) => {
+            // resets visibility on all user added sprites from before
+            child.visible = true
+          })
+        }
+
+        const goSubmit = () => {
+          console.log('go submit')
+        }
+
+        // create 2 buttons: back and submit so user can
+        // exit preview mode
+        let yOffset = 20
+        const xOffset = 12
+        const textStyle = { fontSize: 40 }
+        const buttonTexts = ['Back', 'Submit']
+        buttonTexts.forEach((txt) => {
+          const btn = this.addCanvasButton(txt, {
+            x: xOffset,
+            y: yOffset,
+            textStyle,
+            container: tempButtonLayer,
+            paddingPercentY: 0.1,
+            textAlpha: 1,
+          })
+          yOffset = btn.y + btn.height + 20
+          btn.interactive = true
+          btn.buttonMode = true
+          if (txt === 'Back') {
+            btn.on('pointerdown', goBack)
+          } else if (txt === 'Submit') {
+            btn.on('pointerdown', goSubmit)
+          }
+        })
+      }
+      // this gives time for the visibility to take effect
+    }, 2000)
   }
 
   customToggleControls() {
@@ -584,7 +678,7 @@ export default class PopItHere extends Game {
     const xOffset = 12
     const textStyle = { fontSize: 40 }
     const myButtons = []
-    const buttonTexts = ['Cancel', 'Submit', 'Add Image', 'Add Text', 'Toggle Controls', 'Copy', 'Rotate', 'Resize', 'Delete']
+    const buttonTexts = ['Cancel', 'Preview', 'Add Image', 'Add Text', 'Toggle Controls', 'Copy', 'Rotate', 'Resize', 'Delete']
     buttonTexts.forEach((txt) => {
       const btn = this.addCanvasButton(txt, {
         x: xOffset,
@@ -624,6 +718,8 @@ export default class PopItHere extends Game {
         btn.visible = false
         btn.on('pointerdown', this.customDelete)
         this.customButtons.delete = btn
+      } else if (txt === 'Preview') {
+        btn.on('pointerdown', this.customPreview)
       }
       myButtons.push(btn)
     })
