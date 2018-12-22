@@ -149,7 +149,6 @@ export default class PopItHere extends Game {
       // reset scale for drawing
       this.stage.scale.x = previousScales.x
       this.stage.scale.y = previousScales.y
-      this.setBackgroundColor(0xaf12cb)
 
       const tempButtonLayer = new PIXI.Container()
       this.root.addChild(tempButtonLayer)
@@ -161,7 +160,6 @@ export default class PopItHere extends Game {
         const ind = this.root.getChildIndex(tempButtonLayer)
         this.root.removeChildAt(ind)
         tempButtonLayer.destroy(true)
-        this.setBackgroundColor('alpha')
         this.stopPopping()
         this.controlLayer.visible = true
         this.buttonLayer.visible = true
