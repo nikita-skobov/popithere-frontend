@@ -310,6 +310,8 @@ export default class PopItHere extends Game {
       }
     })
 
+    this.customGifSprites = []
+
     this.removeButtons()
     this.addButton(this.popItButton)
     this.addButton(this.endGameButton)
