@@ -10,21 +10,36 @@ I am releasing this publically for two reasons:
 
 ## Local Development:
 
-```
+```sh
 git clone https://github.com/nikita-skobov/popithere-frontend.git
 cd popithere-frontend/
 cd frontend/
+# NOTE: I am using eslint. If you do not want to use my eslint setup
+# please remove the following from your package.json before installing:
+#    "eslint": "^5.7.0",
+#    "eslint-config-airbnb": "^17.1.0",
+#    "eslint-plugin-import": "^2.14.0",
+#    "eslint-plugin-jsx-a11y": "^6.1.2",
+#    "eslint-plugin-react": "^7.11.1",
+# And you can also remove the .eslintrc.js file
 npm install
 ```
 
 Afterwards, if you'd like to run a webpack dev server for continuous in-memory updates do:
 
-```
+```sh
 npm run build:server
 ```
 
+Then you can access the site on http://localhost:3000
+
 Otherwise, if you want to make a single build, and output actual files to the dist/ directory do:
 
-```
+```sh
 npm run build
 ```
+
+## Dependencies:
+
+- Development:
+  - 
