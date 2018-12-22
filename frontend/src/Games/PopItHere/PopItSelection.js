@@ -22,6 +22,10 @@ import { assetList } from '../../customConfig'
 
 import { createImage, createGifTextures } from '../../utils/PixiUtils'
 
+const notSubmit = (e) => {
+  e.preventDefault()
+}
+
 export default class PopItSelection extends Component {
   constructor(props) {
     super(props)
@@ -212,7 +216,7 @@ export default class PopItSelection extends Component {
       return (
         <Row>
           <Col fluid>
-            <Form>
+            <Form onSubmit={notSubmit}>
               <FormGroup>
                 <Label for="rotateControl">Enter a rotation value in degrees</Label>
                 <CustomInput onChange={this.handleRotate} type="number" defaultValue={rotation * 180 / 3.14159} id="rotateControl" name="customRotate" />
@@ -228,7 +232,7 @@ export default class PopItSelection extends Component {
       return (
         <Row>
           <Col fluid>
-            <Form>
+            <Form onSubmit={notSubmit}>
               <FormGroup>
                 <Label for="rotateControl">Enter a scalar for width</Label>
                 <CustomInput onChange={this.handleResize} type="number" defaultValue={x} id="resizeControl" name="width" />
@@ -236,7 +240,7 @@ export default class PopItSelection extends Component {
             </Form>
           </Col>
           <Col fluid>
-            <Form>
+            <Form onSubmit={notSubmit}>
               <FormGroup>
                 <Label for="rotateControl">Enter a scalar for height</Label>
                 <CustomInput onChange={this.handleResize} type="number" defaultValue={y} id="resizeControl" name="height" />
@@ -252,7 +256,7 @@ export default class PopItSelection extends Component {
       console.log(invalidInput)
       return (
         <Col fluid>
-          <Form>
+          <Form onSubmit={notSubmit}>
             <Row>
               <FormGroup>
                 <Label for="maxSize">Enter your desired size (from 0 to 100)</Label>
@@ -271,7 +275,7 @@ export default class PopItSelection extends Component {
       return (
         <Row>
           <Col fluid>
-            <Form>
+            <Form onSubmit={notSubmit}>
               <FormGroup>
                 <Label for="filebrowser">Choose an image</Label>
                 <CustomInput onChange={this.handleFile} type="file" label="Choose an image" id="filebrowser" name="customFileBrowser" />
@@ -299,7 +303,7 @@ export default class PopItSelection extends Component {
       const { fontSize } = this.state
       return (
         <Col fluid>
-          <Form>
+          <Form onSubmit={notSubmit}>
             <Row>
               <FormGroup>
                 <Label for="textinput">Enter your text: </Label>
