@@ -99,7 +99,10 @@ export default class PopItHere extends Game {
     })
   }
 
-  customPreview() {
+  customPreview(userVal, callback) {
+    if (!callback) {
+      callback = () => {}
+    }
     this.customPreviewMode = true
     this.controlLayer.visible = false
     this.buttonLayer.visible = false
@@ -108,7 +111,8 @@ export default class PopItHere extends Game {
     // theyll see that it doesnt pop to the whole page.
     // while creating a custom popit, it might seem that your creation
     // would cover the whole screen, but thats not the case
-    const scaleFactor = 0.3
+    let scaleFactor = (userVal * 0.3 / 100)
+    scaleFactor = scaleFactor <= 0.01 ? 0.01 : scaleFactor // prevents a 0 scale
     const previousScales = { x: this.stage.scale.x, y: this.stage.scale.y }
     this.stage.scale.x = scaleFactor
     this.stage.scale.y = scaleFactor
@@ -149,6 +153,8 @@ export default class PopItHere extends Game {
 
       const tempButtonLayer = new PIXI.Container()
       this.root.addChild(tempButtonLayer)
+
+      callback(this.modal.isOpen()) // notifies modal that the preview mode is ready
 
       const goBack = () => {
         // resets everything to how it was prior to starting preview mode

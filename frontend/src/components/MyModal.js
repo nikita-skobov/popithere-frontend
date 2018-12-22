@@ -22,6 +22,7 @@ export default class MyModal extends Component {
     this.brain.store('MyModal', this)
 
     this.toggle = this.toggle.bind(this)
+    this.isOpen = this.isOpen.bind(this)
   }
 
   // FUNCTIONS ACCESSIBLE BY GAME CLASS

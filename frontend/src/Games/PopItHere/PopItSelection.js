@@ -100,9 +100,14 @@ export default class PopItSelection extends Component {
         this.setState({ invalidInput: true })
       }
     } else if (name === 'submit') {
-      const { invalidInput } = this.state
+      const { invalidInput, maxSize } = this.state
       if (!invalidInput) {
-        this.game.modal.toggle()
+        this.setState({ choice: 'loading' })
+        this.game.customPreview(maxSize, (closeit) => {
+          if (closeit) {
+            this.game.modal.toggle()
+          }
+        })
       }
     }
   }
