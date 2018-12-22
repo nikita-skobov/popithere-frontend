@@ -41,5 +41,15 @@ npm run build
 
 ## Dependencies:
 
+- Production:
+  - [React](https://github.com/facebook/react), ReactDOM for easy user interface building
+  - [Reactstrap](https://github.com/reactstrap/reactstrap), [Bootstrap](https://www.npmjs.com/package/bootstrap) for nice-looking, pre-made components
+  - [PIXI.js](https://github.com/pixijs/pixi.js/) for easy rendering bindings that will work for either WebGL or Canvas
+  - A modified version of [libgif-js](https://github.com/buzzfeed/libgif-js)
+    - I rewrote their gif parser to use only pure functions because their code had extreme memory leaks on FireFox, and Edge browsers. Also I found that there were many options that did nothing at all in the code...
 - Development:
-  - 
+  - [Webpack](https://github.com/webpack/webpack) to bundle, minify, and load my code for easy deployments
+  - [Webpack-dev-server](https://github.com/webpack/webpack-dev-server) for fast, easy live updates while developing
+  - [babel](https://github.com/babel/babel) (and all of its necessary plugins/polyfills) for modern javascript transpilation
+  - [prop-types](https://www.npmjs.com/package/prop-types) because eslint yells at me if I dont use prop-types
+  - [eslint](https://www.npmjs.com/package/eslint) with [AirBnB style guide](https://www.npmjs.com/package/eslint-config-airbnb) to write nice-looking, modern code
