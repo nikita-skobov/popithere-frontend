@@ -263,18 +263,11 @@ export default class PopItHere extends Game {
   customToggleControls() {
     this.customControls.toggle = !this.customControls.toggle
     const bool = this.customControls.toggle
-    this.customControls.left.visible = bool
-    this.customControls.top.visible = bool
-    this.customControls.right.visible = bool
-    this.customControls.bottom.visible = bool
-    this.customControls.resizeH.visible = bool
-    this.customControls.resizeH2.visible = bool
-    this.customControls.resizeV.visible = bool
-    this.customControls.resizeV2.visible = bool
-    this.customControls.resizeD.visible = bool
-    this.customControls.resizeD2.visible = bool
-    this.customControls.resizeD3.visible = bool
-    this.customControls.resizeD4.visible = bool
+    Object.keys(this.customControls).forEach((key) => {
+      if (key !== 'visible' && key !== 'toggle') {
+        this.customControls[key].visible = bool
+      }
+    })
   }
 
   customDelete() {
@@ -430,18 +423,11 @@ export default class PopItHere extends Game {
     this.activeSprite = myImg
     if (!this.customControls.visible) {
       // first time an image was added, so add controls to stage
-      this.controlLayer.addChild(this.customControls.left)
-      this.controlLayer.addChild(this.customControls.bottom)
-      this.controlLayer.addChild(this.customControls.right)
-      this.controlLayer.addChild(this.customControls.top)
-      this.controlLayer.addChild(this.customControls.resizeH)
-      this.controlLayer.addChild(this.customControls.resizeH2)
-      this.controlLayer.addChild(this.customControls.resizeV)
-      this.controlLayer.addChild(this.customControls.resizeV2)
-      this.controlLayer.addChild(this.customControls.resizeD)
-      this.controlLayer.addChild(this.customControls.resizeD2)
-      this.controlLayer.addChild(this.customControls.resizeD3)
-      this.controlLayer.addChild(this.customControls.resizeD4)
+      Object.keys(this.customControls).forEach((key) => {
+        if (key !== 'visible' && key !== 'toggle') {
+          this.controlLayer.addChild(this.customControls[key])
+        }
+      })
       this.customControls.visible = true
       this.customSetControlVisibility(true)
     }
@@ -493,18 +479,11 @@ export default class PopItHere extends Game {
 
   customSetControlVisibility(bool) {
     if (this.customControls.toggle) {
-      this.customControls.left.visible = bool
-      this.customControls.top.visible = bool
-      this.customControls.right.visible = bool
-      this.customControls.bottom.visible = bool
-      this.customControls.resizeH.visible = bool
-      this.customControls.resizeH2.visible = bool
-      this.customControls.resizeV.visible = bool
-      this.customControls.resizeV2.visible = bool
-      this.customControls.resizeD.visible = bool
-      this.customControls.resizeD2.visible = bool
-      this.customControls.resizeD3.visible = bool
-      this.customControls.resizeD4.visible = bool
+      Object.keys(this.customControls).forEach((key) => {
+        if (key !== 'visible' && key !== 'toggle') {
+          this.customControls[key].visible = bool
+        }
+      })
     }
 
     if (this.customButtons.rotate) {
@@ -597,15 +576,11 @@ export default class PopItHere extends Game {
     line.lineStyle(lineWidth, lineColor, 1)
     line.moveTo(0, 0)
     line.lineTo(0, 100)
-    line.x = 0
-    line.y = 0
     const texture1 = this.renderer.generateTexture(line)
     const line2 = new PIXI.Graphics()
     line2.lineStyle(lineWidth, lineColor, 1)
     line2.moveTo(0, 0)
     line2.lineTo(100, 0)
-    line2.x = 0
-    line2.y = 0
     const texture2 = this.renderer.generateTexture(line2)
 
     const circle = new PIXI.Graphics()
