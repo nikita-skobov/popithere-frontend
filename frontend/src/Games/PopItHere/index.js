@@ -101,81 +101,90 @@ export default class PopItHere extends Game {
     this.stage.scale.x = scaleFactor
     this.stage.scale.y = scaleFactor
     const rectSize = 1024 * scaleFactor
+    // rectangle is specified so that this new texture isnt the size of
+    // the entire canvas
+    const rect = new PIXI.Rectangle(0, 0, rectSize, rectSize)
+
     // this gives time for the visibility to take effect
     setTimeout(async () => {
+      let newTextures
       if (this.customGifSprites.length) {
         // if there are any gifs, you must first create a new
         // animated sprite from all of the frames
       } else {
         // otherwise create a single sprite from a single frame
+        newTextures = this.renderer.generateTexture(this.stage, undefined, undefined, rect)
+      }
+      this.stage.children.forEach((child) => {
+        // make all sprites invisible after generating texture
+        // so when user starts popping, they will only see their new
+        // finalized image
+        child.visible = false
+      })
+      const childIndexBeforePopping = this.stage.children.length
+      this.popItChosen('image', newTextures)
+      // reset scale for drawing
+      this.stage.scale.x = previousScales.x
+      this.stage.scale.y = previousScales.y
+      this.setBackgroundColor(0xaf12cb)
 
-        // rectangle is specified so that this new texture isnt the size of
-        // the entire canvas
-        const rect = new PIXI.Rectangle(0, 0, rectSize, rectSize)
-        const newTexture = this.renderer.generateTexture(this.stage, undefined, undefined, rect)
+      const tempButtonLayer = new PIXI.Container()
+      this.root.addChild(tempButtonLayer)
+
+      const goBack = () => {
+        // resets everything to how it was prior to starting preview mode
+        const ind = this.root.getChildIndex(tempButtonLayer)
+        this.root.removeChildAt(ind)
+        tempButtonLayer.destroy(true)
+        this.setBackgroundColor('alpha')
+        this.stopPopping()
+        this.controlLayer.visible = true
+        this.buttonLayer.visible = true
+        if (childIndexBeforePopping !== this.stage.children.length) {
+          this.stage.removeChildren(childIndexBeforePopping, this.stage.children.length)
+        }
+
+        if (Array.isArray(newTextures)) {
+          // destroy each texture individually
+        } else {
+          // its a single texture
+          newTextures.destroy(true)
+        }
+
         this.stage.children.forEach((child) => {
-          // make all sprites invisible after generating texture
-          // so when user starts popping, they will only see their new
-          // finalized image
-          child.visible = false
-        })
-        const childIndexBeforePopping = this.stage.children.length
-        this.popItChosen('image', newTexture)
-        // reset scale for drawing
-        this.stage.scale.x = previousScales.x
-        this.stage.scale.y = previousScales.y
-        this.setBackgroundColor(0xaf12cb)
-
-        const tempButtonLayer = new PIXI.Container()
-        this.root.addChild(tempButtonLayer)
-
-        const goBack = () => {
-          // resets everything to how it was prior to starting preview mode
-          const ind = this.root.getChildIndex(tempButtonLayer)
-          this.root.removeChildAt(ind)
-          tempButtonLayer.destroy(true)
-          this.setBackgroundColor('alpha')
-          this.stopPopping()
-          this.controlLayer.visible = true
-          this.buttonLayer.visible = true
-          if (childIndexBeforePopping !== this.stage.children.length) {
-            this.stage.removeChildren(childIndexBeforePopping, this.stage.children.length)
-          }
-          this.stage.children.forEach((child) => {
-            // resets visibility on all user added sprites from before
-            child.visible = true
-          })
-        }
-
-        const goSubmit = () => {
-          console.log('go submit')
-        }
-
-        // create 2 buttons: back and submit so user can
-        // exit preview mode
-        let yOffset = 20
-        const xOffset = 12
-        const textStyle = { fontSize: 40 }
-        const buttonTexts = ['Back', 'Submit']
-        buttonTexts.forEach((txt) => {
-          const btn = this.addCanvasButton(txt, {
-            x: xOffset,
-            y: yOffset,
-            textStyle,
-            container: tempButtonLayer,
-            paddingPercentY: 0.1,
-            textAlpha: 1,
-          })
-          yOffset = btn.y + btn.height + 20
-          btn.interactive = true
-          btn.buttonMode = true
-          if (txt === 'Back') {
-            btn.on('pointerdown', goBack)
-          } else if (txt === 'Submit') {
-            btn.on('pointerdown', goSubmit)
-          }
+          // resets visibility on all user added sprites from before
+          child.visible = true
         })
       }
+
+      const goSubmit = () => {
+        console.log('go submit')
+      }
+
+      // create 2 buttons: back and submit so user can
+      // exit preview mode
+      let yOffset = 20
+      const xOffset = 12
+      const textStyle = { fontSize: 40 }
+      const buttonTexts = ['Back', 'Submit']
+      buttonTexts.forEach((txt) => {
+        const btn = this.addCanvasButton(txt, {
+          x: xOffset,
+          y: yOffset,
+          textStyle,
+          container: tempButtonLayer,
+          paddingPercentY: 0.1,
+          textAlpha: 1,
+        })
+        yOffset = btn.y + btn.height + 20
+        btn.interactive = true
+        btn.buttonMode = true
+        if (txt === 'Back') {
+          btn.on('pointerdown', goBack)
+        } else if (txt === 'Submit') {
+          btn.on('pointerdown', goSubmit)
+        }
+      })
       // this gives time for the visibility to take effect
     }, 2000)
   }
