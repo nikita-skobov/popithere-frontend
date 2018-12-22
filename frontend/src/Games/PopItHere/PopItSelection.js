@@ -253,7 +253,6 @@ export default class PopItSelection extends Component {
 
     if (choice === 'preview') {
       const { invalidInput, maxSize } = this.state
-      console.log(invalidInput)
       return (
         <Col fluid>
           <Form onSubmit={notSubmit}>
