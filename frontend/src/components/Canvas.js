@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import RenderWindow from '../RenderWindow'
 import { assetList } from '../customConfig'
+
+import { createRenderer, createRoot, replaceCanvas, loadAssets } from '../utils/PixiUtils'
+import { getCurrentGame } from '../utils/GameUtils'
 
 export default class Canvas extends Component {
   constructor(props) {
@@ -13,6 +15,11 @@ export default class Canvas extends Component {
     this.brain.store('Canvas', this)
     this.settingsChange = this.settingsChange.bind(this)
     this.newGame = this.newGame.bind(this)
+    this.newButtons = this.newButtons.bind(this)
+    this.endGame = this.endGame.bind(this)
+
+    this.currentGame = null
+    this.renderer = null
   }
 
   componentDidMount() {
@@ -22,22 +29,44 @@ export default class Canvas extends Component {
     } catch (e) {
       // do nothing
     }
-    const { brain, maxSprites } = this
-    this.RW = new RenderWindow({
-      brain,
-      maxSprites,
-      size: [1069, 1069],
-      backgroundColor: 0x000000,
-    })
-    this.RW.loadAssets(assetList)
+
+    loadAssets(assetList, this.afterLoad.bind(this))
   }
 
   settingsChange(type, value) {
     // empty for now
   }
 
-  newGame(game) {
-    this.brain.tell.Buttons.newButtons(game.getButtons())
+  afterLoad() {
+    this.renderer = createRenderer({
+      size: [1024, 1024],
+      transparent: true,
+      preserveDrawingBuffer: true,
+    })
+    replaceCanvas(this.renderer.view)
+    const modal = this.brain.ask.MyModal
+    this.currentGame = getCurrentGame({ renderer: this.renderer, modal, canvas: this })
+    this.newGame()
+  }
+
+  endGame() {
+    this.currentGame.endGame()
+    this.brain.tell.Buttons.newButtons([])
+    this.currentGame = null
+
+    setTimeout(() => {
+      const modal = this.brain.ask.MyModal
+      this.currentGame = getCurrentGame({ renderer: this.renderer, modal, canvas: this })
+      this.newGame()
+    }, 10000)
+  }
+
+  newGame() {
+    this.newButtons(this.currentGame.getButtons())
+  }
+
+  newButtons(buttons) {
+    this.brain.tell.Buttons.newButtons(buttons)
   }
 
   render() {

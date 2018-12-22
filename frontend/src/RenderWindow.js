@@ -1,7 +1,7 @@
 /* global document */
 import * as PIXI from 'pixi.js'
 
-import PopItHere from './Games/PopItHere/PopItHere'
+// import PopItHere from './Games/PopItHere/PopItHere'
 import RenderLayer from './RenderLayer'
 import InputHandler from './Games/InputHandler'
 
@@ -24,15 +24,6 @@ export default class RenderWindow {
     const oldCanvas = document.getElementsByTagName('canvas')[0]
     this.renderer.view.classList.add('canvas')
     oldCanvas.parentElement.replaceChild(this.renderer.view, oldCanvas)
-
-    // creates an 'ad' layer for popup advertisenments above the game
-    // kind of like twitch cheers/subscribe messsages
-    this.adLayer = new RenderLayer({
-      size: this.size,
-      interactive: false,
-      transparent: true,
-      addToPage: true,
-    })
 
     // creates a seperate renderer element to handle all inputs
     this.inputLayer = new RenderLayer({
@@ -103,7 +94,7 @@ export default class RenderWindow {
     setTimeout(() => {
       console.log('chaning game:')
       this.changeGame('PopItHere')
-    }, 3000)
+    }, 2000)
   }
 
   loadAssets(assetArray, cb) {

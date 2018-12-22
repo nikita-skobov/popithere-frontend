@@ -20,25 +20,14 @@ export default class Buttons extends Component {
     this.brain = props.brain
 
     this.state = {
-      leftPx: 0,
       open: false,
       gameButtons: [],
     }
 
     this.brain.store('Buttons', this)
 
-    this.adjust = this.adjust.bind(this)
     this.toggleDropdown = this.toggleDropdown.bind(this)
     this.handleButton = this.handleButton.bind(this)
-  }
-
-  componentDidMount() {
-    try {
-      const size = this.brain.ask.Canvas.leaflet.offsetWidth
-      this.adjust(size)
-    } catch (e) {
-      // do nothing
-    }
   }
 
   newButtons(buttons) {
@@ -52,14 +41,6 @@ export default class Buttons extends Component {
   toggleDropdown() {
     const { open } = this.state
     this.setState({ open: !open })
-  }
-
-  adjust(size) {
-    const leftPx = size - this.btn.offsetWidth
-    if (this.state.leftPx !== leftPx) {
-      // only set state if it is different from the last state
-      this.setState({ leftPx })
-    }
   }
 
   handleButton(e) {
@@ -97,24 +78,22 @@ export default class Buttons extends Component {
 
   render() {
     const { toggleDropdown } = this
-    const { leftPx, open, gameButtons } = this.state
+    const { open, gameButtons } = this.state
 
     return (
-      <div ref={(btn) => { this.btn = btn }} className="my-buttons" style={{ left: leftPx }}>
-        <ButtonDropdown direction="left" isOpen={open} toggle={toggleDropdown}>
-          <DropdownToggle className="btn-override">
-            <i className="fa fa-bars" />
-          </DropdownToggle>
-          <DropdownMenu>
-            {gameButtons.map(item => (
-              // users can load buttons into the menu dynamically
-              <DropdownItem name={item.name} onClick={this.handleButton}>{item.text}</DropdownItem>
-            ))}
-            <DropdownItem name="options" onClick={this.handleButton}>Options</DropdownItem>
-            <DropdownItem>Support</DropdownItem>
-          </DropdownMenu>
-        </ButtonDropdown>
-      </div>
+      <ButtonDropdown direction="left" isOpen={open} toggle={toggleDropdown}>
+        <DropdownToggle className="btn-override">
+          <i className="fa fa-bars" />
+        </DropdownToggle>
+        <DropdownMenu>
+          {gameButtons.map(item => (
+            // users can load buttons into the menu dynamically
+            <DropdownItem name={item.name} onClick={this.handleButton}>{item.text}</DropdownItem>
+          ))}
+          <DropdownItem name="options" onClick={this.handleButton}>Options</DropdownItem>
+          <DropdownItem>Support</DropdownItem>
+        </DropdownMenu>
+      </ButtonDropdown>
     )
   }
 }

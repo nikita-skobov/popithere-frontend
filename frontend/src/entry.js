@@ -1,9 +1,11 @@
 /* global document window */
+import '@babel/polyfill'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 import App from './App'
+import './utils/libgif'
 
 const reactContainer = document.getElementById('react-container')
 

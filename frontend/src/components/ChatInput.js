@@ -4,6 +4,8 @@ import PropTypes from 'prop-types'
 
 import { InputGroup, Input, InputGroupAddon, Button } from 'reactstrap'
 
+import Buttons from './Buttons'
+
 export default class ChatInput extends Component {
   constructor(props) {
     super(props)
@@ -29,10 +31,15 @@ export default class ChatInput extends Component {
     this.brain.tell.ChatBox.addChat(chat)
   }
 
+// <Buttons buttonsWidth={80} brain={this.brain} />,
+
   render() {
     return (
       <form action="#" onSubmit={this.onSubmit}>
         <InputGroup className="input-margins">
+          <InputGroupAddon addonType="prepend">
+            <Buttons buttonsWidth={80} brain={this.brain} />
+          </InputGroupAddon>
           <Input placeholder="Send a message" />
           <InputGroupAddon addonType="append">
             <Button>Chat</Button>

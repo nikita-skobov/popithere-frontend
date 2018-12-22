@@ -1,74 +1,169 @@
-import Layer from './Layer'
+import * as PIXI from 'pixi.js'
 
 const has = Object.prototype.hasOwnProperty
 
 export default class Game {
   constructor(props) {
-    this.base = props.baseLayer
-    this.inputHandler = props.inputHandler
-    this.size = props.size
+    this.renderer = props.renderer
+    this.root = props.root
     this.modal = props.modal
-
+    this.canvas = props.canvas
+    this.ticker = PIXI.ticker.shared
     this.buttons = []
+    this.animating = false
 
-    this.layer0 = new Layer({
-      name: '0',
-      container: this.base.root,
-    })
+    this.center = { x: this.renderer.width / 2, y: this.renderer.height / 2 }
 
-    this.rootLayer = this.addLayer('root')
-    this.layer0.addLayer(this.rootLayer)
+    this.background = new PIXI.Sprite(PIXI.Texture.EMPTY)
+    this.background.customId = 'BACKGROUND'
+    this.background.x = 0
+    this.background.y = 0
+    this.background.width = this.renderer.width
+    this.background.height = this.renderer.height
+    this.root.addChild(this.background)
+    this.draw = this.draw.bind(this)
 
-    // when game resets it removes interactions,
-    // set to true for each new game instance
-    this.inputHandler.toggleInteractions(true)
+    this.drawHooks = []
+    this.drawHooksActive = false
   }
 
-  addLayer(name) {
-    const newLayer = new Layer({ name })
-    this.layer0.addLayer(newLayer)
-
-    return newLayer
-  }
-
-  endGame() {
-    this.inputHandler.removeAllListeners()
-    this.base.stopAnimating()
-
-    this.layer0.removeAllChildren()
-
-    this.base.renderer.backgroundColor = 0x000000
-    this.base.renderer.clear()
-    this.inputHandler.toggleInteractions(false)
+  setBackgroundColor(color) {
+    if (typeof color === 'number') {
+      let hexString = color.toString(16)
+      while (hexString.length < 6) {
+        hexString = `0${hexString}`
+      }
+      this.renderer.view.style.backgroundColor = `#${hexString}`
+    } else {
+      this.renderer.view.style.backgroundColor = color
+    }
+    return null
   }
 
   getButtons() {
     return this.buttons
   }
 
-  getLocalPosition(event) {
-    return this.inputHandler.getLocalPosition(event)
+  addDrawHook(func) {
+    if (!this.drawHooksActive) {
+      this.drawHooksActive = true
+    }
+    this.drawHooks.push(func)
   }
 
-  setBackgroundColor(color) {
-    const { renderer } = this.base
-    renderer.backgroundColor = color
-    renderer.render(this.base.root)
+  clearDrawHooks() {
+    this.drawHooks = []
+    this.drawHooksActive = false
   }
 
-  addImage(name, pos) {
-    // when adding image to game, its assumed user wants to add to root
-    this.rootLayer.addImage(name, pos)
+  draw(time) {
+    this.renderer.render(this.root)
+    if (this.drawHooksActive) {
+      this.drawHooks.forEach(hook => hook(time))
+    }
   }
 
-  draw() {
-    this.base.draw()
+  animate() {
+    if (!this.animating) {
+      this.animating = true
+      this.ticker.add(this.draw)
+    }
   }
 
-  on(event, callback) {
-    this.inputHandler.on(event, (e) => {
-      callback(e)
-    })
+  endGame() {
+    this.animating = false
+    this.clearDrawHooks()
+    this.ticker.remove(this.draw)
+    this.root.destroy(true)
+
+    this.renderer.backgroundColor = 0x000000
+    this.renderer.clear()
+  }
+
+  addGif(textures, { x, y, play = true, atIndex = null, container = this.root }) {
+    const anim = new PIXI.extras.AnimatedSprite(textures)
+    anim.x = x
+    anim.y = y
+
+    if (atIndex === null) {
+      container.addChild(anim)
+    } else {
+      container.addChildAt(anim, atIndex)
+    }
+
+    if (play) {
+      anim.play()
+    }
+
+    return anim
+  }
+
+  addCanvasButton(text, {
+    x,
+    y,
+    textAlpha,
+    textStyle,
+    container = this.root,
+    alpha = 0.3,
+    lineWidth = 4,
+    lineColor = 0x000000,
+    buttonColor = 0xffffff,
+    radius = 10,
+    paddingPercentX = 0.04,
+    paddingPercentY = 0.07,
+  }) {
+    const message = new PIXI.Text(text, textStyle)
+    message.alpha = textAlpha || alpha
+    const roundBox = new PIXI.Graphics()
+    roundBox.lineStyle(lineWidth, lineColor, alpha)
+    roundBox.beginFill(buttonColor, alpha)
+    const rectWidth = message.width * (1 + (2 * paddingPercentX))
+    const rectHeight = message.height * (1 + (2 * paddingPercentY))
+    roundBox.drawRoundedRect(0, 0, rectWidth, rectHeight, radius)
+    roundBox.endFill()
+    roundBox.x = x
+    roundBox.y = y
+    container.addChild(roundBox)
+    message.x = (rectWidth - message.width) / 2
+    message.y = (rectHeight - message.height) / 2
+    roundBox.addChild(message)
+
+    return roundBox
+  }
+
+  addText(txt, { x, y, textStyle, atIndex = null, container = this.root }) {
+    const message = new PIXI.Text(txt, textStyle)
+    message.x = x
+    message.y = y
+    if (atIndex === null) {
+      container.addChild(message)
+    } else {
+      container.addChildAt(message, atIndex)
+    }
+
+    return message
+  }
+
+  addImage(name, { x, y, atIndex = null, container = this.root }) {
+    let img
+    if (typeof name === 'string') {
+      img = new PIXI.Sprite(PIXI.loader.resources[name].texture)
+    } else {
+      img = new PIXI.Sprite(name)
+    }
+    img.x = x
+    img.y = y
+    if (atIndex === null) {
+      container.addChild(img)
+    } else {
+      container.addChildAt(img, atIndex)
+    }
+
+    return img
+  }
+
+  removeButtons() {
+    this.buttons = []
   }
 
   addButton(btn) {
