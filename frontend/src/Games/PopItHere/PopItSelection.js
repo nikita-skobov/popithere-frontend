@@ -217,9 +217,9 @@ export default class PopItSelection extends Component {
         <Row>
           <Col fluid>
             <Form onSubmit={notSubmit}>
-              <FormGroup>
+              <FormGroup className="w100">
                 <Label for="rotateControl">Enter a rotation value in degrees</Label>
-                <CustomInput onChange={this.handleRotate} type="number" defaultValue={rotation * 180 / 3.14159} id="rotateControl" name="customRotate" />
+                <Input onChange={this.handleRotate} type="number" defaultValue={rotation * 180 / 3.14159} id="rotateControl" name="customRotate" />
               </FormGroup>
             </Form>
           </Col>
@@ -233,17 +233,17 @@ export default class PopItSelection extends Component {
         <Row>
           <Col fluid>
             <Form onSubmit={notSubmit}>
-              <FormGroup>
+              <FormGroup className="w100">
                 <Label for="rotateControl">Enter a scalar for width</Label>
-                <CustomInput onChange={this.handleResize} type="number" defaultValue={x} id="resizeControl" name="width" />
+                <Input onChange={this.handleResize} type="number" defaultValue={x} id="resizeControl" name="width" />
               </FormGroup>
             </Form>
           </Col>
           <Col fluid>
             <Form onSubmit={notSubmit}>
-              <FormGroup>
+              <FormGroup className="w100">
                 <Label for="rotateControl">Enter a scalar for height</Label>
-                <CustomInput onChange={this.handleResize} type="number" defaultValue={y} id="resizeControl" name="height" />
+                <Input onChange={this.handleResize} type="number" defaultValue={y} id="resizeControl" name="height" />
               </FormGroup>
             </Form>
           </Col>
@@ -257,7 +257,7 @@ export default class PopItSelection extends Component {
         <Col fluid>
           <Form onSubmit={notSubmit}>
             <Row>
-              <FormGroup>
+              <FormGroup className="w100">
                 <Label for="maxSize">Enter your desired size (from 0 to 100)</Label>
                 <Input invalid={invalidInput} onChange={this.handlePreview} type="number" defaultValue={maxSize} id="maxSize" name="maxSize" />
               </FormGroup>
@@ -306,13 +306,13 @@ export default class PopItSelection extends Component {
             <Row>
               <FormGroup>
                 <Label for="textinput">Enter your text: </Label>
-                <CustomInput onChange={this.handleText} type="text" placeholder="Your Text Here..." id="textinput" name="text" />
+                <Input onChange={this.handleText} type="text" placeholder="Your Text Here..." id="textinput" name="text" />
               </FormGroup>
             </Row>
             <Row>
               <FormGroup>
                 <Label for="textinputsize">Size: </Label>
-                <CustomInput onChange={this.handleText} defaultValue={fontSize} type="number" id="textinputsize" name="size" />
+                <Input onChange={this.handleText} defaultValue={fontSize} type="number" id="textinputsize" name="size" />
               </FormGroup>
             </Row>
             <Row>
