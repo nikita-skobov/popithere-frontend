@@ -390,12 +390,14 @@ export default class PopItHere extends Game {
   }
 
   onDragEnd(sprite, event) {
-    sprite.isDragging = false
-    sprite.dragData = null
+    if (!this.customPreviewMode) {
+      sprite.isDragging = false
+      sprite.dragData = null
+    }
   }
 
   onDragMove(sprite) {
-    if (sprite.isDragging) {
+    if (!this.customPreviewMode && sprite.isDragging) {
       const newPos = sprite.dragData.getLocalPosition(this.stage)
       sprite.x = newPos.x
       sprite.y = newPos.y
@@ -407,18 +409,20 @@ export default class PopItHere extends Game {
   }
 
   customNewActiveSprite(mySprite, event) {
-    this.placeSpriteOnTop(mySprite)
-    mySprite.dragData = event.data
-    mySprite.isDragging = true
+    if (!this.customPreviewMode) {
+      this.placeSpriteOnTop(mySprite)
+      mySprite.dragData = event.data
+      mySprite.isDragging = true
 
-    if (!this.activeSprite) {
-      this.activeSprite = mySprite
-      this.customSetControlVisibility(true)
-      return null
-    }
-    if (mySprite.customId !== this.activeSprite.customId) {
-      this.activeSprite = mySprite
-      this.customSetControlVisibility(true)
+      if (!this.activeSprite) {
+        this.activeSprite = mySprite
+        this.customSetControlVisibility(true)
+        return null
+      }
+      if (mySprite.customId !== this.activeSprite.customId) {
+        this.activeSprite = mySprite
+        this.customSetControlVisibility(true)
+      }
     }
     return null
   }
