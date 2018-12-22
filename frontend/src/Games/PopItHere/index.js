@@ -9,6 +9,48 @@ import { getLocalPosition, calculateCenterPosition, makeRandomId, reduceFrames }
 
 const has = Object.prototype.hasOwnProperty
 
+const coolColor = (colorArr, direction) => {
+  // -1, 0, 1
+  let dir = direction
+  const arr = colorArr
+  let nonFixed
+  arr.forEach((val, ind) => {
+    if (val !== 0 && val !== -1) {
+      nonFixed = ind // find which value (r,g,b)
+      // that we are currently modifying
+      // the other 2 will stay fixed
+    }
+  })
+  console.log(`nonfixed: ${nonFixed}`)
+  arr[nonFixed] += dir // modify color slightly
+  const tooBig = arr[nonFixed] >= 255
+  const tooSmall = arr[nonFixed] <= 1
+  if (tooBig || tooSmall) {
+    // once it reaches its limit (either 1, or 255)
+    // set the current color value to a fixed special key (-1 or 0 depending on direction)
+    arr[nonFixed] = (arr[nonFixed] >= 255) ? -1 : 0
+    console.log('flipping')
+    console.log(arr)
+    // switch to the next color value
+    nonFixed += 1
+    dir = -dir // direction must be flipped
+    console.log(`new dir: ${dir}`)
+    if (nonFixed >= arr.length) {
+      // if we are on b, then go back to r
+      nonFixed = 0
+    }
+  }
+  return { arr, dir }
+}
+
+const getColorFromArray = (arr) => {
+  const tempArr = arr
+  tempArr.forEach((val, ind) => {
+    if (val === -1) tempArr[ind] = 255
+  })
+  return `rgb(${tempArr[0]}, ${tempArr[1]}, ${tempArr[2]})`
+}
+
 export default class PopItHere extends Game {
   constructor(props) {
     super(props)
@@ -144,7 +186,24 @@ export default class PopItHere extends Game {
         // finalized image
         child.visible = false
       })
-      this.setBackgroundColor('red')
+
+      const changeBackgroundColor = (colorArr, direction) => {
+        const val = getColorFromArray(colorArr)
+        console.log('arr:')
+        console.log(colorArr)
+        console.log('rgb::')
+        console.log(val)
+        this.setBackgroundColor(val)
+        const { arr, dir } = coolColor(colorArr, direction)
+        if (this.customPreviewMode) {
+          setTimeout(() => {
+            console.log('timeout done')
+            changeBackgroundColor(arr, dir)
+          }, 10)
+        }
+      }
+
+      changeBackgroundColor([-1, 0, 1], 1)
       const childIndexBeforePopping = this.stage.children.length
       this.popItChosen('image', newTextures)
       // reset scale for drawing
