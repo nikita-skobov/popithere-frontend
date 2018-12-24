@@ -73,6 +73,13 @@ export function getClosestVal(pos) {
   return Math.floor(val * 190 / 1024)
 }
 
+export function reverseClosestVal(val) {
+  let pos = val
+  if (pos > 190) pos = 190
+  if (pos < 0) pos = 0
+  return pos * 1024 / 190
+}
+
 export function positionToStringInternal(position) {
   // position can be between 0 and 190
   return myMapReverse[position]
