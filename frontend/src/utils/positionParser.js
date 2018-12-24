@@ -64,10 +64,24 @@ Object.keys(myMap).forEach((key) => {
   myMapReverse[myMap[key]] = key
 })
 
+function getClosestVal(pos) {
+  // position is a number from 0 to 1024
+  // this function returns a number between 0 and 190
+  let val = pos
+  if (val > 1024) val = 1024
+  if (val < 0) val = 0
+  return Math.floor(val * 190 / 1024)
+}
 
-export function positionToString(position) {
+export function positionToStringInternal(position) {
   // position can be between 0 and 190
   return myMapReverse[position]
+}
+
+export function positionToString(x, y) {
+  const newX = getClosestVal(x)
+  const newY = getClosestVal(y)
+  return `${positionToStringInternal(newX)}${positionToStringInternal(newY)}`
 }
 
 export function stringToPosition(string) {
