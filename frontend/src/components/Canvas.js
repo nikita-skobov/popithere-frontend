@@ -45,7 +45,8 @@ export default class Canvas extends Component {
     })
     replaceCanvas(this.renderer.view)
     const modal = this.brain.ask.MyModal
-    this.currentGame = getCurrentGame({ renderer: this.renderer, modal, canvas: this })
+    const socket = this.brain.ask.Sockets
+    this.currentGame = getCurrentGame({ renderer: this.renderer, modal, socket, canvas: this })
     this.newGame()
   }
 

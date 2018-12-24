@@ -7,6 +7,7 @@ export default class Game {
     this.renderer = props.renderer
     this.root = props.root
     this.modal = props.modal
+    this.socket = props.socket
     this.canvas = props.canvas
     this.ticker = PIXI.ticker.shared
     this.buttons = []

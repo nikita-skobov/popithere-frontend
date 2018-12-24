@@ -6,7 +6,7 @@ import PopItHere from '../Games/PopItHere'
  * @todo write a fetch helper
  * to fetch the current game from a server
  */
-export function getCurrentGame({ renderer, modal, canvas }) {
+export function getCurrentGame({ renderer, modal, canvas, socket }) {
   const root = createRoot(renderer, { interactive: true })
 
   const modalInner = {
@@ -15,6 +15,13 @@ export function getCurrentGame({ renderer, modal, canvas }) {
     // to give Game access to setState, render, etc.
     isOpen: modal.isOpen,
     toggle: modal.toggle,
+  }
+
+  const socketInner = {
+    // only let user emit, and receive messages
+    // dont allow connect/disconnect handling
+    on: socket.on,
+    emit: socket.emit,
   }
 
   const canvasInner = {
@@ -26,6 +33,7 @@ export function getCurrentGame({ renderer, modal, canvas }) {
   return new PopItHere({
     renderer,
     root,
+    socket: socketInner,
     modal: modalInner,
     canvas: canvasInner,
   })
