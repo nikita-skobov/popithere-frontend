@@ -4,7 +4,7 @@ import * as PIXI from 'pixi.js'
 import Game from '../Game'
 import PopItSelection from './PopItSelection'
 
-import { reverseClosestVal, getClosestVal, positionToString } from '../../utils/positionParser'
+import { getRealPosition, positionToString } from '../../utils/positionParser'
 import { createImage } from '../../utils/PixiUtils'
 import { getLocalPosition, calculateCenterPosition, makeRandomId, reduceFrames } from '../../utils/GameUtils'
 
@@ -69,6 +69,7 @@ export default class PopItHere extends Game {
 
     this.pointerDown = this.pointerDown.bind(this)
     this.emitPopIt = this.emitPopIt.bind(this)
+    this.onPopIt = this.onPopIt.bind(this)
     this.popItChosenLive = this.popItChosenLive.bind(this)
     this.stopPoppingLive = this.stopPoppingLive.bind(this)
 
@@ -98,6 +99,12 @@ export default class PopItHere extends Game {
     // build mode
     const conditionCallback = () => !this.customBuildMode
     this.changeBackgroundColor([255, 0, 0], 1, 2, 100, conditionCallback.bind(this))
+
+    this.setupLivePopping()
+  }
+
+  setupLivePopping() {
+    this.socket.on('po', this.onPopIt)
   }
 
   changeBackgroundColor(colorArr, direction, nonFixedVal, delay, conditionCallback) {
@@ -404,6 +411,8 @@ export default class PopItHere extends Game {
     this.controlLayer = undefined
     this.customControls = undefined
     this.activeSprite = undefined
+
+    this.setupLivePopping()
   }
 
   customAddText(event) {
@@ -744,6 +753,7 @@ export default class PopItHere extends Game {
   }
 
   setupCustomBuilder() {
+    this.socket.off('po')
     this.customBuildMode = true
     this.removeButtons()
     this.addButton(this.endGameButton)
@@ -835,9 +845,27 @@ export default class PopItHere extends Game {
     }
   }
 
-  onPopIt(name, position) {
+  placeTexture(name, position) {
+    // TODO
+    // add a function call that retrieves a texture, or a texture array
+    // from the name... name should be agnostic to type of popit
+    // then depending on what you get, you call this.addImage or this.addGif
     console.log(name)
     console.log(position)
+    const { x, y } = calculateCenterPosition(name, position)
+    this.addImage(name, { x, y, container: this.stage })
+  }
+
+  onPopIt(obj) {
+    console.log('got popit fromm sserver!!')
+    console.log(obj)
+    let textureName = ''
+    Object.keys(obj).forEach((key) => {
+      textureName = key
+    })
+    const positionString = obj[textureName]
+    const pos = getRealPosition(positionString)
+    this.placeTexture(textureName, pos)
   }
 
   emitPopIt(event) {
