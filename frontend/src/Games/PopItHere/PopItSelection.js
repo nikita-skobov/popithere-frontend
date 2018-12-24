@@ -133,7 +133,7 @@ export default class PopItSelection extends Component {
   handleCustom(e) {
     e.preventDefault()
     this.game.modal.toggle()
-    this.game.stopPopping()
+    this.game.stopPoppingLive()
     this.game.clearCanvas()
     this.game.setupCustomBuilder()
   }
@@ -178,7 +178,7 @@ export default class PopItSelection extends Component {
   popItChosen(e) {
     e.preventDefault()
     const { name } = e.target
-    this.game.popItChosen('image', name)
+    this.game.popItChosenLive(name)
     this.game.modal.toggle()
   }
 

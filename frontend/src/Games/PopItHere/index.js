@@ -68,6 +68,11 @@ export default class PopItHere extends Game {
     this.root.addChild(this.stage)
 
     this.pointerDown = this.pointerDown.bind(this)
+    this.emitPopIt = this.emitPopIt.bind(this)
+    this.popItChosenLive = this.popItChosenLive.bind(this)
+    this.stopPoppingLive = this.stopPoppingLive.bind(this)
+
+    // config for custom build mode
     this.customBuildMode = false
     this.customAddImage = this.customAddImage.bind(this)
     this.customRotate = this.customRotate.bind(this)
@@ -104,6 +109,21 @@ export default class PopItHere extends Game {
         this.changeBackgroundColor(arr, dir, nonFixed, delay, conditionCallback)
       }, delay)
     }
+  }
+
+  popItChosenLive(name) {
+    // the live version of popItChosen
+    this.poppingName = name
+    if (!this.currentlyPopping) {
+      this.currentlyPopping = true
+      this.root.on('pointerdown', this.emitPopIt)
+    }
+  }
+
+  stopPoppingLive() {
+    this.poppingName = null
+    this.currentlyPopping = false
+    this.root.off('pointerdown', this.emitPopIt)
   }
 
   popItChosen(type, val) {
@@ -815,7 +835,14 @@ export default class PopItHere extends Game {
     }
   }
 
-  emitPopIt(name, position) {
+  onPopIt(name, position) {
+    console.log(name)
+    console.log(position)
+  }
+
+  emitPopIt(event) {
+    const position = getLocalPosition(event, this.root)
+    const name = this.poppingName
     this.socket.emit('pi', {
       [name]: positionToString(position),
     })
