@@ -17,7 +17,7 @@ function SocketManager(datastore) {
     },
 
     connect: (cb) => {
-      const ua = 'test'
+      const ua = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaHQiOjEwMCwicGl0IjoxMCwiaWQiOiJkc2FkYXNkc2EiLCJtY2JiIjozMDAsImV4cCI6MTU0NTY4Mzk5OCwiaWF0IjoxNTQ1NjgzODE4fQ.hOjdkFG3-Oays1u2kSLYvN8UXM4ED5N6N62YwL9ExRufAR-Tu2b-Tjt8aBmKg8lk9RkR5fL_3-whg8GAfRy4Jg'
       socket = io.connect(`${socketEndpoint}?ua=${ua}`, {
         transports: ['websocket', 'xhr-polling'],
       })
