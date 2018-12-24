@@ -20,3 +20,5 @@ exports.assetList = [
 exports.defaultButtons = [
   'options',
 ]
+
+exports.socketEndpoint = 'https://sockets.popithere.com'
