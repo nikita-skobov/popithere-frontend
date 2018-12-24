@@ -4,6 +4,7 @@ import * as PIXI from 'pixi.js'
 import Game from '../Game'
 import PopItSelection from './PopItSelection'
 
+import { reverseClosestVal, getClosestVal } from '../../utils/positionParser'
 import { createImage } from '../../utils/PixiUtils'
 import { getLocalPosition, calculateCenterPosition, makeRandomId, reduceFrames } from '../../utils/GameUtils'
 
