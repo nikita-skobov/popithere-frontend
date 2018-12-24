@@ -6,6 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 
 import App from './App'
 import './utils/libgif'
+import SocketManager from './utils/SocketManager'
 
 const reactContainer = document.getElementById('react-container')
 
@@ -23,6 +24,16 @@ const brain = (function brain() {
     p_resizeCallbacks: resizeCallbacks,
   }
 }())
+
+const socketManager = SocketManager(brain)
+
+brain.tell.Sockets.connect((socket) => {
+  console.log('connected')
+  socket.emit('sni', '')
+  socket.on('sno', (sn) => {
+    console.log(`got servername: ${sn}`)
+  })
+})
 
 window.addEventListener('resize', (e) => {
   try {
