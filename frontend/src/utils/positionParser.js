@@ -96,3 +96,16 @@ export function stringToPosition(string) {
   // string can be any of the character codes generated into myMap
   return myMap[string]
 }
+
+export function getRealPosition(str) {
+  let x = str.charAt(0)
+  let y = str.charAt(1)
+
+  x = stringToPosition(x)
+  y = stringToPosition(y)
+
+  x = reverseClosestVal(x)
+  y = reverseClosestVal(y)
+
+  return { x, y }
+}
