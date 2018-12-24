@@ -12,6 +12,9 @@ function SocketManager(datastore) {
     on: (type, cb) => {
       socket.on(type, cb)
     },
+    off: (type) => {
+      socket.off(type)
+    },
 
     connect: (cb) => {
       const ua = 'test'

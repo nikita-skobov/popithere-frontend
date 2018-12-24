@@ -21,6 +21,7 @@ export function getCurrentGame({ renderer, modal, canvas, socket }) {
     // only let user emit, and receive messages
     // dont allow connect/disconnect handling
     on: socket.on,
+    off: socket.off,
     emit: socket.emit,
   }
 
