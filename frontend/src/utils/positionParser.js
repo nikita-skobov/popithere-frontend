@@ -64,7 +64,7 @@ Object.keys(myMap).forEach((key) => {
   myMapReverse[myMap[key]] = key
 })
 
-function getClosestVal(pos) {
+export function getClosestVal(pos) {
   // position is a number from 0 to 1024
   // this function returns a number between 0 and 190
   let val = pos
