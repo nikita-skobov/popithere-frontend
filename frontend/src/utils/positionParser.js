@@ -78,7 +78,8 @@ export function positionToStringInternal(position) {
   return myMapReverse[position]
 }
 
-export function positionToString(x, y) {
+export function positionToString(obj) {
+  const { x, y } = obj
   const newX = getClosestVal(x)
   const newY = getClosestVal(y)
   return `${positionToStringInternal(newX)}${positionToStringInternal(newY)}`
