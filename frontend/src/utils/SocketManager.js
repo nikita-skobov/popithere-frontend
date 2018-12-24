@@ -33,7 +33,7 @@ function SocketManager(datastore) {
     },
   }
 
-  brain.rememberMe('Sockets', retObj)
+  brain.store('Sockets', retObj)
   return retObj
 }
 
