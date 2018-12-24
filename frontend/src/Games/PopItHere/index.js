@@ -4,7 +4,7 @@ import * as PIXI from 'pixi.js'
 import Game from '../Game'
 import PopItSelection from './PopItSelection'
 
-import { reverseClosestVal, getClosestVal } from '../../utils/positionParser'
+import { reverseClosestVal, getClosestVal, positionToString } from '../../utils/positionParser'
 import { createImage } from '../../utils/PixiUtils'
 import { getLocalPosition, calculateCenterPosition, makeRandomId, reduceFrames } from '../../utils/GameUtils'
 
@@ -813,5 +813,11 @@ export default class PopItHere extends Game {
       const { x, y } = calculateCenterPosition(this.poppingName, clickPos)
       this.addImage(this.poppingName, { x, y, container: this.stage })
     }
+  }
+
+  emitPopIt(name, position) {
+    this.socket.emit('pi', {
+      [name]: positionToString(position),
+    })
   }
 }
