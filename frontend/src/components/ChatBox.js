@@ -27,11 +27,28 @@ export default class ChatBox extends Component {
 
     this.brain.store('ChatBox', this)
     this.addChat = this.addChat.bind(this)
+
+    this.socket = this.brain.ask.Sockets
+    if (this.socket.isConnected()) {
+      this.socket.on('co', (chatObj) => {
+        const newChatObj = {
+          name: chatObj.i,
+          msg: chatObj.t,
+        }
+        this.addChat(newChatObj)
+      })
+    }
   }
 
   componentDidMount() {
     const size = this.brain.ask.Canvas.leaflet.offsetHeight
     this.setState({ maxHeight: size * 0.9 })
+  }
+
+  componentWillUnmount() {
+    if (this.socket.isConnected()) {
+      this.socket.off('ci')
+    }
   }
 
   addChat(chat) {
