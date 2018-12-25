@@ -18,7 +18,7 @@ function SocketManager(datastore) {
 
     isConnected: () => socket && socket.connected,
 
-    connect: (cb, token) => {
+    connect: (token, cb) => {
       socket = io.connect(`${socketEndpoint}?ua=${token}`, {
         transports: ['websocket', 'xhr-polling'],
       })
