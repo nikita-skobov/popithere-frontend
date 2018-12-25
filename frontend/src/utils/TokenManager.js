@@ -1,7 +1,10 @@
 /* global localStorage fetch */
+import * as jwtDecode from 'jwt-decode'
+
 import {
   loginEndpoint,
 } from '../customConfig'
+
 
 const has = Object.prototype.hasOwnProperty
 
@@ -16,7 +19,10 @@ function TokenManager(datastore) {
       token = tk
     },
     isTokenExpired: () => {
-      return false
+      const decoded = jwtDecode(token)
+      const rightNow = Math.floor(new Date().getTime() / 1000)
+      console.log(`expired? ${rightNow > decoded.exp}`)
+      return rightNow > decoded.exp
     },
     fetchToken: (cb) => {
       const oldToken = retObj.getToken()
