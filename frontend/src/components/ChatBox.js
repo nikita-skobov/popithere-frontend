@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
+import { Media } from 'reactstrap'
+
 import Avatars from '@dicebear/avatars'
 import SpriteCollection1 from '@dicebear/avatars-identicon-sprites'
 import SpriteCollection2 from '@dicebear/avatars-male-sprites'
@@ -41,12 +43,7 @@ export default class ChatBox extends Component {
     this.state = {
       colorIndex: 0,
       maxHeight: 300,
-      chats: [
-        {
-          name: 'olive oil',
-          msg: 'asdsadsadsadsadsa',
-        },
-      ],
+      chats: [],
     }
 
     this.brain.store('ChatBox', this)
@@ -110,7 +107,13 @@ export default class ChatBox extends Component {
       <div className="input-margins chat-box" style={{ maxHeight }}>
         {chats.slice(0).reverse().map((item) => {
           const { name, msg } = item
-          return <div> <span>{name}</span>: {msg} </div>
+          return (
+            <Media>
+              <Media left>
+              
+              </Media>
+            </Media>
+          )
         })}
       </div>
     )
