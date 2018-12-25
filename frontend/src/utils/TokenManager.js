@@ -7,7 +7,7 @@ const has = Object.prototype.hasOwnProperty
 
 function TokenManager(datastore) {
   const brain = datastore
-  let token = ''
+  let token = localStorage.getItem('token')
 
   const retObj = {
     getToken: () => token,
