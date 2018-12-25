@@ -46,6 +46,9 @@ export default class App extends Component {
           this.afterLogIn()
         }
       })
+    } else {
+      // already logged in
+      this.afterLogIn()
     }
   }
 
