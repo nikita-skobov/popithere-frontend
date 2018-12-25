@@ -1,6 +1,15 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
+import Avatars from '@dicebear/avatars'
+import SpriteCollection1 from '@dicebear/avatars-identicon-sprites'
+import SpriteCollection2 from '@dicebear/avatars-male-sprites'
+import SpriteCollection3 from '@dicebear/avatars-female-sprites'
+
+const avatars1 = new Avatars(SpriteCollection1)
+const avatars2 = new Avatars(SpriteCollection2)
+const avatars3 = new Avatars(SpriteCollection3)
+
 export default class ChatBox extends Component {
   constructor(props) {
     super(props)
