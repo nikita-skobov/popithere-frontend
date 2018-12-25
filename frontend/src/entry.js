@@ -7,6 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import App from './App'
 import './utils/libgif'
 import SocketManager from './utils/SocketManager'
+import TokenManager from './utils/TokenManager'
 
 const reactContainer = document.getElementById('react-container')
 
@@ -26,6 +27,7 @@ const brain = (function brain() {
 }())
 
 const socketManager = SocketManager(brain)
+const tokenManager = TokenManager(brain)
 
 brain.tell.Sockets.connect((socket) => {
   console.log('connected')
