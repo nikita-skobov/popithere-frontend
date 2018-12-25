@@ -20,6 +20,7 @@ export default class App extends Component {
     this.brain.store('App', this)
 
     this.shouldResize = this.shouldResize.bind(this)
+    this.afterLogIn = this.afterLogIn.bind(this)
 
     const tokenManager = this.brain.ask.Tokens
     const token = tokenManager.getToken()
@@ -41,10 +42,23 @@ export default class App extends Component {
         } else if (tk) {
           // if just the token then everything is good
           tokenManager.storeToken(tk)
-          this.setState({ loggedIn: true })
+          this.afterLogIn()
         }
       })
     }
+  }
+
+  afterLogIn() {
+    const token = this.brain.ask.Tokens.getToken()
+    this.setState({ loggedIn: true })
+
+    this.brain.tell.Sockets.connect(token, (socket) => {
+      console.log('connected')
+      socket.emit('sni', '')
+      socket.on('sno', (sn) => {
+        console.log(`got servername: ${sn}`)
+      })
+    })
   }
 
   shouldResize(iw, ih) {

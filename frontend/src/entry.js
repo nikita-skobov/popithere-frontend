@@ -29,14 +29,6 @@ const brain = (function brain() {
 const socketManager = SocketManager(brain)
 const tokenManager = TokenManager(brain)
 
-brain.tell.Sockets.connect((socket) => {
-  console.log('connected')
-  socket.emit('sni', '')
-  socket.on('sno', (sn) => {
-    console.log(`got servername: ${sn}`)
-  })
-})
-
 window.addEventListener('resize', (e) => {
   try {
     const ih = window.innerHeight
