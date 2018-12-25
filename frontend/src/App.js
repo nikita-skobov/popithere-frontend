@@ -3,7 +3,6 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 import Canvas from './components/Canvas'
-import Buttons from './components/Buttons'
 import Chat from './components/Chat'
 import MyModal from './components/MyModal'
 
