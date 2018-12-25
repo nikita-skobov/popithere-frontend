@@ -27,6 +27,7 @@ export default class App extends Component {
 
     this.state = {
       loggedIn: token && !tokenManager.isTokenExpired(),
+      connected: this.brain.ask.Sockets.isConnected(),
     }
 
     const { loggedIn } = this.state
@@ -53,6 +54,7 @@ export default class App extends Component {
     this.setState({ loggedIn: true })
 
     this.brain.tell.Sockets.connect(token, (socket) => {
+      this.setState({ connected: true })
       console.log('connected')
       socket.emit('sni', '')
       socket.on('sno', (sn) => {
@@ -78,17 +80,21 @@ export default class App extends Component {
   }
 
   render() {
-    const { loggedIn } = this.state
-    if (loggedIn) {
-      return [
-        <Canvas brain={this.brain} />,
-        <Chat brain={this.brain} />,
-        <MyModal brain={this.brain} />,
-      ]
+    const { loggedIn, connected } = this.state
+    if (!loggedIn) {
+      // otherwise render placceholder while we are fetching the token
+      return <div>logging in please wait</div>
     }
 
-    // otherwise render placceholder while we are fetching the token
-    return <div>logging in please wait</div>
+    if (!connected) {
+      return <div>Connecting to socket server. please wait</div>
+    }
+
+    return [
+      <Canvas brain={this.brain} />,
+      <Chat brain={this.brain} />,
+      <MyModal brain={this.brain} />,
+    ]
   }
 }
 
