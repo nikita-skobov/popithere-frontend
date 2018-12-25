@@ -20,6 +20,31 @@ export default class App extends Component {
     this.brain.store('App', this)
 
     this.shouldResize = this.shouldResize.bind(this)
+
+    const tokenManager = this.brain.ask.Tokens
+    const token = tokenManager.getToken()
+
+    this.state = {
+      loggedIn: token && !tokenManager.isTokenExpired(),
+    }
+
+    const { loggedIn } = this.state
+    if (!loggedIn) {
+      // fetch new token first
+      tokenManager.fetchToken((err, tk, msg) => {
+        if (err) {
+          // handle this later lmao
+        } else if (tk && msg) {
+          // if token, and also warning messsage
+          // tell user something about how someone might
+          // have used their token!
+        } else if (tk) {
+          // if just the token then everything is good
+          tokenManager.storeToken(tk)
+          this.setState({ loggedIn: true })
+        }
+      })
+    }
   }
 
   shouldResize(iw, ih) {
@@ -39,11 +64,17 @@ export default class App extends Component {
   }
 
   render() {
-    return [
-      <Canvas brain={this.brain} />,
-      <Chat brain={this.brain} />,
-      <MyModal brain={this.brain} />,
-    ]
+    const { loggedIn } = this.state
+    if (loggedIn) {
+      return [
+        <Canvas brain={this.brain} />,
+        <Chat brain={this.brain} />,
+        <MyModal brain={this.brain} />,
+      ]
+    }
+
+    // otherwise render placceholder while we are fetching the token
+    return <div>logging in please wait</div>
   }
 }
 
