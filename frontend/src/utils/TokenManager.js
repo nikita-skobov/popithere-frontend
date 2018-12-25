@@ -30,7 +30,7 @@ function TokenManager(datastore) {
         // old token already exists, so well add it as a header
         fetch(loginEndpoint, {
           headers: {
-            'X-Custom-Token': oldToken,
+            Authorization: oldToken,
           },
         })
           .then(resp => resp.json())
