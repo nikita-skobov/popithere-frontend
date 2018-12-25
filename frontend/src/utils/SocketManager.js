@@ -17,14 +17,28 @@ function SocketManager(datastore) {
     },
 
     connect: (cb) => {
-      const ua = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaHQiOjEwMCwicGl0IjoxMCwiaWQiOiJkc2FkYXNkc2EiLCJtY2JiIjozMDAsImV4cCI6MTU0NTY4Mzk5OCwiaWF0IjoxNTQ1NjgzODE4fQ.hOjdkFG3-Oays1u2kSLYvN8UXM4ED5N6N62YwL9ExRufAR-Tu2b-Tjt8aBmKg8lk9RkR5fL_3-whg8GAfRy4Jg'
-      socket = io.connect(`${socketEndpoint}?ua=${ua}`, {
-        transports: ['websocket', 'xhr-polling'],
-      })
+      const actualConnect = (token, callback) => {
+        socket = io.connect(`${socketEndpoint}?ua=${token}`, {
+          transports: ['websocket', 'xhr-polling'],
+        })
 
-      socket.on('connect', () => {
-        cb(socket)
-      })
+        socket.on('connect', () => {
+          callback(socket)
+        })
+      }
+      const tokenManager = brain.ask.Tokens
+      let token = tokenManager.getToken()
+      if (token && !tokenManager.isTokenExpired()) {
+        // token exists, and is not expired. proceed to connect
+        actualConnect(token, cb)
+      } else {
+        // otherwise fetch token, and then connect
+        tokenManager.fetchToken((newToken) => {
+          token = newToken
+          tokenManager.storeToken(token)
+          actualConnect(token, cb)
+        })
+      }
     },
 
     disconnect: () => {
