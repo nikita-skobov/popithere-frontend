@@ -16,9 +16,7 @@ function SocketManager(datastore) {
       socket.off(type)
     },
 
-    isConnected: () => {
-      return socket && socket.connected
-    },
+    isConnected: () => socket && socket.connected,
 
     connect: (cb, token) => {
       socket = io.connect(`${socketEndpoint}?ua=${token}`, {
