@@ -35,10 +35,15 @@ export default class App extends Component {
       tokenManager.fetchToken((err, tk, msg) => {
         if (err) {
           // handle this later lmao
+          console.log(err)
         } else if (tk && msg) {
           // if token, and also warning messsage
           // tell user something about how someone might
           // have used their token!
+          console.log('DID SOMEBODY USE YOUR TOKEN????')
+          console.log(msg)
+          tokenManager.storeToken(tk)
+          this.afterLogIn()
         } else if (tk) {
           // if just the token then everything is good
           tokenManager.storeToken(tk)
