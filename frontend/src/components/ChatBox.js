@@ -43,6 +43,7 @@ export default class ChatBox extends Component {
     this.state = {
       colorIndex: 0,
       maxHeight: 300,
+      maxChatItems: 50,
       chats: [],
     }
 
@@ -71,7 +72,7 @@ export default class ChatBox extends Component {
   addChat(chat) {
     this.setState((prevState) => {
       const tempState = prevState
-      const { colorIndex } = tempState
+      const { colorIndex, maxChatItems } = tempState
       const name = chat.i
       const msg = chat.t
       let svg = ''
@@ -96,6 +97,11 @@ export default class ChatBox extends Component {
         svg,
         color,
       }
+
+      if (tempState.chats.length > maxChatItems) {
+        tempState.chats.shift()
+      }
+
       tempState.chats.push(newChat)
       return tempState
     })
