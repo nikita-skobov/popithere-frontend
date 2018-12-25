@@ -16,29 +16,14 @@ function SocketManager(datastore) {
       socket.off(type)
     },
 
-    connect: (cb) => {
-      const actualConnect = (token, callback) => {
-        socket = io.connect(`${socketEndpoint}?ua=${token}`, {
-          transports: ['websocket', 'xhr-polling'],
-        })
+    connect: (cb, token) => {
+      socket = io.connect(`${socketEndpoint}?ua=${token}`, {
+        transports: ['websocket', 'xhr-polling'],
+      })
 
-        socket.on('connect', () => {
-          callback(socket)
-        })
-      }
-      const tokenManager = brain.ask.Tokens
-      let token = tokenManager.getToken()
-      if (token && !tokenManager.isTokenExpired()) {
-        // token exists, and is not expired. proceed to connect
-        actualConnect(token, cb)
-      } else {
-        // otherwise fetch token, and then connect
-        tokenManager.fetchToken((newToken) => {
-          token = newToken
-          tokenManager.storeToken(token)
-          actualConnect(token, cb)
-        })
-      }
+      socket.on('connect', () => {
+        cb(socket)
+      })
     },
 
     disconnect: () => {
