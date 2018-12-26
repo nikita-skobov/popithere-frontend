@@ -103,6 +103,14 @@ export default class PopItHere extends Game {
     this.setupLivePopping()
   }
 
+  static endGame() {
+    console.log('end game called!!!')
+    this.stage.destroy()
+    this.root.off('pointerdown', this.emitPopIt)
+    this.root.off('pointerdown', this.pointerDown)
+    super.endGame()
+  }
+
   setupLivePopping() {
     this.socket.on('po', this.onPopIt)
   }
