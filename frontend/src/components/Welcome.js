@@ -99,7 +99,7 @@ export default class Welcome extends Component {
         <Row>
           {errors.length === 0 && (
             // no error, so render a confirm button to acknowledge warnings
-            <Button color="green">I Understand</Button>
+            <Button className="ma" color="info">I Understand</Button>
           )}
         </Row>
       </Col>
