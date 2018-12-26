@@ -38,16 +38,32 @@ export default class App extends Component {
         if (err) {
           // handle this later lmao
           console.log(err)
+          this.brain.tell.Welcome.addMessage({
+            message: 'Failed to log in',
+            error: err,
+          }, true)
         } else if (tk && msg) {
           // if token, and also warning messsage
           // tell user something about how someone might
           // have used their token!
           console.log('DID SOMEBODY USE YOUR TOKEN????')
           console.log(msg)
+          // the true parameter tells the welcome page to wait for user
+          // to confirm at the end of the welcome process.
+          // if true is not provided, then the welcome component closes
+          // automatically at the end of the welcome process
+          this.brain.tell.Welcome.addMessage({
+            message: 'Successfully logged in',
+            warning: msg,
+          }, true)
+          this.brain.tell.Welcome.addMessage('Connecting to socket server')
+
           tokenManager.storeToken(tk)
           this.afterLogIn()
         } else if (tk) {
           // if just the token then everything is good
+          this.brain.tell.Welcome.addMessage('Succesfully logged in')
+          this.brain.tell.Welcome.addMessage('Connecting to socket server')
           tokenManager.storeToken(tk)
           this.afterLogIn()
         }
@@ -68,6 +84,7 @@ export default class App extends Component {
       socket.emit('sni', '')
       socket.on('sno', (sn) => {
         console.log(`got servername: ${sn}`)
+        this.brain.tell.Welcome.addMessage('Successfully connected to socket server')
       })
     })
   }
