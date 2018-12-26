@@ -31,6 +31,13 @@ export default class App extends Component {
       ready: false,
     }
 
+    this.customMessages = {
+      loggingIn: 'Logging in',
+      connecting: 'Connecting to socket server',
+      logInSuccess: 'Successfully logged in',
+      connectSuccess: 'Successfully connected to socket server',
+    }
+
     const { loggedIn } = this.state
     if (!loggedIn) {
       // fetch new token first
@@ -53,17 +60,17 @@ export default class App extends Component {
           // if true is not provided, then the welcome component closes
           // automatically at the end of the welcome process
           this.brain.tell.Welcome.addMessage({
-            message: 'Successfully logged in',
+            message: this.customMessages.logInSuccess,
             warning: msg,
           }, true)
-          this.brain.tell.Welcome.addMessage('Connecting to socket server')
+          this.brain.tell.Welcome.addMessage(this.customMessages.connecting)
 
           tokenManager.storeToken(tk)
           this.afterLogIn()
         } else if (tk) {
           // if just the token then everything is good
-          this.brain.tell.Welcome.addMessage('Succesfully logged in')
-          this.brain.tell.Welcome.addMessage('Connecting to socket server')
+          this.brain.tell.Welcome.addMessage(this.customMessages.logInSuccess)
+          this.brain.tell.Welcome.addMessage(this.customMessages.connecting)
           tokenManager.storeToken(tk)
           this.afterLogIn()
         }
@@ -84,7 +91,7 @@ export default class App extends Component {
       socket.emit('sni', '')
       socket.on('sno', (sn) => {
         console.log(`got servername: ${sn}`)
-        this.brain.tell.Welcome.addMessage('Successfully connected to socket server')
+        this.brain.tell.Welcome.addMessage(this.customMessages.connectSuccess)
       })
     })
   }
@@ -106,11 +113,12 @@ export default class App extends Component {
   }
 
   render() {
-    const { loggedIn, connected, ready } = this.state
+    const { loggedIn, ready } = this.state
+    const { connecting, loggingIn } = this.customMessages
     if (!ready) {
       // otherwise render placceholder while we are fetching the token
       // and connecting to socket server
-      const msg = !loggedIn ? 'Logging in' : 'Connecting to socket server'
+      const msg = !loggedIn ? loggingIn : connecting
       return <Welcome initialMessage={msg} brain={this.brain} />
     }
 
