@@ -47,9 +47,11 @@ export default class App extends Component {
           // a bad error is an http error, something like
           // the lambda function responding with forbidden or something
           this.brain.tell.Welcome.addMessage({
-            message: this.customMessages.logInFail,
-            error: typeof badErr === 'object' ? badErr.message : badErr,
+            warning: this.customMessages.logInFail,
           }, true)
+          this.brain.tell.Welcome.addMessage({
+            error: typeof badErr === 'object' ? badErr.message : badErr,
+          })
           this.brain.tell.Welcome.welcomeDone()
         } else if (err) {
           // a regular error is something possibly expected like
@@ -58,9 +60,11 @@ export default class App extends Component {
           // with a token that doesnt allow chatting/popping
           console.log(err)
           this.brain.tell.Welcome.addMessage({
-            message: this.customMessages.logInFail,
-            warning: typeof err === 'object' ? err.message : err,
+            warning: this.customMessages.logInFail,
           }, true)
+          this.brain.tell.Welcome.addMessage({
+            warning: typeof err === 'object' ? err.message : err,
+          })
 
           // TODO: Implement this on socket server
           // this.brain.tell.Tokens.storeToken('notoken')
