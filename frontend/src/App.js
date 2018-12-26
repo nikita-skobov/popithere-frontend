@@ -48,6 +48,7 @@ export default class App extends Component {
             message: 'Failed to log in',
             error: err,
           }, true)
+          this.brain.tell.Welcome.welcomeDone()
         } else if (tk && msg) {
           // if token, and also warning messsage
           // tell user something about how someone might
