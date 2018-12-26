@@ -68,9 +68,11 @@ export default class Welcome extends Component {
               {messages.map(msg => <ListGroupItem color="success">{msg}</ListGroupItem>)}
             </ListGroup>
           </Row>
+          <Row />
+          <Row />
+          <Row />
         </Col>
       )
-      return messages.map(msg => <div>{msg}</div>)
     }
 
     // if done is true, and ready is true, then this wouldnt even render
@@ -78,17 +80,30 @@ export default class Welcome extends Component {
     // this means that ready is FALSE, and thus we should show the user
     // all of the errors/warnings, as well as make them click a button before proceding
     return (
-      <div>
-        {messages.map(msg => <div>{msg}</div>)}
-        {warnings.map(wrn => <div>{wrn}</div>)}
-        {errors.length === 0 && (
-          // no error, so render a confirm button to acknowledge warnings
-          <Button color="green">I Understand</Button>
-        )}
-        {errors.map(err => <div>{err}</div>)}
-      </div>
+      <Col className="wlc">
+        <Row>
+          <ListGroup className="w100">
+            {messages.map(msg => <ListGroupItem color="success">{msg}</ListGroupItem>)}
+          </ListGroup>
+        </Row>
+        <Row>
+          <ListGroup className="w100">
+            {warnings.map(wrn => <ListGroupItem color="warning">{wrn}</ListGroupItem>)}
+          </ListGroup>
+        </Row>
+        <Row>
+          <ListGroup className="w100">
+            {errors.map(err => <ListGroupItem color="danger">{err}</ListGroupItem>)}
+          </ListGroup>
+        </Row>
+        <Row>
+          {errors.length === 0 && (
+            // no error, so render a confirm button to acknowledge warnings
+            <Button color="green">I Understand</Button>
+          )}
+        </Row>
+      </Col>
     )
-    
   }
 }
 
