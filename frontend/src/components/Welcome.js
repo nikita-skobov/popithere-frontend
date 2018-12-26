@@ -57,7 +57,6 @@ export default class Welcome extends Component {
   }
 
   render() {
-    console.log('rendering welcome')
     const { messages, done, warnings, errors } = this.state
     if (!done) {
       // not done, so keep rendering a list of messages

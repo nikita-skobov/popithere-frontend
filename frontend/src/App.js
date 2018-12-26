@@ -58,7 +58,6 @@ export default class App extends Component {
           // ip limit, or database being unavailable for some reason
           // in this case, I still want to allow access to the site, just
           // with a token that doesnt allow chatting/popping
-          console.log(err)
           this.brain.tell.Welcome.addMessage({
             warning: this.customMessages.logInFail,
           }, true)
@@ -67,8 +66,8 @@ export default class App extends Component {
           })
 
           // TODO: Implement this on socket server
-          // this.brain.tell.Tokens.storeToken('notoken')
-          // this.afterLogIn()
+          this.brain.tell.Tokens.storeToken('notoken')
+          this.afterLogIn()
         } else if (tk && msg) {
           // if token, and also warning messsage
           // tell user something about how someone might
