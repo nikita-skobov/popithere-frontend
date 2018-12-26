@@ -63,8 +63,8 @@ export default class Welcome extends Component {
       // not done, so keep rendering a list of messages
       return (
         <Col className="wlc">
-          <Row>
-            <ListGroup className="w100">
+          <Row className="mt3">
+            <ListGroup className="w100 mtb3">
               {messages.map(msg => <ListGroupItem color="success">{msg}</ListGroupItem>)}
             </ListGroup>
           </Row>
@@ -81,18 +81,18 @@ export default class Welcome extends Component {
     // all of the errors/warnings, as well as make them click a button before proceding
     return (
       <Col className="wlc">
-        <Row>
-          <ListGroup className="w100">
+        <Row className="mt3">
+          <ListGroup className="w100 mtb3">
             {messages.map(msg => <ListGroupItem color="success">{msg}</ListGroupItem>)}
           </ListGroup>
         </Row>
         <Row>
-          <ListGroup className="w100">
+          <ListGroup className="w100 mtb3">
             {warnings.map(wrn => <ListGroupItem color="warning">{wrn}</ListGroupItem>)}
           </ListGroup>
         </Row>
         <Row>
-          <ListGroup className="w100">
+          <ListGroup className="w100 mtb3">
             {errors.map(err => <ListGroupItem color="danger">{err}</ListGroupItem>)}
           </ListGroup>
         </Row>
