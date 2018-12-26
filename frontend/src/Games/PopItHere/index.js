@@ -859,11 +859,8 @@ export default class PopItHere extends Game {
   onPopIt(obj) {
     console.log('got popit fromm sserver!!')
     console.log(obj)
-    let textureName = ''
-    Object.keys(obj).forEach((key) => {
-      textureName = key
-    })
-    const positionString = obj[textureName]
+    const positionString = obj.substr(0, 2)
+    const textureName = obj.substr(2, obj.length)
     const pos = getRealPosition(positionString)
     this.placeTexture(textureName, pos)
   }
@@ -871,8 +868,8 @@ export default class PopItHere extends Game {
   emitPopIt(event) {
     const position = getLocalPosition(event, this.root)
     const name = this.poppingName
-    this.socket.emit('pi', {
-      [name]: positionToString(position),
-    })
+    const posString = positionToString(position)
+    const msg = `${posString}${name}`
+    this.socket.emit('pi', msg)
   }
 }
