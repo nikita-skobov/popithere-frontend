@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 import Canvas from './components/Canvas'
 import Chat from './components/Chat'
 import MyModal from './components/MyModal'
+import Welcome from './components/Welcome'
 
 export default class App extends Component {
   constructor(props) {
@@ -88,13 +89,11 @@ export default class App extends Component {
 
   render() {
     const { loggedIn, connected } = this.state
-    if (!loggedIn) {
+    if (!loggedIn || !connected) {
       // otherwise render placceholder while we are fetching the token
-      return <div>logging in please wait</div>
-    }
-
-    if (!connected) {
-      return <div>Connecting to socket server. please wait</div>
+      // and connecting to socket server
+      const msg = !loggedIn ? 'Logging in' : 'Connecting to socket server'
+      return <Welcome initialMessage={msg} brain={this.brain} />
     }
 
     return [
