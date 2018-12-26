@@ -61,19 +61,14 @@ export default class App extends Component {
             message: this.customMessages.logInFail,
             warning: typeof err === 'object' ? err.message : err,
           }, true)
-          this.brain.tell.Tokens.storeToken('notoken')
-          this.afterLogIn()
-          // this.brain.tell.Welcome.welcomeDone()
+
+          // TODO: Implement this on socket server
+          // this.brain.tell.Tokens.storeToken('notoken')
+          // this.afterLogIn()
         } else if (tk && msg) {
           // if token, and also warning messsage
           // tell user something about how someone might
           // have used their token!
-          console.log('DID SOMEBODY USE YOUR TOKEN????')
-          console.log(msg)
-          // the true parameter tells the welcome page to wait for user
-          // to confirm at the end of the welcome process.
-          // if true is not provided, then the welcome component closes
-          // automatically at the end of the welcome process
           this.brain.tell.Welcome.addMessage({
             message: this.customMessages.logInSuccess,
             warning: msg,
