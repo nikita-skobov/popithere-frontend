@@ -28,6 +28,7 @@ export default class App extends Component {
     this.state = {
       loggedIn: token && !tokenManager.isTokenExpired(),
       connected: this.brain.ask.Sockets.isConnected(),
+      ready: false,
     }
 
     const { loggedIn } = this.state
@@ -88,8 +89,8 @@ export default class App extends Component {
   }
 
   render() {
-    const { loggedIn, connected } = this.state
-    if (!loggedIn || !connected) {
+    const { loggedIn, connected, ready } = this.state
+    if (!ready) {
       // otherwise render placceholder while we are fetching the token
       // and connecting to socket server
       const msg = !loggedIn ? 'Logging in' : 'Connecting to socket server'
