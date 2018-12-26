@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
+import { Button } from 'reactstrap'
+
 export default class Welcome extends Component {
   constructor(props) {
     super()
@@ -11,6 +13,7 @@ export default class Welcome extends Component {
       warnings: [],
       errors: [],
       ready: true,
+      done: false,
     }
 
     this.brain.store('Welcome', this)
@@ -42,8 +45,28 @@ export default class Welcome extends Component {
 
   render() {
     console.log('rendering welcome')
-    const { messages } = this.state
-    return messages.map(msg => <div>{msg}</div>)
+    const { messages, done, warnings, errors } = this.state
+    if (!done) {
+      // not done, so keep rendering a list of messages
+      return messages.map(msg => <div>{msg}</div>)
+    }
+
+    // if done is true, and ready is true, then this wouldnt even render
+    // because this component unmounts when both flags are true.
+    // this means that ready is FALSE, and thus we should show the user
+    // all of the errors/warnings, as well as make them click a button before proceding
+    return (
+      <div>
+        {messages.map(msg => <div>{msg}</div>)}
+        {warnings.map(wrn => <div>{wrn}</div>)}
+        {errors.length === 0 && (
+          // no error, so render a confirm button to acknowledge warnings
+          <Button color="green">I Understand</Button>
+        )}
+        {errors.map(err => <div>{err}</div>)}
+      </div>
+    )
+    
   }
 }
 
