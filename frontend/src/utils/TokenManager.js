@@ -49,10 +49,10 @@ function TokenManager(datastore) {
               cb(obj.error, null, null)
             } else {
               // unknown error
-              cb(obj, null, null)
+              cb(null, null, null, obj)
             }
           })
-          .catch(err => cb(err))
+          .catch(err => cb(null, null, null, err))
       } else {
         // first time fetching, so we dont add token to header
         fetch(loginEndpoint)
@@ -69,10 +69,10 @@ function TokenManager(datastore) {
               cb(obj.error, null, null)
             } else {
               // unknown error
-              cb(obj, null, null)
+              cb(null, null, null, obj)
             }
           })
-          .catch(err => cb(err))
+          .catch(err => cb(null, null, null, err))
       }
     },
   }

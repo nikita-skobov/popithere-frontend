@@ -33,6 +33,7 @@ export default class App extends Component {
     this.customMessages = {
       loggingIn: 'Logging in',
       connecting: 'Connecting to socket server',
+      logInFail: 'Failed to log in',
       logInSuccess: 'Successfully logged in',
       connectSuccess: 'Successfully connected to socket server',
       invalidToken: 'Socket server rejected your token. Try refreshing the page to generate a new one',
@@ -41,13 +42,24 @@ export default class App extends Component {
     const { loggedIn } = this.state
     if (!loggedIn) {
       // fetch new token first
-      tokenManager.fetchToken((err, tk, msg) => {
-        if (err) {
-          // handle this later lmao
+      tokenManager.fetchToken((err, tk, msg, badErr) => {
+        if (badErr) {
+          // a bad error is an http error, something like
+          // the lambda function responding with forbidden or something
+          this.brain.tell.Welcome.addMessage({
+            message: this.customMessages.logInFail,
+            error: typeof badErr === 'object' ? badErr.message : badErr,
+          }, true)
+          this.brain.tell.Welcome.welcomeDone()
+        } else if (err) {
+          // a regular error is something possibly expected like
+          // ip limit, or database being unavailable for some reason
+          // in this case, I still want to allow access to the site, just
+          // with a token that doesnt allow chatting/popping
           console.log(err)
           this.brain.tell.Welcome.addMessage({
-            message: 'Failed to log in',
-            error: err,
+            message: this.customMessages.logInFail,
+            warning: typeof err === 'object' ? err.message : err,
           }, true)
           this.brain.tell.Welcome.welcomeDone()
         } else if (tk && msg) {
