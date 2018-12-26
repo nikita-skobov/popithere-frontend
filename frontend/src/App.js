@@ -61,7 +61,9 @@ export default class App extends Component {
             message: this.customMessages.logInFail,
             warning: typeof err === 'object' ? err.message : err,
           }, true)
-          this.brain.tell.Welcome.welcomeDone()
+          this.brain.tell.Tokens.storeToken('notoken')
+          this.afterLogIn()
+          // this.brain.tell.Welcome.welcomeDone()
         } else if (tk && msg) {
           // if token, and also warning messsage
           // tell user something about how someone might
