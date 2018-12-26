@@ -9,11 +9,14 @@ export default class Welcome extends Component {
     this.state = {
       messages: [props.initialMessage],
     }
+
+    this.brain.store('Welcome', this)
   }
 
   render() {
     console.log('rendering welcome')
-    return <div />
+    const { messages } = this.state
+    return messages.map(msg => <div>{msg}</div>)
   }
 }
 
