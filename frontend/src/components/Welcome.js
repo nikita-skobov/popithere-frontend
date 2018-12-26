@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import { Button } from 'reactstrap'
+import { Button, Row, Col, ListGroup, ListGroupItem } from 'reactstrap'
 
 export default class Welcome extends Component {
   constructor(props) {
@@ -61,6 +61,15 @@ export default class Welcome extends Component {
     const { messages, done, warnings, errors } = this.state
     if (!done) {
       // not done, so keep rendering a list of messages
+      return (
+        <Col className="wlc">
+          <Row>
+            <ListGroup className="w100">
+              {messages.map(msg => <ListGroupItem color="success">{msg}</ListGroupItem>)}
+            </ListGroup>
+          </Row>
+        </Col>
+      )
       return messages.map(msg => <div>{msg}</div>)
     }
 
