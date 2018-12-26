@@ -18,6 +18,9 @@ function TokenManager(datastore) {
       localStorage.setItem('token', tk)
       token = tk
     },
+    removeToken: () => {
+      localStorage.removeItem('token')
+    },
     isTokenExpired: () => {
       const decoded = jwtDecode(token)
       const rightNow = Math.floor(new Date().getTime() / 1000)
