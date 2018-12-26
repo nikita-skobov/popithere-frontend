@@ -96,7 +96,6 @@ export default class App extends Component {
 
   afterLogIn() {
     const token = this.brain.ask.Tokens.getToken()
-    this.setState({ loggedIn: true })
 
     this.brain.tell.Sockets.connect(token, (socket) => {
       console.log('connected')
