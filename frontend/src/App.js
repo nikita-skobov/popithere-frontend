@@ -35,6 +35,7 @@ export default class App extends Component {
       connecting: 'Connecting to socket server',
       logInSuccess: 'Successfully logged in',
       connectSuccess: 'Successfully connected to socket server',
+      invalidToken: 'Socket server rejected your token. Try refreshing the page to generate a new one',
     }
 
     const { loggedIn } = this.state
@@ -91,6 +92,15 @@ export default class App extends Component {
       socket.on('sno', (sn) => {
         console.log(`got servername: ${sn}`)
         this.brain.tell.Welcome.addMessage(this.customMessages.connectSuccess)
+        this.brain.tell.Welcome.welcomeDone()
+      })
+
+      socket.on('it', () => {
+        // invalid token
+        this.brain.tell.Tokens.removeToken()
+        this.brain.tell.Welcome.addMessage({
+          error: this.customMessages.invalidToken,
+        }, true)
         this.brain.tell.Welcome.welcomeDone()
       })
     })
