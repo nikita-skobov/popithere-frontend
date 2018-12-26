@@ -92,6 +92,7 @@ export default class App extends Component {
       socket.on('sno', (sn) => {
         console.log(`got servername: ${sn}`)
         this.brain.tell.Welcome.addMessage(this.customMessages.connectSuccess)
+        this.brain.tell.Welcome.welcomeDone()
       })
     })
   }

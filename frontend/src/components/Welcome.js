@@ -43,6 +43,19 @@ export default class Welcome extends Component {
     }
   }
 
+  welcomeDone() {
+    const { ready } = this.state
+    // if ready that means there were no errors/warnings,
+    // so simply tell the App, that the welcome steps are done
+    if (ready) {
+      this.brain.tell.App.setState({ ready: true })
+    } else {
+      // if not ready, simply set done to true, and that
+      // will render a confirmation button
+      this.setState({ done: true })
+    }
+  }
+
   render() {
     console.log('rendering welcome')
     const { messages, done, warnings, errors } = this.state
