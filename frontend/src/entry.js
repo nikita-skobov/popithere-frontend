@@ -6,6 +6,8 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 
 import App from './App'
 import './utils/libgif'
+import SocketManager from './utils/SocketManager'
+import TokenManager from './utils/TokenManager'
 
 const reactContainer = document.getElementById('react-container')
 
@@ -23,6 +25,9 @@ const brain = (function brain() {
     p_resizeCallbacks: resizeCallbacks,
   }
 }())
+
+const socketManager = SocketManager(brain)
+const tokenManager = TokenManager(brain)
 
 window.addEventListener('resize', (e) => {
   try {

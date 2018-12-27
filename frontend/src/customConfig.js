@@ -20,3 +20,6 @@ exports.assetList = [
 exports.defaultButtons = [
   'options',
 ]
+
+exports.socketEndpoint = 'https://sockets.popithere.com'
+exports.loginEndpoint = 'https://f6hfmvw9v0.execute-api.us-east-1.amazonaws.com/staging/login'

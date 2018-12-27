@@ -18,17 +18,21 @@ export default class ChatInput extends Component {
 
   onSubmit(e) {
     e.preventDefault()
-    document.activeElement.blur()
-    const input = e.target.getElementsByTagName('input')[0]
-    const { value } = input
-    input.value = ''
+    const { Sockets } = this.brain.ask
+    const socket = Sockets
+    if (socket.isConnected()) {
+      document.activeElement.blur()
+      const input = e.target.getElementsByTagName('input')[0]
+      const { value } = input
+      input.value = ''
+      socket.emit('ci', value)
+      // const chat = {
+      //   name: 'Johhnuyyy',
+      //   msg: value,
+      // }
 
-    const chat = {
-      name: 'Johhnuyyy',
-      msg: value,
+      // this.brain.tell.ChatBox.addChat(chat)
     }
-
-    this.brain.tell.ChatBox.addChat(chat)
   }
 
 // <Buttons buttonsWidth={80} brain={this.brain} />,

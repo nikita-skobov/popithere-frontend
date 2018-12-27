@@ -7,10 +7,13 @@ export default class Game {
     this.renderer = props.renderer
     this.root = props.root
     this.modal = props.modal
+    this.socket = props.socket
     this.canvas = props.canvas
     this.ticker = PIXI.ticker.shared
     this.buttons = []
     this.animating = false
+
+    this.gameIsActive = true
 
     this.center = { x: this.renderer.width / 2, y: this.renderer.height / 2 }
 
@@ -28,16 +31,18 @@ export default class Game {
   }
 
   setBackgroundColor(color) {
-    if (typeof color === 'number') {
-      let hexString = color.toString(16)
-      while (hexString.length < 6) {
-        hexString = `0${hexString}`
+    if (this.gameIsActive) {
+      if (typeof color === 'number') {
+        let hexString = color.toString(16)
+        while (hexString.length < 6) {
+          hexString = `0${hexString}`
+        }
+        this.renderer.view.style.backgroundColor = `#${hexString}`
+      } else {
+        this.renderer.view.style.backgroundColor = color
       }
-      this.renderer.view.style.backgroundColor = `#${hexString}`
-    } else {
-      this.renderer.view.style.backgroundColor = color
+      return null
     }
-    return null
   }
 
   getButtons() {
@@ -71,13 +76,18 @@ export default class Game {
   }
 
   endGame() {
+    console.log('other end game called')
     this.animating = false
     this.clearDrawHooks()
     this.ticker.remove(this.draw)
-    this.root.destroy(true)
+    this.setBackgroundColor('white')
+    this.root.interactive = false
+    this.root.destroy()
+    // this.root.destroy({ children: true, texture: false, baseTexture: false })
 
     this.renderer.backgroundColor = 0x000000
     this.renderer.clear()
+    this.gameIsActive = false
   }
 
   addGif(textures, { x, y, play = true, atIndex = null, container = this.root }) {
