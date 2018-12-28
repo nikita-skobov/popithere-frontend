@@ -34,6 +34,7 @@ export function getCurrentGame({ renderer, modal, canvas, socket, uploader }) {
   const uploadInner = {
     storeData: uploader.storeData,
     clearData: uploader.clearData,
+    uploadData: uploader.uploadData,
   }
 
   return new PopItHere({

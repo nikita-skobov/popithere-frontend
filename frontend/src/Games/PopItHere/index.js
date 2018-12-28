@@ -277,6 +277,7 @@ export default class PopItHere extends Game {
 
       const goSubmit = () => {
         console.log('go submit')
+        this.uploader.uploadData('myo-data')
       }
 
       // create 2 buttons: back and submit so user can
