@@ -12,6 +12,9 @@ import {
   Input,
 } from 'reactstrap'
 
+import 'rc-slider/assets/index.css'
+import Slider, { Range } from 'rc-slider'
+
 import PropTypes from 'prop-types'
 
 import * as PIXI from 'pixi.js'
@@ -146,9 +149,8 @@ export default class PopItSelection extends Component {
   }
 
   handleRotate(e) {
-    e.preventDefault()
-    const degrees = parseFloat(e.target.value)
-    const radians = degrees * 3.14 / 180
+    const degree = e
+    const radians = degree * (Math.PI / 180)
     this.game.activeSprite.rotation = radians
   }
 
@@ -224,6 +226,7 @@ export default class PopItSelection extends Component {
               <FormGroup className="w100">
                 <Label for="rotateControl">Enter a rotation value in degrees</Label>
                 <Input onChange={this.handleRotate} type="number" defaultValue={rotation * 180 / 3.14159} id="rotateControl" name="customRotate" />
+                <Slider onChange={this.handleRotate} min={-180} max={180} defaultValue={0} />
               </FormGroup>
             </Form>
           </Col>
