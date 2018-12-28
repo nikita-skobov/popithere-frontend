@@ -2,7 +2,6 @@
 import React from 'react'
 
 import {
-  loginEndpoint,
   urlEndpoint,
 } from '../customConfig'
 
@@ -97,7 +96,6 @@ function UploadManager(datastore) {
 
       const resp2 = (obj) => {
         const { URL, error } = obj
-        console.log(obj)
         if (error && error === 'Invalid token') {
           brain.tell.Welcome.addMessage('Token is expired? Trying to generate new one')
 
