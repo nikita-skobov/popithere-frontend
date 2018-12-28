@@ -99,7 +99,7 @@ function UploadManager(datastore) {
         console.log(obj)
         if (error && error === 'Invalid token') {
           brain.tell.Welcome.addMessage('Token is expired? Trying to generate new one')
-          brain.ask.Tokens.fetchTokens((e1, tok, msg, e2) => {
+          brain.ask.Tokens.fetchToken((e1, tok, msg, e2) => {
             let tryAgain = false
             if (tok) {
               tryAgain = true
