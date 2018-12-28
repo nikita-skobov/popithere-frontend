@@ -39,7 +39,7 @@ function UploadManager(datastore) {
       // notify user that data was not cleared
       return false
     },
-    uploadData: (key, cb) => {
+    uploadData: async (key, cb) => {
       if (!has.call(tempData, key)) return cb(`Cannot find data for: ${key}`)
 
       const token = brain.ask.Tokens.getToken()
@@ -47,7 +47,7 @@ function UploadManager(datastore) {
 
       modal.toggle({
         modal: () => (
-          <Welcome brain={brain} initialMessage="custom" />
+          <Welcome brain={brain} initialMessage="Requesting data signature" />
         ),
         notCloseable: true,
         modalTitle: 'Uploading Your Data',
@@ -57,11 +57,18 @@ function UploadManager(datastore) {
       fetch(urlEndpoint, {
         method: 'GET',
         headers: new Headers({ Authorization: token }),
-      }).then(resp => resp.json())
+      }).then((resp) => {
+        brain.tell.Welcome.addMessage('Got response')
+        return resp.json()
+      })
         .then((obj) => {
           const { URL, error } = obj
-          if (error) return cb(error)
           console.log(obj)
+          if (error && error === 'Invalid token') {
+            brain.tell.Welcome.addMessage('Token is expired? Trying to generate new one')
+          } else if (error) {
+            return cb(error)
+          }
           const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
           fetch(URL, {
             method: 'PUT',
