@@ -189,10 +189,7 @@ export default class PopItSelection extends Component {
       return (
         <Row>
           <Col fluid>
-            <Button onClick={this.handleButton} name="text" block>Text</Button>
-          </Col>
-          <Col fluid>
-            <Button onClick={this.handleButton} name="image" block>Image</Button>
+            <Button onClick={this.handleButton} name="image" block>Pre-Made</Button>
           </Col>
           <Col fluid>
             <Button onClick={this.handleCustom} name="custom" block>Make your own!</Button>
