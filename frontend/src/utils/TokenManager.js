@@ -35,7 +35,8 @@ function TokenManager(datastore) {
     },
     isTokenExpired: () => {
       const { exp } = claims
-      const rightNow = Math.floor(new Date().getTime() / 1000)
+      const bufferTime = 30 // give a 30 second buffer to expiration
+      const rightNow = Math.floor(new Date().getTime() / 1000) + (bufferTime)
       const isExpired = (rightNow > exp)
       console.log(`expired? ${isExpired}`)
       return isExpired
