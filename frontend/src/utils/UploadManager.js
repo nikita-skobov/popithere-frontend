@@ -35,7 +35,7 @@ function UploadManager(datastore) {
       // notify user that data was not cleared
       return false
     },
-    uploadData: (key) => {
+    uploadData: (key, cb) => {
       if (!has.call(tempData, key)) return false
 
       const token = brain.ask.Tokens.getToken()
@@ -47,6 +47,7 @@ function UploadManager(datastore) {
       }).then(resp => resp.json())
         .then((obj) => {
           const { URL, error } = obj
+          if (error) return cb(error)
           console.log(obj)
           const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
           fetch(URL, {
@@ -54,10 +55,15 @@ function UploadManager(datastore) {
             body: blob,
           }).then((resp) => {
             console.log(resp)
-            if (resp.statusCode === 200) console.log('we gooooooood')
+            if (resp.statusCode === 200) {
+              return cb(null)
+            }
+            return cb(resp)
           })
-            .catch(err => console.log(err))
+            .catch(err => cb(err))
+          return null
         })
+        .catch(err => cb(err))
     },
   }
 

@@ -242,11 +242,25 @@ export default class PopItHere extends Game {
 
       this.uploader.storeData('myo-data', dataArr)
 
+      let goBack
       const goSubmit = () => {
-        this.uploader.uploadData('myo-data')
+        const gb2 = goBack.bind(this)
+        this.uploader.uploadData('myo-data', gb2)
       }
 
-      const goBack = () => {
+      goBack = (err) => {
+        let actualErr = err
+        if (has.call(err, 'type') && err.type === 'pointerdown') {
+          // this means they just clicked the back button, err is a single
+          // argument that can either be an actual error, or a pointerdown event
+          actualErr = false
+        }
+        if (actualErr) {
+          console.log(actualErr)
+          // if there was an error submitting, then dont leave the preview mode.
+          // user should decide on their own if they want to leave preview mode.
+          return null
+        }
         this.uploader.clearData('myo-data')
         // resets everything to how it was prior to starting preview mode
         const ind = this.root.getChildIndex(tempButtonLayer)
