@@ -513,8 +513,8 @@ export default class PopItHere extends Game {
   onDragMove(sprite) {
     if (!this.customPreviewMode && sprite.isDragging) {
       const newPos = sprite.dragData.getLocalPosition(this.stage)
-      sprite.x = newPos.x
-      sprite.y = newPos.y
+      sprite.x = newPos.x - sprite.xOffCenter
+      sprite.y = newPos.y - sprite.yOffCenter
     }
   }
 
@@ -527,6 +527,23 @@ export default class PopItHere extends Game {
       this.placeSpriteOnTop(mySprite)
       mySprite.dragData = event.data
       mySprite.isDragging = true
+      const localPos = mySprite.dragData.getLocalPosition(mySprite)
+
+      // Could not figure this out :(
+      // maybe later
+      // const degree = mySprite.rotation * (180 / Math.PI)
+      // const localPos = mySprite.dragData.getLocalPosition(mySprite)
+      // const xOffRotate = localPos.x * Math.cos(degree) + localPos.y * Math.sin(degree)
+      // const yOffRotate = -(localPos.x * Math.sign(degree)) + localPos.y * Math.cos(degree)
+
+      if (mySprite.rotation <= 0.1 && mySprite.rotation >= -0.1) {
+        mySprite.xOffCenter = mySprite.scale.x * localPos.x
+        mySprite.yOffCenter = mySprite.scale.y * localPos.y
+      } else {
+        // if rotation is not close to 0, then dont bother calculating
+        mySprite.xOffCenter = 0
+        mySprite.xOffCenter = 0
+      }
 
       if (!this.activeSprite) {
         this.activeSprite = mySprite
