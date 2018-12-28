@@ -219,6 +219,7 @@ export default class PopItSelection extends Component {
 
     if (choice === 'rotate') {
       const { rotation } = this.game.activeSprite
+      const dfv = rotation * (180 / Math.PI)
       return (
         <Row>
           <Col fluid>
@@ -226,7 +227,7 @@ export default class PopItSelection extends Component {
               <FormGroup className="w100">
                 <Label for="rotateControl">Enter a rotation value in degrees</Label>
                 <Input onChange={this.handleRotate} type="number" defaultValue={rotation * 180 / 3.14159} id="rotateControl" name="customRotate" />
-                <Slider onChange={this.handleRotate} min={-180} max={180} defaultValue={0} />
+                <Slider onChange={this.handleRotate} min={-180} max={180} defaultValue={dfv} />
               </FormGroup>
             </Form>
           </Col>
