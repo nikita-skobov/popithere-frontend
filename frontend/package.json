@@ -49,6 +49,7 @@
     "jwt-decode": "^2.2.0",
     "pixi.js": "^4.8.2",
     "prop-types": "^15.6.2",
+    "rc-slider": "^8.6.4",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "reactstrap": "^6.5.0",
