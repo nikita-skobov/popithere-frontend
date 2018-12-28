@@ -11,12 +11,24 @@ const has = Object.prototype.hasOwnProperty
 function TokenManager(datastore) {
   const brain = datastore
   let token = localStorage.getItem('token')
+  let claims = {}
 
   const retObj = {
+    fillClaims: () => {
+      try {
+        const decoded = jwtDecode(token)
+        delete decoded.swv
+        claims = decoded
+      } catch (e) {
+        // just console log it i guess?
+        console.error(e)
+      }
+    },
     getToken: () => token,
     storeToken: (tk) => {
       localStorage.setItem('token', tk)
       token = tk
+      retObj.fillClaims()
     },
     removeToken: () => {
       localStorage.removeItem('token')
@@ -76,6 +88,8 @@ function TokenManager(datastore) {
       }
     },
   }
+
+  retObj.fillClaims()
 
   brain.store('Tokens', retObj)
   return retObj
