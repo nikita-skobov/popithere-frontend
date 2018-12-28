@@ -54,36 +54,53 @@ function UploadManager(datastore) {
       })
 
       const data = tempData[key]
-      fetch(urlEndpoint, {
-        method: 'GET',
-        headers: new Headers({ Authorization: token }),
-      }).then((resp) => {
+
+      const resp1 = (r) => {
         brain.tell.Welcome.addMessage('Got response')
-        return resp.json()
-      })
-        .then((obj) => {
-          const { URL, error } = obj
-          console.log(obj)
-          if (error && error === 'Invalid token') {
-            brain.tell.Welcome.addMessage('Token is expired? Trying to generate new one')
-          } else if (error) {
-            return cb(error)
+        try {
+          return r.json()
+        } catch (e) {
+          // this means its a response from S3, not lambda
+          if (r.status === 200) {
+            brain.tell.Welcome.addMessage('Successfully Uploaded!')
+            // return cb(null)
           }
+          brain.tell.Welcome.addMessage('Oops! Error uploading data to server', true)
+          // return cb(r)
+        }
+      }
+
+      const errCatcher = (e) => {
+        console.log(e)
+        brain.tell.Welcome.addMessage(`Unkown error: ${e}`, true)
+        cb(e)
+      }
+
+      const resp2 = (obj) => {
+        const { URL, error } = obj
+        console.log(obj)
+        if (error && error === 'Invalid token') {
+          brain.tell.Welcome.addMessage('Token is expired? Trying to generate new one')
+        } else if (error) {
+          brain.tell.Welcome.addMessage(`Oops! Error getting a signature: ${error}`)
+          // return cb(error)
+        } else {
           const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
           fetch(URL, {
             method: 'PUT',
             body: blob,
-          }).then((resp) => {
-            console.log(resp)
-            if (resp.status === 200) {
-              return cb(null)
-            }
-            return cb(resp)
-          })
-            .catch(err => cb(err))
-          return null
-        })
-        .catch(err => cb(err))
+          }).then(resp1)
+            .catch(errCatcher)
+        }
+      }
+
+      fetch(urlEndpoint, {
+        method: 'GET',
+        headers: new Headers({ Authorization: token }),
+      })
+        .then(resp1)
+        .then(resp2)
+        .catch(errCatcher)
     },
   }
 
