@@ -21,6 +21,7 @@ import RowGenerator from './RowGenerator'
 import { assetList } from '../../customConfig'
 
 import { createImage, createGifTextures } from '../../utils/PixiUtils'
+import ContainsBadWords from '../../utils/ContainsBadWords'
 
 const notSubmit = (e) => {
   e.preventDefault()
@@ -123,8 +124,14 @@ export default class PopItSelection extends Component {
       this.setState({ textInput: value })
     } else if (name === 'submit') {
       const { textInput, fontSize } = this.state
-      this.game.customNewImage(textInput, 'text', { fontSize })
-      this.game.modal.toggle()
+
+      if (!ContainsBadWords(textInput)) {
+        this.game.customNewImage(textInput, 'text', { fontSize })
+        this.game.modal.toggle()
+      } else {
+        
+      }
+
     } else if (name === 'size') {
       this.setState({ fontSize: parseInt(value, 10) })
     }
