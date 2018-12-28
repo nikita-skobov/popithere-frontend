@@ -96,7 +96,7 @@ function UploadManager(datastore) {
 
       const resp2 = (obj) => {
         const { URL, error } = obj
-        if (error && error === 'Invalid token') {
+        if (error && error === 'Token expired') {
           brain.tell.Welcome.addMessage('Token is expired? Trying to generate new one')
 
           if (tokenReFetched) {

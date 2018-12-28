@@ -11,21 +11,35 @@ const has = Object.prototype.hasOwnProperty
 function TokenManager(datastore) {
   const brain = datastore
   let token = localStorage.getItem('token')
+  let claims = {}
 
   const retObj = {
+    fillClaims: () => {
+      try {
+        const decoded = jwtDecode(token)
+        delete decoded.swv
+        claims = decoded
+      } catch (e) {
+        // just console log it i guess?
+        console.error(e)
+      }
+    },
     getToken: () => token,
     storeToken: (tk) => {
       localStorage.setItem('token', tk)
       token = tk
+      retObj.fillClaims()
     },
     removeToken: () => {
       localStorage.removeItem('token')
     },
     isTokenExpired: () => {
-      const decoded = jwtDecode(token)
-      const rightNow = Math.floor(new Date().getTime() / 1000)
-      console.log(`expired? ${rightNow > decoded.exp}`)
-      return rightNow > decoded.exp
+      const { exp } = claims
+      const bufferTime = 30 // give a 30 second buffer to expiration
+      const rightNow = Math.floor(new Date().getTime() / 1000) + (bufferTime)
+      const isExpired = (rightNow > exp)
+      console.log(`expired? ${isExpired}`)
+      return isExpired
     },
     fetchToken: (cb) => {
       const oldToken = retObj.getToken()
@@ -76,6 +90,8 @@ function TokenManager(datastore) {
       }
     },
   }
+
+  retObj.fillClaims()
 
   brain.store('Tokens', retObj)
   return retObj
