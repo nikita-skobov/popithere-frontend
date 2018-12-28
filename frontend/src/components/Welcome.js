@@ -100,7 +100,7 @@ export default class Welcome extends Component {
         <Row>
           {errors.length === 0 && (
             // no error, so render a confirm button to acknowledge warnings
-            <Button className="ma" color="info">{this.btnText}</Button>
+            <Button onClick={this.callback} className="ma" color="info">{this.btnText}</Button>
           )}
         </Row>
       </Col>
