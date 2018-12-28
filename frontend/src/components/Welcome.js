@@ -8,6 +8,7 @@ export default class Welcome extends Component {
     super()
     this.brain = props.brain
     this.callback = props.callback
+    this.btnText = props.btnText
 
     this.state = {
       messages: [props.initialMessage],
@@ -99,7 +100,7 @@ export default class Welcome extends Component {
         <Row>
           {errors.length === 0 && (
             // no error, so render a confirm button to acknowledge warnings
-            <Button className="ma" color="info">I Understand</Button>
+            <Button className="ma" color="info">{this.btnText}</Button>
           )}
         </Row>
       </Col>
@@ -111,4 +112,5 @@ Welcome.propTypes = {
   brain: PropTypes.instanceOf(Object).isRequired,
   initialMessage: PropTypes.string.isRequired,
   callback: PropTypes.func.isRequired,
+  btnText: PropTypes.string.isRequired,
 }

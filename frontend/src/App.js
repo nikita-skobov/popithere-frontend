@@ -145,7 +145,7 @@ export default class App extends Component {
       // otherwise render placceholder while we are fetching the token
       // and connecting to socket server
       const msg = !loggedIn ? loggingIn : connecting
-      return <Welcome callback={this.onWelcomeDone} initialMessage={msg} brain={this.brain} />
+      return <Welcome btnText="I Understand" callback={this.onWelcomeDone} initialMessage={msg} brain={this.brain} />
     }
 
     return [
