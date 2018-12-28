@@ -240,8 +240,11 @@ export default class PopItHere extends Game {
         dataArr = [this.renderer.plugins.extract.base64(newTextures)]
       }
 
-      console.log(dataArr)
       this.uploader.storeData('myo-data', dataArr)
+
+      const goSubmit = () => {
+        this.uploader.uploadData('myo-data')
+      }
 
       const goBack = () => {
         this.uploader.clearData('myo-data')
@@ -273,11 +276,6 @@ export default class PopItHere extends Game {
         setTimeout(() => {
           this.setBackgroundColor('white')
         }, 100)
-      }
-
-      const goSubmit = () => {
-        console.log('go submit')
-        this.uploader.uploadData('myo-data')
       }
 
       // create 2 buttons: back and submit so user can
