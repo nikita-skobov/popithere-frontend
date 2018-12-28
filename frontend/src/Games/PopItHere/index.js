@@ -233,7 +233,18 @@ export default class PopItHere extends Game {
 
       callback(this.modal.isOpen()) // notifies modal that the preview mode is ready
 
+      let dataArr
+      if (Array.isArray(newTextures)) {
+        dataArr = newTextures.map(txt => this.renderer.plugins.extract.base64(txt))
+      } else {
+        dataArr = [this.renderer.plugins.extract.base64(newTextures)]
+      }
+
+      console.log(dataArr)
+      this.uploader.storeData('myo-data', dataArr)
+
       const goBack = () => {
+        this.uploader.clearData('myo-data')
         // resets everything to how it was prior to starting preview mode
         const ind = this.root.getChildIndex(tempButtonLayer)
         this.root.removeChildAt(ind)
