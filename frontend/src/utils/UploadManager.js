@@ -60,14 +60,14 @@ function UploadManager(datastore) {
       const data = tempData[key]
 
       const resp1 = (r) => {
-        brain.tell.Welcome.addMessage('Got response')
+        brain.tell.Welcome.addMessage('Got response', true)
         if (r.statusText === 'OK') {
           // this is a response from S3
           if (r.status === 200) {
             brain.tell.Welcome.addMessage('Successfully Uploaded!')
             brain.tell.Welcome.welcomeDone()
           } else {
-            brain.tell.Welcome.addMessage('Oops! Error uploading data to server', true)
+            brain.tell.Welcome.addMessage('Oops! Error uploading data to server')
             brain.tell.Welcome.welcomeDone()
           }
         } else {
