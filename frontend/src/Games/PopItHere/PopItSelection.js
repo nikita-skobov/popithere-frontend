@@ -129,7 +129,7 @@ export default class PopItSelection extends Component {
         this.game.customNewImage(textInput, 'text', { fontSize })
         this.game.modal.toggle()
       } else {
-        
+        this.setState({ invalidInput: true })
       }
 
     } else if (name === 'size') {
@@ -304,14 +304,14 @@ export default class PopItSelection extends Component {
     }
 
     if (choice === 'text') {
-      const { fontSize } = this.state
+      const { fontSize, invalidInput } = this.state
       return (
         <Col fluid>
           <Form onSubmit={notSubmit}>
             <Row>
               <FormGroup>
                 <Label for="textinput">Enter your text: </Label>
-                <Input onChange={this.handleText} type="text" placeholder="Your Text Here..." id="textinput" name="text" />
+                <Input invalid={invalidInput} onChange={this.handleText} type="text" placeholder="Your Text Here..." id="textinput" name="text" />
               </FormGroup>
             </Row>
             <Row>
