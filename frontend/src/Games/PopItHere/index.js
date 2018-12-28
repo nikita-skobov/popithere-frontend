@@ -513,8 +513,8 @@ export default class PopItHere extends Game {
   onDragMove(sprite) {
     if (!this.customPreviewMode && sprite.isDragging) {
       const newPos = sprite.dragData.getLocalPosition(this.stage)
-      sprite.x = newPos.x
-      sprite.y = newPos.y
+      sprite.x = newPos.x - sprite.xOffCenter
+      sprite.y = newPos.y - sprite.yOffCenter
     }
   }
 
@@ -526,6 +526,9 @@ export default class PopItHere extends Game {
     if (!this.customPreviewMode) {
       this.placeSpriteOnTop(mySprite)
       mySprite.dragData = event.data
+      const localPos = mySprite.dragData.getLocalPosition(mySprite)
+      mySprite.xOffCenter = mySprite.scale.x * localPos.x
+      mySprite.yOffCenter = mySprite.scale.y * localPos.y
       mySprite.isDragging = true
 
       if (!this.activeSprite) {
