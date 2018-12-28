@@ -34,10 +34,11 @@ function TokenManager(datastore) {
       localStorage.removeItem('token')
     },
     isTokenExpired: () => {
-      const decoded = jwtDecode(token)
+      const { exp } = claims
       const rightNow = Math.floor(new Date().getTime() / 1000)
-      console.log(`expired? ${rightNow > decoded.exp}`)
-      return rightNow > decoded.exp
+      const isExpired = (rightNow > exp)
+      console.log(`expired? ${isExpired}`)
+      return isExpired
     },
     fetchToken: (cb) => {
       const oldToken = retObj.getToken()
