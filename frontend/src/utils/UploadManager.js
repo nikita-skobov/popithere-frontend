@@ -46,6 +46,7 @@ function UploadManager(datastore) {
       const modal = brain.ask.MyModal
 
       let cbErr = false
+      let dataName = '-'
 
       const onWelcomeDone = () => {
         modal.toggle()
@@ -68,6 +69,11 @@ function UploadManager(datastore) {
           // this is a response from S3
           if (r.status === 200) {
             brain.tell.Welcome.addMessage('Successfully Uploaded!')
+            brain.tell.Welcome.addMessage(`Your data name should be: ${dataName}`)
+            brain.tell.Welcome.addMessage(`
+            Please Note: there is a chance that your data name might be altered slightly. In
+            this case, it will have a . in front, and it will be followed by several random characters.
+            `)
             brain.tell.Welcome.welcomeDone()
           } else {
             cbErr = 'Error uploading data to server'
@@ -97,6 +103,10 @@ function UploadManager(datastore) {
           brain.tell.Welcome.addMessage(`Oops! Error getting a signature: ${error}`)
           brain.tell.Welcome.welcomeDone()
         } else {
+          const splitUrl = URL.split('/')
+          const path = splitUrl[3]; // wow I actually needed to use a semicolon here
+          [dataName] = path.split('.')
+
           brain.tell.Welcome.addMessage('Successfully got signature')
           brain.tell.Welcome.addMessage('Uploading data to storage server')
           const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
