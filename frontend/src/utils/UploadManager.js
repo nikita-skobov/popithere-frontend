@@ -46,6 +46,7 @@ function UploadManager(datastore) {
       const modal = brain.ask.MyModal
 
       let cbErr = false
+      let tokenReFetched = false
       let dataName = '-'
       let rootFetch
 
@@ -99,7 +100,15 @@ function UploadManager(datastore) {
         console.log(obj)
         if (error && error === 'Invalid token') {
           brain.tell.Welcome.addMessage('Token is expired? Trying to generate new one')
+
+          if (tokenReFetched) {
+            brain.tell.Welcome.addMessage('Already tried fetching token, and it failed. Try refreshing your page. If this error persists, please notify the site owner.')
+            brain.tell.Welcome.welcomeDone()
+            return null
+          }
+
           brain.ask.Tokens.fetchToken((e1, tok, msg, e2) => {
+            tokenReFetched = true
             let tryAgain = false
             if (tok) {
               tryAgain = true
