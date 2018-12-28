@@ -36,7 +36,7 @@ function UploadManager(datastore) {
       return false
     },
     uploadData: (key, cb) => {
-      if (!has.call(tempData, key)) return false
+      if (!has.call(tempData, key)) return cb(`Cannot find data for: ${key}`)
 
       const token = brain.ask.Tokens.getToken()
 
