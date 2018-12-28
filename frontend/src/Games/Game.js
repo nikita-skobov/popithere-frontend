@@ -202,6 +202,7 @@ export default class Game {
       const obj = {
         name: btn.name,
         text: btn.text,
+        notCloseable: btn.notCloseable,
       }
 
       if (has.call(btn, 'on')) {
