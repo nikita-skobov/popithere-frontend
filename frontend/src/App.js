@@ -21,6 +21,7 @@ export default class App extends Component {
 
     this.shouldResize = this.shouldResize.bind(this)
     this.afterLogIn = this.afterLogIn.bind(this)
+    this.onWelcomeDone = this.onWelcomeDone.bind(this)
 
     const tokenManager = this.brain.ask.Tokens
     const token = tokenManager.getToken()
@@ -94,6 +95,10 @@ export default class App extends Component {
     }
   }
 
+  onWelcomeDone() {
+    this.setState({ ready: true })
+  }
+
   afterLogIn() {
     const token = this.brain.ask.Tokens.getToken()
 
@@ -140,7 +145,7 @@ export default class App extends Component {
       // otherwise render placceholder while we are fetching the token
       // and connecting to socket server
       const msg = !loggedIn ? loggingIn : connecting
-      return <Welcome initialMessage={msg} brain={this.brain} />
+      return <Welcome callback={this.onWelcomeDone} initialMessage={msg} brain={this.brain} />
     }
 
     return [
