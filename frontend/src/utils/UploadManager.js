@@ -1,6 +1,7 @@
-/* global fetch */
+/* global fetch Headers Blob */
 import {
   loginEndpoint,
+  urlEndpoint,
 } from '../customConfig'
 
 const has = Object.prototype.hasOwnProperty
@@ -33,6 +34,30 @@ function UploadManager(datastore) {
       }
       // notify user that data was not cleared
       return false
+    },
+    uploadData: (key) => {
+      if (!has.call(tempData, key)) return false
+
+      const token = brain.ask.Tokens.getToken()
+
+      const data = tempData[key]
+      fetch(urlEndpoint, {
+        method: 'GET',
+        headers: new Headers({ Authorization: token }),
+      }).then(resp => resp.json())
+        .then((obj) => {
+          const { URL, error } = obj
+          console.log(obj)
+          const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
+          fetch(URL, {
+            method: 'PUT',
+            body: blob,
+          }).then((resp) => {
+            console.log(resp)
+            if (resp.statusCode === 200) console.log('we gooooooood')
+          })
+            .catch(err => console.log(err))
+        })
     },
   }
 

@@ -23,3 +23,4 @@ exports.defaultButtons = [
 
 exports.socketEndpoint = 'https://sockets.popithere.com'
 exports.loginEndpoint = 'https://2dhx9pojm5.execute-api.us-east-1.amazonaws.com/staging/issue/login'
+exports.urlEndpoint = 'https://2dhx9pojm5.execute-api.us-east-1.amazonaws.com/staging/issue/url'
