@@ -21,6 +21,7 @@ import RowGenerator from './RowGenerator'
 import { assetList } from '../../customConfig'
 
 import { createImage, createGifTextures } from '../../utils/PixiUtils'
+import ContainsBadWords from '../../utils/ContainsBadWords'
 
 const notSubmit = (e) => {
   e.preventDefault()
@@ -123,8 +124,14 @@ export default class PopItSelection extends Component {
       this.setState({ textInput: value })
     } else if (name === 'submit') {
       const { textInput, fontSize } = this.state
-      this.game.customNewImage(textInput, 'text', { fontSize })
-      this.game.modal.toggle()
+
+      if (!ContainsBadWords(textInput)) {
+        this.game.customNewImage(textInput, 'text', { fontSize })
+        this.game.modal.toggle()
+      } else {
+        this.setState({ invalidInput: true })
+      }
+
     } else if (name === 'size') {
       this.setState({ fontSize: parseInt(value, 10) })
     }
@@ -297,14 +304,14 @@ export default class PopItSelection extends Component {
     }
 
     if (choice === 'text') {
-      const { fontSize } = this.state
+      const { fontSize, invalidInput } = this.state
       return (
         <Col fluid>
           <Form onSubmit={notSubmit}>
             <Row>
               <FormGroup>
                 <Label for="textinput">Enter your text: </Label>
-                <Input onChange={this.handleText} type="text" placeholder="Your Text Here..." id="textinput" name="text" />
+                <Input invalid={invalidInput} onChange={this.handleText} type="text" placeholder="Your Text Here..." id="textinput" name="text" />
               </FormGroup>
             </Row>
             <Row>
