@@ -1,8 +1,12 @@
 /* global fetch Headers Blob */
+import React from 'react'
+
 import {
   loginEndpoint,
   urlEndpoint,
 } from '../customConfig'
+
+import Welcome from '../components/Welcome'
 
 const has = Object.prototype.hasOwnProperty
 
@@ -39,6 +43,15 @@ function UploadManager(datastore) {
       if (!has.call(tempData, key)) return cb(`Cannot find data for: ${key}`)
 
       const token = brain.ask.Tokens.getToken()
+      const modal = brain.ask.MyModal
+
+      modal.toggle({
+        modal: () => (
+          <Welcome brain={brain} initialMessage="custom" />
+        ),
+        notCloseable: true,
+        modalTitle: 'Uploading Your Data',
+      })
 
       const data = tempData[key]
       fetch(urlEndpoint, {
