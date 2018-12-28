@@ -42,11 +42,12 @@ function UploadManager(datastore) {
     uploadData: async (key, cb) => {
       if (!has.call(tempData, key)) return cb(`Cannot find data for: ${key}`)
 
-      const token = brain.ask.Tokens.getToken()
+      let token = brain.ask.Tokens.getToken()
       const modal = brain.ask.MyModal
 
       let cbErr = false
       let dataName = '-'
+      let rootFetch
 
       const onWelcomeDone = () => {
         modal.toggle()
@@ -98,6 +99,28 @@ function UploadManager(datastore) {
         console.log(obj)
         if (error && error === 'Invalid token') {
           brain.tell.Welcome.addMessage('Token is expired? Trying to generate new one')
+          brain.ask.Tokens.fetchTokens((e1, tok, msg, e2) => {
+            let tryAgain = false
+            if (tok) {
+              tryAgain = true
+              token = tok
+              brain.tell.Tokens.storeToken(tok)
+              brain.tell.Welcome.addMessage('Got new token. Trying again')
+            }
+            if (msg) {
+              brain.tell.Welcome.addMessage(`Server issued a warning: ${msg}`)
+            }
+            if (e1) {
+              brain.tell.Welcome.addMessage(`Error getting token: ${e1}`)
+              brain.tell.Welcome.welcomeDone()
+            }
+            if (e2) {
+              brain.tell.Welcome.addMessage(`Unknown error getting token: ${typeof e2 === 'object' ? e2.message : e2}`)
+            }
+            if (tryAgain) {
+              rootFetch()
+            }
+          })
         } else if (error) {
           cbErr = error
           brain.tell.Welcome.addMessage(`Oops! Error getting a signature: ${error}`)
@@ -118,13 +141,17 @@ function UploadManager(datastore) {
         }
       }
 
-      fetch(urlEndpoint, {
-        method: 'GET',
-        headers: new Headers({ Authorization: token }),
-      })
-        .then(resp1)
-        .then(resp2)
-        .catch(errCatcher)
+      rootFetch = () => {
+        fetch(urlEndpoint, {
+          method: 'GET',
+          headers: new Headers({ Authorization: token }),
+        })
+          .then(resp1)
+          .then(resp2)
+          .catch(errCatcher)
+      }
+
+      rootFetch()
     },
   }
 
