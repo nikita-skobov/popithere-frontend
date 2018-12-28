@@ -26,12 +26,14 @@ function UploadManager(datastore) {
     clearData: (key) => {
       if (key && has.call(tempData, key)) {
         tempData[key] = null
+        delete tempData[key]
         return true
       }
       if (!key) {
         // if no key provided, clear all data
         Object.keys(tempData).forEach((okey) => {
           tempData[okey] = null
+          delete tempData[okey]
         })
         return true
       }
