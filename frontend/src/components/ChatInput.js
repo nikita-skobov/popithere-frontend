@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 
 import { InputGroup, Input, InputGroupAddon, Button } from 'reactstrap'
 
+import ContainsBadWords from '../utils/ContainsBadWords'
 import Buttons from './Buttons'
 
 export default class ChatInput extends Component {
@@ -25,7 +26,11 @@ export default class ChatInput extends Component {
       const input = e.target.getElementsByTagName('input')[0]
       const { value } = input
       input.value = ''
-      socket.emit('ci', value)
+
+      if (!ContainsBadWords(value)) {
+        socket.emit('ci', value)
+      }
+
       // const chat = {
       //   name: 'Johhnuyyy',
       //   msg: value,
