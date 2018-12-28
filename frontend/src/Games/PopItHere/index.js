@@ -168,6 +168,7 @@ export default class PopItHere extends Game {
       modal: () => (
         <PopItSelection game={this} startingChoice="preview" />
       ),
+      notCloseable: true,
       modalTitle: 'Preview Setup',
     })
   }
@@ -397,6 +398,7 @@ export default class PopItHere extends Game {
       modal: () => (
         <PopItSelection game={this} startingChoice="custom" />
       ),
+      notCloseable: true,
       modalTitle: 'Choose An Image',
     })
   }
