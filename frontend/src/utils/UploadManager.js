@@ -55,7 +55,7 @@ function UploadManager(datastore) {
             body: blob,
           }).then((resp) => {
             console.log(resp)
-            if (resp.statusCode === 200) {
+            if (resp.status === 200) {
               return cb(null)
             }
             return cb(resp)

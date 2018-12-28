@@ -250,7 +250,7 @@ export default class PopItHere extends Game {
 
       goBack = (err) => {
         let actualErr = err
-        if (has.call(err, 'type') && err.type === 'pointerdown') {
+        if (err && has.call(err, 'type') && err.type === 'pointerdown') {
           // this means they just clicked the back button, err is a single
           // argument that can either be an actual error, or a pointerdown event
           actualErr = false
