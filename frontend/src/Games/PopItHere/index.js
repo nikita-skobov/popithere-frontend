@@ -542,7 +542,7 @@ export default class PopItHere extends Game {
       } else {
         // if rotation is not close to 0, then dont bother calculating
         mySprite.xOffCenter = 0
-        mySprite.xOffCenter = 0
+        mySprite.yOffCenter = 0
       }
 
       if (!this.activeSprite) {
