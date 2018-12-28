@@ -45,9 +45,13 @@ function UploadManager(datastore) {
       const token = brain.ask.Tokens.getToken()
       const modal = brain.ask.MyModal
 
+      const onWelcomeDone = () => {
+        console.log('WELCOME DOOONNNNNE')
+      }
+
       modal.toggle({
         modal: () => (
-          <Welcome brain={brain} initialMessage="Requesting data signature" />
+          <Welcome brain={brain} callback={onWelcomeDone} btnText="Ok" initialMessage="Requesting data signature" />
         ),
         notCloseable: true,
         modalTitle: 'Uploading Your Data',
@@ -57,23 +61,25 @@ function UploadManager(datastore) {
 
       const resp1 = (r) => {
         brain.tell.Welcome.addMessage('Got response')
-        try {
-          return r.json()
-        } catch (e) {
-          // this means its a response from S3, not lambda
+        if (r.statusText === 'OK') {
+          // this is a response from S3
           if (r.status === 200) {
             brain.tell.Welcome.addMessage('Successfully Uploaded!')
-            // return cb(null)
+            brain.tell.Welcome.welcomeDone()
+          } else {
+            brain.tell.Welcome.addMessage('Oops! Error uploading data to server', true)
+            brain.tell.Welcome.welcomeDone()
           }
-          brain.tell.Welcome.addMessage('Oops! Error uploading data to server', true)
-          // return cb(r)
+        } else {
+          // this is a response from lambda
+          return r.json()
         }
       }
 
       const errCatcher = (e) => {
         console.log(e)
         brain.tell.Welcome.addMessage(`Unkown error: ${e}`, true)
-        cb(e)
+        brain.tell.Welcome.welcomeDone()
       }
 
       const resp2 = (obj) => {
@@ -83,8 +89,10 @@ function UploadManager(datastore) {
           brain.tell.Welcome.addMessage('Token is expired? Trying to generate new one')
         } else if (error) {
           brain.tell.Welcome.addMessage(`Oops! Error getting a signature: ${error}`)
-          // return cb(error)
+          brain.tell.Welcome.welcomeDone()
         } else {
+          brain.tell.Welcome.addMessage('Successfully got signature')
+          brain.tell.Welcome.addMessage('Uploading data to storage server')
           const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
           fetch(URL, {
             method: 'PUT',
