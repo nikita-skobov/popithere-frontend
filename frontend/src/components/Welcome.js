@@ -7,6 +7,8 @@ export default class Welcome extends Component {
   constructor(props) {
     super()
     this.brain = props.brain
+    this.callback = props.callback
+    this.btnText = props.btnText
 
     this.state = {
       messages: [props.initialMessage],
@@ -48,7 +50,7 @@ export default class Welcome extends Component {
     // if ready that means there were no errors/warnings,
     // so simply tell the App, that the welcome steps are done
     if (ready) {
-      this.brain.tell.App.setState({ ready: true })
+      this.callback()
     } else {
       // if not ready, simply set done to true, and that
       // will render a confirmation button
@@ -98,7 +100,7 @@ export default class Welcome extends Component {
         <Row>
           {errors.length === 0 && (
             // no error, so render a confirm button to acknowledge warnings
-            <Button className="ma" color="info">I Understand</Button>
+            <Button onClick={this.callback} className="ma" color="info">{this.btnText}</Button>
           )}
         </Row>
       </Col>
@@ -109,4 +111,6 @@ export default class Welcome extends Component {
 Welcome.propTypes = {
   brain: PropTypes.instanceOf(Object).isRequired,
   initialMessage: PropTypes.string.isRequired,
+  callback: PropTypes.func.isRequired,
+  btnText: PropTypes.string.isRequired,
 }

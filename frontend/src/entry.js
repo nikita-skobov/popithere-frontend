@@ -8,6 +8,7 @@ import App from './App'
 import './utils/libgif'
 import SocketManager from './utils/SocketManager'
 import TokenManager from './utils/TokenManager'
+import UploadManager from './utils/UploadManager'
 
 const reactContainer = document.getElementById('react-container')
 
@@ -28,6 +29,7 @@ const brain = (function brain() {
 
 const socketManager = SocketManager(brain)
 const tokenManager = TokenManager(brain)
+const uploadManager = UploadManager(brain)
 
 window.addEventListener('resize', (e) => {
   try {

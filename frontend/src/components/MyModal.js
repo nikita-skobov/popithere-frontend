@@ -48,13 +48,17 @@ export default class MyModal extends Component {
   render() {
     const { modal } = this.state
     const { type } = this.state
+    const isObj = typeof type === 'object'
+    console.log(type)
+    let closeable = true
+    if (isObj && type.notCloseable) closeable = false
     return (
       <Modal isOpen={modal} toggle={this.toggle} backdrop={false} fade={false}>
-        <ModalHeader toggle={this.toggle}>
+        <ModalHeader toggle={closeable && this.toggle}>
           {type === 'options' && (
             'Options'
           )}
-          {typeof type === 'object' && (
+          {isObj && (
             type.modalTitle || type.text
           )}
         </ModalHeader>

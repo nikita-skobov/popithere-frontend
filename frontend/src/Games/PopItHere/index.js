@@ -168,6 +168,7 @@ export default class PopItHere extends Game {
       modal: () => (
         <PopItSelection game={this} startingChoice="preview" />
       ),
+      notCloseable: true,
       modalTitle: 'Preview Setup',
     })
   }
@@ -233,7 +234,35 @@ export default class PopItHere extends Game {
 
       callback(this.modal.isOpen()) // notifies modal that the preview mode is ready
 
-      const goBack = () => {
+      let dataArr
+      if (Array.isArray(newTextures)) {
+        dataArr = newTextures.map(txt => this.renderer.plugins.extract.base64(txt))
+      } else {
+        dataArr = [this.renderer.plugins.extract.base64(newTextures)]
+      }
+
+      this.uploader.storeData('myo-data', dataArr)
+
+      let goBack
+      const goSubmit = () => {
+        const gb2 = goBack.bind(this)
+        this.uploader.uploadData('myo-data', gb2)
+      }
+
+      goBack = (err) => {
+        let actualErr = err
+        if (err && has.call(err, 'type') && err.type === 'pointerdown') {
+          // this means they just clicked the back button, err is a single
+          // argument that can either be an actual error, or a pointerdown event
+          actualErr = false
+        }
+        if (actualErr) {
+          console.log(actualErr)
+          // if there was an error submitting, then dont leave the preview mode.
+          // user should decide on their own if they want to leave preview mode.
+          return null
+        }
+        this.uploader.clearData('myo-data')
         // resets everything to how it was prior to starting preview mode
         const ind = this.root.getChildIndex(tempButtonLayer)
         this.root.removeChildAt(ind)
@@ -262,10 +291,6 @@ export default class PopItHere extends Game {
         setTimeout(() => {
           this.setBackgroundColor('white')
         }, 100)
-      }
-
-      const goSubmit = () => {
-        console.log('go submit')
       }
 
       // create 2 buttons: back and submit so user can
@@ -373,6 +398,7 @@ export default class PopItHere extends Game {
       modal: () => (
         <PopItSelection game={this} startingChoice="custom" />
       ),
+      notCloseable: true,
       modalTitle: 'Choose An Image',
     })
   }

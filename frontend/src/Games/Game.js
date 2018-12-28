@@ -7,6 +7,7 @@ export default class Game {
     this.renderer = props.renderer
     this.root = props.root
     this.modal = props.modal
+    this.uploader = props.uploader
     this.socket = props.socket
     this.canvas = props.canvas
     this.ticker = PIXI.ticker.shared
@@ -201,6 +202,7 @@ export default class Game {
       const obj = {
         name: btn.name,
         text: btn.text,
+        notCloseable: btn.notCloseable,
       }
 
       if (has.call(btn, 'on')) {
