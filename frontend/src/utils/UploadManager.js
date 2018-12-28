@@ -45,8 +45,11 @@ function UploadManager(datastore) {
       const token = brain.ask.Tokens.getToken()
       const modal = brain.ask.MyModal
 
+      let cbErr = false
+
       const onWelcomeDone = () => {
-        console.log('WELCOME DOOONNNNNE')
+        modal.toggle()
+        cb(cbErr)
       }
 
       modal.toggle({
@@ -67,7 +70,8 @@ function UploadManager(datastore) {
             brain.tell.Welcome.addMessage('Successfully Uploaded!')
             brain.tell.Welcome.welcomeDone()
           } else {
-            brain.tell.Welcome.addMessage('Oops! Error uploading data to server')
+            cbErr = 'Error uploading data to server'
+            brain.tell.Welcome.addMessage(`Oops! ${cbErr}`)
             brain.tell.Welcome.welcomeDone()
           }
         } else {
@@ -78,6 +82,7 @@ function UploadManager(datastore) {
 
       const errCatcher = (e) => {
         console.log(e)
+        cbErr = e
         brain.tell.Welcome.addMessage(`Unkown error: ${e}`, true)
         brain.tell.Welcome.welcomeDone()
       }
@@ -88,6 +93,7 @@ function UploadManager(datastore) {
         if (error && error === 'Invalid token') {
           brain.tell.Welcome.addMessage('Token is expired? Trying to generate new one')
         } else if (error) {
+          cbErr = error
           brain.tell.Welcome.addMessage(`Oops! Error getting a signature: ${error}`)
           brain.tell.Welcome.welcomeDone()
         } else {
