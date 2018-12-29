@@ -15,6 +15,9 @@ export default class App extends Component {
     const iw = window.innerWidth
     const ih = window.innerHeight
 
+    this.maxInitialFetch = 10 // client should only download this
+    // many objects initially, and then download more as needed
+
     this.orientation = iw > ih ? 'landscape' : 'portrait'
 
     this.brain.store('App', this)
@@ -112,7 +115,21 @@ export default class App extends Component {
 
         // here we should fetch the new data list, only
         // after the user has been verified
-        this.brain.ask.DataMan.fetchList()
+        this.brain.ask.DataMan.fetchList((err, listSize) => {
+          if (err) {
+            // not sure what else to do here...
+            console.error(err)
+            return null
+          }
+
+          // if no error, proceed to download the objects
+          // in that list
+          let fetchUpTo = listSize
+          if (fetchUpTo > this.maxInitialFetch) {
+            fetchUpTo = this.maxInitialFetch
+          }
+          this.brain.ask.DataMan.fetchRange([0, fetchUpTo])
+        })
       })
 
       socket.on('it', () => {
