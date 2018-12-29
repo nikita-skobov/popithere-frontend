@@ -386,8 +386,8 @@ export default class PopItSelection extends Component {
 
       return (
         <div>
-          <Button className="mb1em" onClick={this.handleButton} name="back">Back</Button>
-          <Button className="mb1em" onClick={refresh} name="refresh">Refresh</Button>
+          <Button className="mb1em mr1em" onClick={this.handleButton} name="back">Back</Button>
+          <Button className="mb1em mr1em" onClick={refresh} name="refresh">Refresh</Button>
           <Button className="mb1em" onClick={this.handleButton} name="prev" block disabled={offset === 0}> Previous </Button>
           {ready && (
             <RowGenerator
