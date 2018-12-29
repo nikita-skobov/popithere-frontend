@@ -907,12 +907,23 @@ export default class PopItHere extends Game {
     this.addImage(name, { x, y, container: this.stage })
   }
 
+  // hasTexture(name) {
+  //   return false
+  // }
+
   onPopIt(obj) {
     console.log('got popit fromm sserver!!')
     console.log(obj)
     const positionString = obj.substr(0, 2)
     const textureName = obj.substr(2, obj.length)
     const pos = getRealPosition(positionString)
+
+    // if (this.hasTexture(textureName)) {
+    //   this.placeTexture(textureName, pos)
+    // } else {
+    //   this.dataMan.fetchData(textureName)
+    //   this.placeTexture('placeholder', pos)
+    // }
     this.placeTexture(textureName, pos)
   }
 
