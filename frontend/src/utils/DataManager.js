@@ -113,6 +113,7 @@ function DataManager(datastore) {
     },
     fetchKey: (key) => {
       return new Promise((res, rej) => {
+        fetchingMap[key] = false
         const url = `${keyDataEndpoint}/${key}`
         fetch(url)
           .then(resp => resp.json())
