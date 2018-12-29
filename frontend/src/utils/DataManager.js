@@ -98,6 +98,7 @@ function DataManager(datastore) {
         callback = () => {}
       }
     },
+    getDataNumbers: () => [...dataNumberList],
   }
 
   brain.store('DataMan', retObj)

@@ -40,6 +40,7 @@ export function getCurrentGame({ renderer, modal, canvas, dataMan, socket, uploa
   const dataInner = {
     getDataNow: dataMan.getDataNow,
     getDataLater: dataMan.getDataLater,
+    getDataNumbers: dataMan.getDataNumbers,
   }
 
   return new PopItHere({
