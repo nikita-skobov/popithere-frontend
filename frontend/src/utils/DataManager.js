@@ -14,7 +14,7 @@ const has = Object.prototype.hasOwnProperty
 function DataManager(datastore) {
   const brain = datastore
   let lastFetchListTime = 0
-  const listFetchDelay = 1 * 60 // 1 minute
+  const listFetchDelay = 1 * 30 // 30 seconds
 
   // a list of data that is fetched on page load
   // this is a list of objects with 2 keys:
