@@ -60,7 +60,10 @@ export default class PopItHere extends Game {
     this.addButton(this.popItButton)
     this.addButton(this.endGameButton)
 
-    this.dataNumbers = this.dataMan.getDataNumbers()
+    const initialFetchLimit = 20
+    const dataNumbers = this.dataMan.getDataNumbers()
+    const shuffled = dataNumbers.sort(() => 0.5 - Math.random())
+    this.dataNumbers = shuffled.slice(0, initialFetchLimit)
     this.textures = {}
     this.previewImages = []
     this.loadTextures()
@@ -120,7 +123,10 @@ export default class PopItHere extends Game {
   loadTextures(iterator = this.dataNumbers) {
     iterator.forEach((num) => {
       this.dataMan.getDataLater(num, (data) => {
-        this.buildTextureAndPreview(num, data)
+        const hasTexture = this.hasTexture(num)
+        if (!hasTexture) {
+          this.buildTextureAndPreview(num, data)
+        }
       })
     })
   }
@@ -137,7 +143,7 @@ export default class PopItHere extends Game {
       if (appendNumbers.length) {
         this.dataNumbers = [...this.dataNumbers, ...newNumbers]
         this.loadTextures(appendNumbers)
-        const timeout = appendNumbers.length * 200
+        const timeout = appendNumbers.length * 20
         // I think its better to set state guaranateed after a certain time
         // instead of waiting for all textures to be loaded. you never know
         // there might be a network error, or something, and that would make the
