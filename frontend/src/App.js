@@ -35,6 +35,7 @@ export default class App extends Component {
     }
 
     this.customMessages = {
+      loadingAssets: 'Loading initial assets',
       loggingIn: 'Logging in',
       connecting: 'Connecting to socket server',
       logInFail: 'Failed to log in',
@@ -111,8 +112,7 @@ export default class App extends Component {
       socket.on('sno', (sn) => {
         console.log(`got servername: ${sn}`)
         this.brain.tell.Welcome.addMessage(this.customMessages.connectSuccess)
-        this.brain.tell.Welcome.welcomeDone()
-
+        this.brain.tell.Welcome.addMessage(this.customMessages.loadingAssets)
         // here we should fetch the new data list, only
         // after the user has been verified
         this.brain.ask.DataMan.fetchList((err, listSize) => {
@@ -122,6 +122,7 @@ export default class App extends Component {
             return null
           }
 
+          this.brain.tell.Welcome.welcomeDone()
           // if no error, proceed to download the objects
           // in that list
           let fetchUpTo = listSize
