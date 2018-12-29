@@ -4,6 +4,7 @@ import React from 'react'
 import {
   dataFetchBase,
   listDataEndpoint,
+  keyDataEndpoint,
 } from '../customConfig'
 
 function range(size, startAt = 0) {
@@ -110,6 +111,20 @@ function DataManager(datastore) {
         retObj.fetchData(index, null)
       })
     },
+    fetchKey: (key) => {
+      return new Promise((res, rej) => {
+        const url = `${keyDataEndpoint}/${key}`
+        fetch(url)
+          .then(resp => resp.json())
+          .then((obj) => {
+            if (has.call(obj, 'error')) {
+              return rej(obj.error)
+            }
+            return res(obj.key)
+          })
+          .catch(err => rej(err))
+      })
+    },
     fetchList: (cb) => {
       let callback = cb
       if (!callback) {
@@ -131,7 +146,7 @@ function DataManager(datastore) {
         .catch(err => callback(err))
     },
     getDataNow: dataNumber => dataObj[dataNumber],
-    getDataLater: (dataNumber, cb) => {
+    getDataLater: async (dataNumber, cb) => {
       let callback = cb
       if (!callback) {
         callback = () => {}
@@ -160,7 +175,16 @@ function DataManager(datastore) {
       // if it is NOT there, we need to first find the s3 key for that data number, and
       // then fetch it!
 
-      const s3key = s3keys[dataNumber]
+      let s3key = s3keys[dataNumber]
+      if (!s3key) {
+        try {
+          s3key = await retObj.fetchKey(dataNumber)
+        } catch (e) {
+          console.error(`FAILED to fetch s3id from key: ${dataNumber}`)
+          return null
+        }
+      }
+      console.log(s3key)
 
       retObj.fetchData(null, { key: s3key, dn: dataNumber, cb: callback })
     },

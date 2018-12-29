@@ -25,6 +25,7 @@ exports.defaultButtons = [
   'options',
 ]
 
+exports.keyDataEndpoint = 'https://api.popithere.com/list/key'
 exports.dataFetchBase = 'https://api.popithere.com/'
 exports.listDataEndpoint = 'https://api.popithere.com/list/data'
 exports.socketEndpoint = 'https://sockets.popithere.com'
