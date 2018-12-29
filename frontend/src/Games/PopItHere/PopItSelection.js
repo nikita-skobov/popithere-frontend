@@ -12,6 +12,9 @@ import {
   Input,
 } from 'reactstrap'
 
+import 'rc-slider/assets/index.css'
+import Slider, { Range } from 'rc-slider'
+
 import PropTypes from 'prop-types'
 
 import * as PIXI from 'pixi.js'
@@ -25,6 +28,36 @@ import ContainsBadWords from '../../utils/ContainsBadWords'
 
 const notSubmit = (e) => {
   e.preventDefault()
+}
+
+const scaleMap = (num, inMin, inMax, outMin, outMax) => {
+  return (num - inMin) * (outMax - outMin) / (inMax - inMin) + outMin
+}
+
+const normalizeScale = (val) => {
+  let pos = val
+  if (pos > 15) pos = 15
+  if (pos < 0) pos = 0
+  if (pos === 1) return 50000
+  if (pos > 1) {
+    return scaleMap(pos, 1, 15, 50000, 100000)
+  }
+  if (pos < 1) {
+    return scaleMap(pos, 0, 1, 0, 50000)
+  }
+}
+
+const denormalizeScale = (val) => {
+  let pos = val
+  if (pos > 100000) pos = 100000
+  if (pos < 0) pos = 0
+  if (pos === 50000) return 1
+  if (pos > 50000) {
+    return scaleMap(pos, 50000, 100000, 1, 15)
+  }
+  if (pos < 50000) {
+    return scaleMap(pos, 0, 50000, 0, 1)
+  }
 }
 
 export default class PopItSelection extends Component {
@@ -44,13 +77,17 @@ export default class PopItSelection extends Component {
       offset: 0,
     }
 
+    this.previousScaleBothVal = 500
+
     this.handleButton = this.handleButton.bind(this)
     this.handleCustom = this.handleCustom.bind(this)
     this.handleCancel = this.handleCancel.bind(this)
     this.handleRotate = this.handleRotate.bind(this)
     this.handlePreview = this.handlePreview.bind(this)
     this.handleText = this.handleText.bind(this)
-    this.handleResize = this.handleResize.bind(this)
+    this.handleResizeWidth = this.handleResizeWidth.bind(this)
+    this.handleResizeHeight = this.handleResizeHeight.bind(this)
+    this.handleResizeBoth = this.handleResizeBoth.bind(this)
     this.popItChosen = this.popItChosen.bind(this)
     this.handleFile = this.handleFile.bind(this)
     this.textureLoaded = this.textureLoaded.bind(this)
@@ -146,19 +183,36 @@ export default class PopItSelection extends Component {
   }
 
   handleRotate(e) {
-    e.preventDefault()
-    const degrees = parseFloat(e.target.value)
-    const radians = degrees * 3.14 / 180
+    const degree = e
+    const radians = degree * (Math.PI / 180)
     this.game.activeSprite.rotation = radians
   }
 
-  handleResize(e) {
-    e.preventDefault()
-    const { name, value } = e.target
-    if (name === 'width') {
-      this.game.activeSprite.scale.x = parseFloat(value)
-    } else if (name === 'height') {
-      this.game.activeSprite.scale.y = parseFloat(value)
+  handleResizeHeight(e) {
+    this.game.activeSprite.scale.y = denormalizeScale(e)
+  }
+
+  handleResizeWidth(e) {
+    this.game.activeSprite.scale.x = denormalizeScale(e)
+  }
+
+  handleResizeBoth(e) {
+    // this function sucks
+    const { scale } = this.game.activeSprite
+    if (scale.x > 0 && scale.y > 0) {
+      let scaleVal = 0.072
+      if (e < this.previousScaleBothVal) {
+        scaleVal = -scaleVal
+      }
+      this.game.activeSprite.scale.x += scaleVal
+      this.game.activeSprite.scale.y += scaleVal
+      this.previousScaleBothVal = e
+      if (this.game.activeSprite.scale.x < 0) {
+        this.game.activeSprite.scale.x = 0.01
+      }
+      if (this.game.activeSprite.scale.y < 0) {
+        this.game.activeSprite.scale.y = 0.01
+      }
     }
   }
 
@@ -217,13 +271,13 @@ export default class PopItSelection extends Component {
 
     if (choice === 'rotate') {
       const { rotation } = this.game.activeSprite
+      const dfv = rotation * (180 / Math.PI)
       return (
         <Row>
           <Col fluid>
             <Form onSubmit={notSubmit}>
               <FormGroup className="w100">
-                <Label for="rotateControl">Enter a rotation value in degrees</Label>
-                <Input onChange={this.handleRotate} type="number" defaultValue={rotation * 180 / 3.14159} id="rotateControl" name="customRotate" />
+                <Slider onChange={this.handleRotate} min={-180} max={180} step={5} defaultValue={dfv} marks={{ '-180': -180, '-90': -90, 0: 0, 90: 90, 180: 180 }} />
               </FormGroup>
             </Form>
           </Col>
@@ -233,25 +287,23 @@ export default class PopItSelection extends Component {
 
     if (choice === 'resize') {
       const { x, y } = this.game.activeSprite.scale
+      const normX = normalizeScale(x)
+      const normY = normalizeScale(y)
       return (
-        <Row>
-          <Col fluid>
-            <Form onSubmit={notSubmit}>
-              <FormGroup className="w100">
-                <Label for="rotateControl">Enter a scalar for width</Label>
-                <Input onChange={this.handleResize} type="number" defaultValue={x} id="resizeControl" name="width" />
-              </FormGroup>
-            </Form>
-          </Col>
-          <Col fluid>
-            <Form onSubmit={notSubmit}>
-              <FormGroup className="w100">
-                <Label for="rotateControl">Enter a scalar for height</Label>
-                <Input onChange={this.handleResize} type="number" defaultValue={y} id="resizeControl" name="height" />
-              </FormGroup>
-            </Form>
-          </Col>
-        </Row>
+        <Col fluid>
+          <Row>
+            <Label for="doesThisEvenMatter">Both</Label>
+            <Slider onChange={this.handleResizeBoth} min={0} max={1000} defaultValue={this.previousScaleBothVal} />
+          </Row>
+          <Row>
+            <Label for="rotateControl">Width</Label>
+            <Slider onChange={this.handleResizeWidth} min={0} max={100000} defaultValue={normX} />
+          </Row>
+          <Row>
+            <Label for="rotateControl">Height</Label>
+            <Slider onChange={this.handleResizeHeight} min={0} max={100000} defaultValue={normY} />
+          </Row>
+        </Col>
       )
     }
 
