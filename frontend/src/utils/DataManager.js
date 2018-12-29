@@ -13,7 +13,8 @@ const has = Object.prototype.hasOwnProperty
 
 function DataManager(datastore) {
   const brain = datastore
-  let lastFetchListTime = null
+  let lastFetchListTime = 0
+  const listFetchDelay = 1 * 60 // 1 minute
 
   // a list of data that is fetched on page load
   // this is a list of objects with 2 keys:
@@ -127,11 +128,19 @@ function DataManager(datastore) {
         callback = () => {}
       }
 
+      const rightNow = Math.floor(Date.now() / 1000)
+      if (rightNow < lastFetchListTime + listFetchDelay) {
+        console.log('preventing early list fetch')
+        callback('too early', null)
+        return null
+      }
+
+
       fetch(listDataEndpoint)
         .then(resp => resp.json())
         .then((list) => {
           dataList = list
-          lastFetchListTime = Date.now()
+          lastFetchListTime = Math.floor(Date.now() / 1000)
           dataNumberList = []
           dataList.forEach((obj) => {
             dataNumberList.push(obj.dn)
