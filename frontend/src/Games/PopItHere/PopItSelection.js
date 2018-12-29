@@ -243,26 +243,18 @@ export default class PopItSelection extends Component {
     if (choice === 'resize') {
       const { x, y } = this.game.activeSprite.scale
       return (
-        <Row>
-          <Col fluid>
-            <Form onSubmit={notSubmit}>
-              <FormGroup className="w100">
-                <Label for="rotateControl">Width</Label>
-                <Slider onChange={this.handleResizeWidth} min={0} max={20} defaultValue={x} />
-                <Input onChange={this.handleResize} type="number" defaultValue={x} id="resizeControl" name="width" />
-              </FormGroup>
-            </Form>
-          </Col>
-          <Col fluid>
-            <Form onSubmit={notSubmit}>
-              <FormGroup className="w100">
-                <Label for="rotateControl">Height</Label>
-                <Slider onChange={this.handleResizeHeight} min={0} max={20} defaultValue={y} />
-                <Input onChange={this.handleResize} type="number" defaultValue={y} id="resizeControl" name="height" />
-              </FormGroup>
-            </Form>
-          </Col>
-        </Row>
+        <Col fluid>
+          <Row>
+            <Label for="rotateControl">Width</Label>
+            <Slider onChange={this.handleResizeWidth} min={0} max={20} defaultValue={x} />
+            <Input onChange={this.handleResize} type="number" defaultValue={x} id="resizeControl" name="width" />
+          </Row>
+          <Row>
+            <Label for="rotateControl">Height</Label>
+            <Slider onChange={this.handleResizeHeight} min={0} max={20} defaultValue={y} />
+            <Input onChange={this.handleResize} type="number" defaultValue={y} id="resizeControl" name="height" />
+          </Row>
+        </Col>
       )
     }
 
