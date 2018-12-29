@@ -14,12 +14,29 @@ const has = Object.prototype.hasOwnProperty
 
 function DataManager(datastore) {
   const brain = datastore
-  let dataList = []
   let lastFetchListTime = null
 
+  // a list of data that is fetched on page load
+  // this is a list of objects with 2 keys:
+  // a data number, and an s3 id telling the client
+  // where to download that data nummber from
+  let dataList = []
+
+  // this is an in memory map of data that the client currently
+  // has. data can (AND SHOULD!) be released when it is no longer needed
+  // the keys in this object are the  dataNumbers, and the value is whatever
+  // data is fetched (should be a json object or array)
   const dataObj = {}
 
+  // a temporary map of dataNumbers that are currently being fetched
+  // This is used to prevent multiple fetches of the same item.
   const fetchingMap = {}
+
+  // a list of all dataNumbers that were fetched from the dataList
+  // these are not necessarily data numbers that correspond to a data object
+  // in memory, but rather a list of data numbers that the client KNOWS ABOUT.
+  // if they arent in memory, they can easily be fetched later.
+  let dataNumberList = []
 
   const retObj = {
     fetchData: (index) => {
@@ -64,6 +81,11 @@ function DataManager(datastore) {
         .then((list) => {
           dataList = list
           lastFetchListTime = Date.now()
+          dataNumberList = []
+          dataList.forEach((obj) => {
+            dataNumberList.push(obj.dn)
+          })
+          console.log(dataNumberList)
           console.log(dataList)
           callback(null, list.length)
         })
