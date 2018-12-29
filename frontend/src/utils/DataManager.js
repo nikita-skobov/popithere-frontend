@@ -137,6 +137,12 @@ function DataManager(datastore) {
         callback = () => {}
       }
 
+      if (has.call(dataObj, dataNumber)) {
+        // if we already have it, just return it
+        callback(dataObj[dataNumber])
+        return null
+      }
+
       if (has.call(fetchingMap, dataNumber)) {
         if (!fetchingMap[dataNumber]) {
           // if it is set to false, then turn it into an array
