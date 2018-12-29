@@ -60,7 +60,7 @@ export default class PopItHere extends Game {
     this.addButton(this.popItButton)
     this.addButton(this.endGameButton)
 
-    const initialFetchLimit = 20
+    const initialFetchLimit = 2
     const dataNumbers = this.dataMan.getDataNumbers()
     const shuffled = dataNumbers.sort(() => 0.5 - Math.random())
     this.dataNumbers = shuffled.slice(0, initialFetchLimit)
@@ -143,17 +143,15 @@ export default class PopItHere extends Game {
       if (appendNumbers.length) {
         this.dataNumbers = [...this.dataNumbers, ...newNumbers]
         this.loadTextures(appendNumbers)
-        const timeout = appendNumbers.length * 20
-        // I think its better to set state guaranateed after a certain time
-        // instead of waiting for all textures to be loaded. you never know
-        // there might be a network error, or something, and that would make the
-        // modal stuck. this way it is guaranteed to come back
-        setTimeout(() => {
-          reactElement.setState({ ready: true })
-        }, timeout)
-      } else {
-        reactElement.setState({ ready: true })
       }
+      // I think its better to set state guaranateed after a certain time
+      // instead of waiting for all textures to be loaded. you never know
+      // there might be a network error, or something, and that would make the
+      // modal stuck. this way it is guaranteed to come back
+      const timeout = 500
+      setTimeout(() => {
+        reactElement.setState({ ready: true })
+      }, timeout)
     })
   }
 
