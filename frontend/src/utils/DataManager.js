@@ -69,37 +69,13 @@ function DataManager(datastore) {
         })
         .catch(err => callback(err))
     },
-    getData: (key) => {
-      if (!has.call(dataObj, key)) {
-        return null
+    getDataNow: dataNumber => dataObj[dataNumber],
+    getDataLater: (dataNumber, cb) => {
+      let callback = cb
+      if (!callback) {
+        callback = () => {}
       }
-      return dataObj[key]
     },
-    // storeData: (key, data) => {
-    //   if (!has.call(dataObj, key)) {
-    //     dataObj[key] = data
-    //     return true
-    //   }
-    //   // dont want to override some other data
-    //   return false
-    // },
-    // clearData: (key) => {
-    //   if (key && has.call(tempData, key)) {
-    //     tempData[key] = null
-    //     delete tempData[key]
-    //     return true
-    //   }
-    //   if (!key) {
-    //     // if no key provided, clear all data
-    //     Object.keys(tempData).forEach((okey) => {
-    //       tempData[okey] = null
-    //       delete tempData[okey]
-    //     })
-    //     return true
-    //   }
-    //   // notify user that data was not cleared
-    //   return false
-    // },
   }
 
   brain.store('DataMan', retObj)
