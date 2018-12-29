@@ -53,7 +53,8 @@ export default class PopItSelection extends Component {
     this.handleRotate = this.handleRotate.bind(this)
     this.handlePreview = this.handlePreview.bind(this)
     this.handleText = this.handleText.bind(this)
-    this.handleResize = this.handleResize.bind(this)
+    this.handleResizeWidth = this.handleResizeWidth.bind(this)
+    this.handleResizeHeight = this.handleResizeHeight.bind(this)
     this.popItChosen = this.popItChosen.bind(this)
     this.handleFile = this.handleFile.bind(this)
     this.textureLoaded = this.textureLoaded.bind(this)
@@ -154,14 +155,20 @@ export default class PopItSelection extends Component {
     this.game.activeSprite.rotation = radians
   }
 
-  handleResize(e) {
-    e.preventDefault()
-    const { name, value } = e.target
-    if (name === 'width') {
-      this.game.activeSprite.scale.x = parseFloat(value)
-    } else if (name === 'height') {
-      this.game.activeSprite.scale.y = parseFloat(value)
-    }
+  handleResizeHeight(e) {
+    this.game.activeSprite.scale.y = e
+  }
+
+  handleResizeWidth(e) {
+    console.log(e)
+    this.game.activeSprite.scale.x = e
+    // e.preventDefault()
+    // const { name, value } = e.target
+    // if (name === 'width') {
+    //   this.game.activeSprite.scale.x = parseFloat(value)
+    // } else if (name === 'height') {
+    //   this.game.activeSprite.scale.y = parseFloat(value)
+    // }
   }
 
   handleButton(e) {
@@ -240,7 +247,8 @@ export default class PopItSelection extends Component {
           <Col fluid>
             <Form onSubmit={notSubmit}>
               <FormGroup className="w100">
-                <Label for="rotateControl">Enter a scalar for width</Label>
+                <Label for="rotateControl">Width</Label>
+                <Slider onChange={this.handleResizeWidth} min={0} max={20} defaultValue={x} />
                 <Input onChange={this.handleResize} type="number" defaultValue={x} id="resizeControl" name="width" />
               </FormGroup>
             </Form>
@@ -248,7 +256,8 @@ export default class PopItSelection extends Component {
           <Col fluid>
             <Form onSubmit={notSubmit}>
               <FormGroup className="w100">
-                <Label for="rotateControl">Enter a scalar for height</Label>
+                <Label for="rotateControl">Height</Label>
+                <Slider onChange={this.handleResizeHeight} min={0} max={20} defaultValue={y} />
                 <Input onChange={this.handleResize} type="number" defaultValue={y} id="resizeControl" name="height" />
               </FormGroup>
             </Form>
