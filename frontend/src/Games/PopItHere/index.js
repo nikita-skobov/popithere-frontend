@@ -119,22 +119,7 @@ export default class PopItHere extends Game {
   loadTextures() {
     this.dataNumbers.forEach((num) => {
       this.dataMan.getDataLater(num, (data) => {
-        console.log(`got data for num: ${num}`)
-        this.textures[num] = []
-        data.forEach(async (b64str, index) => {
-          const imgStr = `data:image/png;base64,${b64str}`
-          const texture = await createImage({
-            file: imgStr,
-            alreadyURL: true,
-          })
-          this.textures[num].push(texture)
-          if (index === 0) {
-            this.previewImages.push({
-              name: num,
-              url: imgStr,
-            })
-          }
-        })
+        this.buildTextureAndPreview(num, data)
       })
     })
   }
@@ -971,24 +956,42 @@ export default class PopItHere extends Game {
       console.log('i dont have that texture')
       const sprite = this.placeTexture('.placeholder.', pos)
       console.log(sprite)
-      this.dataMan.getDataLater(textureName, (data) => {
-        this.textures[textureName] = []
-        data.forEach(async (b64str, index) => {
-          const imgStr = `data:image/png;base64,${b64str}`
-          const texture = await createImage({
-            file: imgStr,
-            alreadyURL: true,
-          })
-          this.textures[textureName].push(texture)
-          if (index === 0) {
-            this.previewImages.push({
-              name: textureName,
-              url: imgStr,
-            })
-          }
-        })
+      this.dataMan.getDataLater(textureName, async (data) => {
+        const newTexture = await this.buildTextureAndPreview(textureName, data)
+        console.log(newTexture)
       })
     }
+  }
+
+  buildTextureAndPreview(name, data) {
+    this.textures[name] = []
+    return new Promise((res, rej) => {
+      try {
+        data.forEach(async (b64str, index) => {
+          try {
+            const imgStr = `data:image/png;base64,${b64str}`
+            const texture = await createImage({
+              file: imgStr,
+              alreadyURL: true,
+            })
+            this.textures[name].push(texture)
+            if (index === 0) {
+              this.previewImages.push({
+                name,
+                url: imgStr,
+              })
+            }
+            if (index === data.length - 1) {
+              return res(this.textures[name])
+            }
+          } catch (e) {
+            throw e
+          }
+        })
+      } catch (e) {
+        return rej(e)
+      }
+    })
   }
 
   emitPopIt(event) {
