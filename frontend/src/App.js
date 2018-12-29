@@ -109,6 +109,10 @@ export default class App extends Component {
         console.log(`got servername: ${sn}`)
         this.brain.tell.Welcome.addMessage(this.customMessages.connectSuccess)
         this.brain.tell.Welcome.welcomeDone()
+
+        // here we should fetch the new data list, only
+        // after the user has been verified
+        this.brain.ask.DataMan.fetchList()
       })
 
       socket.on('it', () => {
