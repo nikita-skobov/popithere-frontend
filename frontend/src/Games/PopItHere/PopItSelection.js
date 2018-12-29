@@ -225,7 +225,7 @@ export default class PopItSelection extends Component {
           <Col fluid>
             <Form onSubmit={notSubmit}>
               <FormGroup className="w100">
-                <Slider onChange={this.handleRotate} min={-180} max={180} defaultValue={dfv} marks={{ '-180': -180, '-90': -90, 0: 0, 90: 90, 180: 180 }} />
+                <Slider onChange={this.handleRotate} min={-180} max={180} step={5} defaultValue={dfv} marks={{ '-180': -180, '-90': -90, 0: 0, 90: 90, 180: 180 }} />
               </FormGroup>
             </Form>
           </Col>
