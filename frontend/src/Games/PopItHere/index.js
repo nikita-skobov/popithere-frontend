@@ -62,6 +62,7 @@ export default class PopItHere extends Game {
 
     this.dataNumbers = this.dataMan.getDataNumbers()
     this.textures = {}
+    this.previewImages = []
     this.loadTextures()
 
     this.poppingName = null
@@ -120,15 +121,28 @@ export default class PopItHere extends Game {
       this.dataMan.getDataLater(num, (data) => {
         console.log(`got data for num: ${num}`)
         this.textures[num] = []
-        data.forEach(async (b64str) => {
+        data.forEach(async (b64str, index) => {
           const imgStr = `data:image/png;base64,${b64str}`
           const texture = await createImage({
             file: imgStr,
             alreadyURL: true,
           })
           this.textures[num].push(texture)
+          if (index === 0) {
+            this.previewImages.push({
+              name: num,
+              url: imgStr,
+            })
+          }
         })
       })
+    })
+  }
+
+  makePreviewImages() {
+    Object.keys(this.textures).forEach((num) => {
+      console.log(this.textures[num].source)
+      console.log(this.textures[num])
     })
   }
 
@@ -924,8 +938,11 @@ export default class PopItHere extends Game {
     // then depending on what you get, you call this.addImage or this.addGif
     console.log(name)
     console.log(position)
-    const { x, y } = calculateCenterPosition(name, position)
-    this.addImage(name, { x, y, container: this.stage })
+    const textures = this.textures[name]
+    const { x, y } = calculateCenterPosition(textures[0], position)
+    const play = (textures.length > 1) // only play if its more than a single frame
+    const sprite = this.addGif(textures, { x, y, play, container: this.stage })
+    return sprite
   }
 
   hasTexture(name) {
@@ -939,13 +956,33 @@ export default class PopItHere extends Game {
     const textureName = obj.substr(2, obj.length)
     const pos = getRealPosition(positionString)
 
-    // if (this.hasTexture(textureName)) {
-    //   this.placeTexture(textureName, pos)
-    // } else {
-    //   this.dataMan.fetchData(textureName)
-    //   this.placeTexture('placeholder', pos)
-    // }
-    this.placeTexture(textureName, pos)
+    if (this.hasTexture(textureName)) {
+      console.log('i have that texture!')
+      this.placeTexture(textureName, pos)
+    } else {
+      console.log('i dont have that texture')
+      const sprite = this.placeTexture('a', pos)
+      this.dataMan.getDataLater(textureName, (data) => {
+        this.textures[textureName] = []
+        data.forEach(async (b64str, index) => {
+          const imgStr = `data:image/png;base64,${b64str}`
+          const texture = await createImage({
+            file: imgStr,
+            alreadyURL: true,
+          })
+          this.textures[textureName].push(texture)
+          if (index === 0) {
+            this.previewImages.push({
+              name: textureName,
+              url: imgStr,
+            })
+          }
+        })
+      })
+      this.dataMan.fetchData(textureName)
+      this.placeTexture('placeholder', pos)
+    }
+    // this.placeTexture(textureName, pos)
   }
 
   emitPopIt(event) {
