@@ -79,7 +79,7 @@ function DataManager(datastore) {
           .then(resp => resp.json())
           .then((obj2) => {
             console.log(`got ${s3key}, dn: ${dataNumber}`)
-            dataObj[dataNumber] = obj
+            dataObj[dataNumber] = obj2
 
             if (fetchingMap[dataNumber]) {
               // this is a hooked callback array from
