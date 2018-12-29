@@ -1,6 +1,4 @@
 /* global fetch */
-import React from 'react'
-
 import {
   dataFetchBase,
   listDataEndpoint,
@@ -101,9 +99,6 @@ function DataManager(datastore) {
         console.error(e)
       }
     },
-    dataHasBeenFetched: (key, data) => {
-
-    },
     fetchRange: (rang) => {
       const [start, stop] = rang
       const iterator = range(stop - start, start)
@@ -169,12 +164,6 @@ function DataManager(datastore) {
         console.log('NOT FETCHING BECAUSE ALREADY FETCH IN PROGRESS')
         return null
       }
-
-      // FOR NOW we are going to assume that if a dataNumber is to be
-      // fetched, that the client already has that dataNumber in the dataNumberList
-      // however, in the future, we should implement checking to see if it is there.
-      // if it is NOT there, we need to first find the s3 key for that data number, and
-      // then fetch it!
 
       let s3key = s3keys[dataNumber]
       if (!s3key) {

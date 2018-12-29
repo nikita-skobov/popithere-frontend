@@ -124,13 +124,6 @@ export default class PopItHere extends Game {
     })
   }
 
-  makePreviewImages() {
-    Object.keys(this.textures).forEach((num) => {
-      console.log(this.textures[num].source)
-      console.log(this.textures[num])
-    })
-  }
-
   setupLivePopping() {
     this.socket.on('po', this.onPopIt)
   }

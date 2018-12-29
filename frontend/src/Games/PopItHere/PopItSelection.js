@@ -1,4 +1,3 @@
-/* global Image */
 import React, { Component } from 'react'
 import {
   Row,
@@ -13,15 +12,11 @@ import {
 } from 'reactstrap'
 
 import 'rc-slider/assets/index.css'
-import Slider, { Range } from 'rc-slider'
+import Slider from 'rc-slider'
 
 import PropTypes from 'prop-types'
 
-import * as PIXI from 'pixi.js'
-
 import RowGenerator from './RowGenerator'
-
-import { assetList } from '../../customConfig'
 
 import { createImage, createGifTextures } from '../../utils/PixiUtils'
 import ContainsBadWords from '../../utils/ContainsBadWords'
