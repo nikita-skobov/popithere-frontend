@@ -60,6 +60,10 @@ export default class PopItHere extends Game {
     this.addButton(this.popItButton)
     this.addButton(this.endGameButton)
 
+    this.dataNumbers = this.dataMan.getDataNumbers()
+    this.textures = {}
+    this.loadTextures()
+
     this.poppingName = null
     this.currentlyPopping = false
     this.maxGifFrames = 60
@@ -109,6 +113,23 @@ export default class PopItHere extends Game {
     this.root.off('pointerdown', this.emitPopIt)
     this.root.off('pointerdown', this.pointerDown)
     super.endGame()
+  }
+
+  loadTextures() {
+    this.dataNumbers.forEach((num) => {
+      this.dataMan.getDataLater(num, (data) => {
+        console.log(`got data for num: ${num}`)
+        this.textures[num] = []
+        data.forEach(async (b64str) => {
+          const imgStr = `data:image/png;base64,${b64str}`
+          const texture = await createImage({
+            file: imgStr,
+            alreadyURL: true,
+          })
+          this.textures[num].push(texture)
+        })
+      })
+    })
   }
 
   setupLivePopping() {
@@ -907,9 +928,9 @@ export default class PopItHere extends Game {
     this.addImage(name, { x, y, container: this.stage })
   }
 
-  // hasTexture(name) {
-  //   return false
-  // }
+  hasTexture(name) {
+    return has.call(this.textures, name)
+  }
 
   onPopIt(obj) {
     console.log('got popit fromm sserver!!')
