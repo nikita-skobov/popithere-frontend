@@ -959,6 +959,13 @@ export default class PopItHere extends Game {
       this.dataMan.getDataLater(textureName, async (data) => {
         const newTexture = await this.buildTextureAndPreview(textureName, data)
         console.log(newTexture)
+        sprite._textures = newTexture
+        if (newTexture.length > 1) {
+          sprite.gotoAndPlay(0)
+        } else {
+          sprite._texture = newTexture[0]
+          sprite.gotoAndStop(0)
+        }
       })
     }
   }
