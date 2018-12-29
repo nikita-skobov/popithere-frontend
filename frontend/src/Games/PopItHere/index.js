@@ -60,6 +60,14 @@ export default class PopItHere extends Game {
     this.addButton(this.popItButton)
     this.addButton(this.endGameButton)
 
+    const initialFetchLimit = 2
+    const dataNumbers = this.dataMan.getDataNumbers()
+    const shuffled = dataNumbers.sort(() => 0.5 - Math.random())
+    this.dataNumbers = shuffled.slice(0, initialFetchLimit)
+    this.textures = {}
+    this.previewImages = []
+    this.loadTextures()
+
     this.poppingName = null
     this.currentlyPopping = false
     this.maxGifFrames = 60
@@ -72,6 +80,7 @@ export default class PopItHere extends Game {
     this.onPopIt = this.onPopIt.bind(this)
     this.popItChosenLive = this.popItChosenLive.bind(this)
     this.stopPoppingLive = this.stopPoppingLive.bind(this)
+    this.reloadTextures = this.reloadTextures.bind(this)
 
     // config for custom build mode
     this.customBuildMode = false
@@ -109,6 +118,41 @@ export default class PopItHere extends Game {
     this.root.off('pointerdown', this.emitPopIt)
     this.root.off('pointerdown', this.pointerDown)
     super.endGame()
+  }
+
+  loadTextures(iterator = this.dataNumbers) {
+    iterator.forEach((num) => {
+      this.dataMan.getDataLater(num, (data) => {
+        const hasTexture = this.hasTexture(num)
+        if (!hasTexture) {
+          this.buildTextureAndPreview(num, data)
+        }
+      })
+    })
+  }
+
+  reloadTextures(reactElement) {
+    this.dataMan.fetchList(() => {
+      const newNumbers = this.dataMan.getDataNumbers()
+      const appendNumbers = []
+      newNumbers.forEach((num) => {
+        if (this.dataNumbers.indexOf(num) === -1) {
+          appendNumbers.push(num)
+        }
+      })
+      if (appendNumbers.length) {
+        this.dataNumbers = [...this.dataNumbers, ...newNumbers]
+        this.loadTextures(appendNumbers)
+      }
+      // I think its better to set state guaranateed after a certain time
+      // instead of waiting for all textures to be loaded. you never know
+      // there might be a network error, or something, and that would make the
+      // modal stuck. this way it is guaranteed to come back
+      const timeout = 500
+      setTimeout(() => {
+        reactElement.setState({ ready: true })
+      }, timeout)
+    })
   }
 
   setupLivePopping() {
@@ -897,23 +941,76 @@ export default class PopItHere extends Game {
   }
 
   placeTexture(name, position) {
-    // TODO
-    // add a function call that retrieves a texture, or a texture array
-    // from the name... name should be agnostic to type of popit
-    // then depending on what you get, you call this.addImage or this.addGif
-    console.log(name)
-    console.log(position)
-    const { x, y } = calculateCenterPosition(name, position)
-    this.addImage(name, { x, y, container: this.stage })
+    let textures = []
+    let play
+    if (name === '.placeholder.') {
+      const { texture } = PIXI.loader.resources[name]
+      textures = [texture]
+      play = false // because placeholder texture is a single frame
+    } else {
+      textures = this.textures[name]
+      play = (textures.length > 1) // only play if its more than a single frame
+    }
+    const { x, y } = calculateCenterPosition(textures[0], position)
+    const sprite = this.addGif(textures, { x, y, play, container: this.stage })
+    return sprite
+  }
+
+  hasTexture(name) {
+    return has.call(this.textures, name)
   }
 
   onPopIt(obj) {
-    console.log('got popit fromm sserver!!')
-    console.log(obj)
     const positionString = obj.substr(0, 2)
     const textureName = obj.substr(2, obj.length)
     const pos = getRealPosition(positionString)
-    this.placeTexture(textureName, pos)
+
+    if (this.hasTexture(textureName)) {
+      this.placeTexture(textureName, pos)
+    } else {
+      const sprite = this.placeTexture('.placeholder.', pos)
+      this.dataMan.getDataLater(textureName, async (data) => {
+        const newTexture = await this.buildTextureAndPreview(textureName, data)
+        sprite._textures = newTexture
+        if (newTexture.length > 1) {
+          sprite.gotoAndPlay(0)
+        } else {
+          sprite._texture = newTexture[0]
+          sprite.gotoAndStop(0)
+        }
+      })
+    }
+  }
+
+  buildTextureAndPreview(name, data) {
+    this.textures[name] = []
+    return new Promise((res, rej) => {
+      try {
+        data.forEach(async (b64str, index) => {
+          try {
+            const imgStr = `data:image/png;base64,${b64str}`
+            const texture = await createImage({
+              file: imgStr,
+              alreadyURL: true,
+            })
+            this.textures[name].push(texture)
+            if (index === 0) {
+              this.previewImages.push({
+                name,
+                url: imgStr,
+              })
+            }
+            if (index === data.length - 1) {
+              return res(this.textures[name])
+            }
+          } catch (e) {
+            throw e
+          }
+        })
+      } catch (e) {
+        return rej(e)
+      }
+    })
   }
 
   emitPopIt(event) {

@@ -6,7 +6,7 @@ import PopItHere from '../Games/PopItHere'
  * @todo write a fetch helper
  * to fetch the current game from a server
  */
-export function getCurrentGame({ renderer, modal, canvas, socket, uploader }) {
+export function getCurrentGame({ renderer, modal, canvas, dataMan, socket, uploader }) {
   const root = createRoot(renderer, { interactive: true })
 
   const modalInner = {
@@ -37,6 +37,13 @@ export function getCurrentGame({ renderer, modal, canvas, socket, uploader }) {
     uploadData: uploader.uploadData,
   }
 
+  const dataInner = {
+    getDataNow: dataMan.getDataNow,
+    getDataLater: dataMan.getDataLater,
+    getDataNumbers: dataMan.getDataNumbers,
+    fetchList: dataMan.fetchList,
+  }
+
   return new PopItHere({
     renderer,
     root,
@@ -44,6 +51,7 @@ export function getCurrentGame({ renderer, modal, canvas, socket, uploader }) {
     modal: modalInner,
     canvas: canvasInner,
     uploader: uploadInner,
+    dataMan: dataInner,
   })
 }
 

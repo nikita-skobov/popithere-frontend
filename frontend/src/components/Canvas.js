@@ -46,8 +46,9 @@ export default class Canvas extends Component {
     replaceCanvas(this.renderer.view)
     const modal = this.brain.ask.MyModal
     const socket = this.brain.ask.Sockets
+    const dataMan = this.brain.ask.DataMan
     const uploader = this.brain.ask.Uploads
-    this.currentGame = getCurrentGame({ renderer: this.renderer, modal, socket, uploader, canvas: this })
+    this.currentGame = getCurrentGame({ renderer: this.renderer, modal, socket, uploader, dataMan, canvas: this })
     this.newGame()
   }
 
@@ -59,8 +60,9 @@ export default class Canvas extends Component {
     setTimeout(() => {
       const modal = this.brain.ask.MyModal
       const socket = this.brain.ask.Sockets
+      const dataMan = this.brain.ask.DataMan
       const uploader = this.brain.ask.Uploads
-      this.currentGame = getCurrentGame({ renderer: this.renderer, modal, socket, uploader, canvas: this })
+      this.currentGame = getCurrentGame({ renderer: this.renderer, modal, socket, uploader, dataMan, canvas: this })
       this.newGame()
     }, 10000)
   }

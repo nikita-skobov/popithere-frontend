@@ -8,6 +8,7 @@ export default class Game {
     this.root = props.root
     this.modal = props.modal
     this.uploader = props.uploader
+    this.dataMan = props.dataMan
     this.socket = props.socket
     this.canvas = props.canvas
     this.ticker = PIXI.ticker.shared

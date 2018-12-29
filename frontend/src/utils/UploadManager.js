@@ -65,10 +65,11 @@ function UploadManager(datastore) {
       })
 
       const data = tempData[key]
+      console.log('data length:', data.length)
 
       const resp1 = (r) => {
         brain.tell.Welcome.addMessage('Got response', true)
-        if (r.statusText === 'OK') {
+        if (r.url !== urlEndpoint) {
           // this is a response from S3
           if (r.status === 200) {
             brain.tell.Welcome.addMessage('Successfully Uploaded!')

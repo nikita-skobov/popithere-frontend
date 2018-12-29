@@ -18,7 +18,7 @@ const RowGenerator = (props) => {
       if (loopArray[index + offset]) {
         // if the loopArray has an item at this index
         const item1 = loopArray[index + offset]
-        if (loopArray[index + 1]) {
+        if (loopArray[index + offset + 1]) {
           // if both 0,1 exist then render both side by side
           const item2 = loopArray[index + 1 + offset]
           return (
