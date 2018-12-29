@@ -36,27 +36,27 @@ const scaleMap = (num, inMin, inMax, outMin, outMax) => {
 
 const normalizeScale = (val) => {
   let pos = val
-  if (pos > 30) pos = 30
+  if (pos > 15) pos = 15
   if (pos < 0) pos = 0
-  if (pos === 1) return 50
+  if (pos === 1) return 50000
   if (pos > 1) {
-    return scaleMap(pos, 1, 30, 50, 100)
+    return scaleMap(pos, 1, 15, 50000, 100000)
   }
   if (pos < 1) {
-    return scaleMap(pos, 0, 1, 0, 50)
+    return scaleMap(pos, 0, 1, 0, 50000)
   }
 }
 
 const denormalizeScale = (val) => {
   let pos = val
-  if (pos > 100) pos = 100
+  if (pos > 100000) pos = 100000
   if (pos < 0) pos = 0
-  if (pos === 50) return 1
-  if (pos > 50) {
-    return scaleMap(pos, 50, 100, 1, 30)
+  if (pos === 50000) return 1
+  if (pos > 50000) {
+    return scaleMap(pos, 50000, 100000, 1, 15)
   }
-  if (pos < 50) {
-    return scaleMap(pos, 0, 50, 0, 1)
+  if (pos < 50000) {
+    return scaleMap(pos, 0, 50000, 0, 1)
   }
 }
 
@@ -278,11 +278,11 @@ export default class PopItSelection extends Component {
         <Col fluid>
           <Row>
             <Label for="rotateControl">Width</Label>
-            <Slider onChange={this.handleResizeWidth} min={0} max={100} defaultValue={normX} />
+            <Slider onChange={this.handleResizeWidth} min={0} max={100000} defaultValue={normX} />
           </Row>
           <Row>
             <Label for="rotateControl">Height</Label>
-            <Slider onChange={this.handleResizeHeight} min={0} max={100} defaultValue={normY} />
+            <Slider onChange={this.handleResizeHeight} min={0} max={100000} defaultValue={normY} />
           </Row>
         </Col>
       )
