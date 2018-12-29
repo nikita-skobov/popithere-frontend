@@ -77,6 +77,8 @@ export default class PopItSelection extends Component {
       offset: 0,
     }
 
+    this.previousScaleBothVal = 500
+
     this.handleButton = this.handleButton.bind(this)
     this.handleCustom = this.handleCustom.bind(this)
     this.handleCancel = this.handleCancel.bind(this)
@@ -85,6 +87,7 @@ export default class PopItSelection extends Component {
     this.handleText = this.handleText.bind(this)
     this.handleResizeWidth = this.handleResizeWidth.bind(this)
     this.handleResizeHeight = this.handleResizeHeight.bind(this)
+    this.handleResizeBoth = this.handleResizeBoth.bind(this)
     this.popItChosen = this.popItChosen.bind(this)
     this.handleFile = this.handleFile.bind(this)
     this.textureLoaded = this.textureLoaded.bind(this)
@@ -201,6 +204,26 @@ export default class PopItSelection extends Component {
     // }
   }
 
+  handleResizeBoth(e) {
+    // this function sucks
+    const { scale } = this.game.activeSprite
+    if (scale.x > 0 && scale.y > 0) {
+      let scaleVal = 0.072
+      if (e < this.previousScaleBothVal) {
+        scaleVal = -scaleVal
+      }
+      this.game.activeSprite.scale.x += scaleVal
+      this.game.activeSprite.scale.y += scaleVal
+      this.previousScaleBothVal = e
+      if (this.game.activeSprite.scale.x < 0) {
+        this.game.activeSprite.scale.x = 0.01
+      }
+      if (this.game.activeSprite.scale.y < 0) {
+        this.game.activeSprite.scale.y = 0.01
+      }
+    }
+  }
+
   handleButton(e) {
     e.preventDefault()
     const { choice } = this.state
@@ -276,6 +299,10 @@ export default class PopItSelection extends Component {
       const normY = normalizeScale(y)
       return (
         <Col fluid>
+          <Row>
+            <Label for="doesThisEvenMatter">Both</Label>
+            <Slider onChange={this.handleResizeBoth} min={0} max={1000} defaultValue={this.previousScaleBothVal} />
+          </Row>
           <Row>
             <Label for="rotateControl">Width</Label>
             <Slider onChange={this.handleResizeWidth} min={0} max={100000} defaultValue={normX} />
