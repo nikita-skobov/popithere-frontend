@@ -122,7 +122,6 @@ export default class App extends Component {
             return null
           }
 
-          this.brain.tell.Welcome.welcomeDone()
           // if no error, proceed to download the objects
           // in that list
           let fetchUpTo = listSize
@@ -130,6 +129,7 @@ export default class App extends Component {
             fetchUpTo = this.maxInitialFetch
           }
           this.brain.ask.DataMan.fetchRange([0, fetchUpTo])
+          this.brain.tell.Welcome.welcomeDone()
         })
       })
 
