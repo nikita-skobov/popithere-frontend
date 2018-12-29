@@ -45,7 +45,7 @@ function DataManager(datastore) {
 
         const s3key = dataList[index].si
         const dataNumber = dataList[index].dn
-        fetchingMap[dataNumber] = true
+        fetchingMap[dataNumber] = false
         // this gets the s3 object key
         // which is appended to the api base
         // and then fetched
@@ -56,6 +56,15 @@ function DataManager(datastore) {
           .then((obj) => {
             console.log(`got ${s3key}, dn: ${dataNumber}`)
             dataObj[dataNumber] = obj
+
+            if (fetchingMap[dataNumber]) {
+              // this is a hooked callback array from
+              // getDataLater. if fetchingMap
+              // of dataNumber is false, that means
+              // no one hooked in
+              fetchingMap[dataNumber].forEach(cb => cb(obj))
+            }
+
             delete fetchingMap[dataNumber]
           })
       } catch (e) {
@@ -98,6 +107,16 @@ function DataManager(datastore) {
       let callback = cb
       if (!callback) {
         callback = () => {}
+      }
+
+      if (has.call(fetchingMap, dataNumber)) {
+        if (!fetchingMap[dataNumber]) {
+          // if it is set to false, then turn it into an array
+          fetchingMap[dataNumber] = []
+        }
+        fetchingMap[dataNumber].push(callback)
+        // dont fetch because we are already fetching it.
+        return null
       }
     },
     getDataNumbers: () => [...dataNumberList],
