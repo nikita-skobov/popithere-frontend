@@ -15,6 +15,10 @@ exports.assetList = [
     name: 'test1',
     url: 'images/temp/hqdefault.jpg',
   },
+  {
+    name: '.placeholder.',
+    url: 'images/temp/placeholder.png',
+  },
 ]
 
 exports.defaultButtons = [

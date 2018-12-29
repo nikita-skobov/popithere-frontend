@@ -938,9 +938,17 @@ export default class PopItHere extends Game {
     // then depending on what you get, you call this.addImage or this.addGif
     console.log(name)
     console.log(position)
-    const textures = this.textures[name]
+    let textures = []
+    let play
+    if (name === '.placeholder.') {
+      const { texture } = PIXI.loader.resources[name]
+      textures = [texture]
+      play = false // because placeholder texture is a single frame
+    } else {
+      textures = this.textures[name]
+      play = (textures.length > 1) // only play if its more than a single frame
+    }
     const { x, y } = calculateCenterPosition(textures[0], position)
-    const play = (textures.length > 1) // only play if its more than a single frame
     const sprite = this.addGif(textures, { x, y, play, container: this.stage })
     return sprite
   }
@@ -961,7 +969,8 @@ export default class PopItHere extends Game {
       this.placeTexture(textureName, pos)
     } else {
       console.log('i dont have that texture')
-      const sprite = this.placeTexture('a', pos)
+      const sprite = this.placeTexture('.placeholder.', pos)
+      console.log(sprite)
       this.dataMan.getDataLater(textureName, (data) => {
         this.textures[textureName] = []
         data.forEach(async (b64str, index) => {
@@ -979,10 +988,7 @@ export default class PopItHere extends Game {
           }
         })
       })
-      this.dataMan.fetchData(textureName)
-      this.placeTexture('placeholder', pos)
     }
-    // this.placeTexture(textureName, pos)
   }
 
   emitPopIt(event) {
