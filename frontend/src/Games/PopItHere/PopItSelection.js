@@ -193,15 +193,7 @@ export default class PopItSelection extends Component {
   }
 
   handleResizeWidth(e) {
-    console.log(e)
     this.game.activeSprite.scale.x = denormalizeScale(e)
-    // e.preventDefault()
-    // const { name, value } = e.target
-    // if (name === 'width') {
-    //   this.game.activeSprite.scale.x = parseFloat(value)
-    // } else if (name === 'height') {
-    //   this.game.activeSprite.scale.y = parseFloat(value)
-    // }
   }
 
   handleResizeBoth(e) {
