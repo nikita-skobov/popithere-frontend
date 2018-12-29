@@ -63,6 +63,7 @@ export default class PopItSelection extends Component {
     this.maxImages = 10
 
     this.state = {
+      ready: true,
       maxSize: 100,
       invalidInput: false,
       textInput: '',
@@ -376,17 +377,26 @@ export default class PopItSelection extends Component {
     }
 
     if (choice === 'image') {
-      const { offset } = this.state
+      const { offset, ready } = this.state
+
+      const refresh = () => {
+        this.setState({ ready: false })
+        this.game.reloadTextures(this)
+      }
+
       return (
         <div>
           <Button className="mb1em" onClick={this.handleButton} name="back">Back</Button>
+          <Button className="mb1em" onClick={refresh} name="refresh">Refresh</Button>
           <Button className="mb1em" onClick={this.handleButton} name="prev" block disabled={offset === 0}> Previous </Button>
-          <RowGenerator
-            cb={this.popItChosen}
-            cellCount={this.maxImages}
-            offset={offset}
-            loopArray={this.game.previewImages}
-          />
+          {ready && (
+            <RowGenerator
+              cb={this.popItChosen}
+              cellCount={this.maxImages}
+              offset={offset}
+              loopArray={this.game.previewImages}
+            />
+          )}
           <Button onClick={this.handleButton} name="next" block disabled={this.game.previewImages.length - this.maxImages <= offset}> Next </Button>
         </div>
       )

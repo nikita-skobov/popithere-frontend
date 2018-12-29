@@ -77,6 +77,7 @@ export default class PopItHere extends Game {
     this.onPopIt = this.onPopIt.bind(this)
     this.popItChosenLive = this.popItChosenLive.bind(this)
     this.stopPoppingLive = this.stopPoppingLive.bind(this)
+    this.reloadTextures = this.reloadTextures.bind(this)
 
     // config for custom build mode
     this.customBuildMode = false
@@ -116,11 +117,37 @@ export default class PopItHere extends Game {
     super.endGame()
   }
 
-  loadTextures() {
-    this.dataNumbers.forEach((num) => {
+  loadTextures(iterator = this.dataNumbers) {
+    iterator.forEach((num) => {
       this.dataMan.getDataLater(num, (data) => {
         this.buildTextureAndPreview(num, data)
       })
+    })
+  }
+
+  reloadTextures(reactElement) {
+    this.dataMan.fetchList(() => {
+      const newNumbers = this.dataMan.getDataNumbers()
+      const appendNumbers = []
+      newNumbers.forEach((num) => {
+        if (this.dataNumbers.indexOf(num) === -1) {
+          appendNumbers.push(num)
+        }
+      })
+      if (appendNumbers.length) {
+        this.dataNumbers = [...this.dataNumbers, ...newNumbers]
+        this.loadTextures(appendNumbers)
+        const timeout = appendNumbers.length * 200
+        // I think its better to set state guaranateed after a certain time
+        // instead of waiting for all textures to be loaded. you never know
+        // there might be a network error, or something, and that would make the
+        // modal stuck. this way it is guaranteed to come back
+        setTimeout(() => {
+          reactElement.setState({ ready: true })
+        }, timeout)
+      } else {
+        reactElement.setState({ ready: true })
+      }
     })
   }
 
