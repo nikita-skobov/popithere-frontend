@@ -392,7 +392,7 @@ export default class PopItSelection extends Component {
             offset={offset}
             loopArray={this.game.previewImages}
           />
-          <Button onClick={this.handleButton} name="next" block disabled={assetList.length - this.maxImages <= offset}> Next </Button>
+          <Button onClick={this.handleButton} name="next" block disabled={this.game.previewImages.length - this.maxImages <= offset}> Next </Button>
         </div>
       )
     }
