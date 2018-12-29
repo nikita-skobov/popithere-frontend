@@ -247,12 +247,10 @@ export default class PopItSelection extends Component {
           <Row>
             <Label for="rotateControl">Width</Label>
             <Slider onChange={this.handleResizeWidth} min={0} max={20} defaultValue={x} />
-            <Input onChange={this.handleResize} type="number" defaultValue={x} id="resizeControl" name="width" />
           </Row>
           <Row>
             <Label for="rotateControl">Height</Label>
             <Slider onChange={this.handleResizeHeight} min={0} max={20} defaultValue={y} />
-            <Input onChange={this.handleResize} type="number" defaultValue={y} id="resizeControl" name="height" />
           </Row>
         </Col>
       )
