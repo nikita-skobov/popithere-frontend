@@ -917,12 +917,6 @@ export default class PopItHere extends Game {
   }
 
   placeTexture(name, position) {
-    // TODO
-    // add a function call that retrieves a texture, or a texture array
-    // from the name... name should be agnostic to type of popit
-    // then depending on what you get, you call this.addImage or this.addGif
-    console.log(name)
-    console.log(position)
     let textures = []
     let play
     if (name === '.placeholder.') {
@@ -943,22 +937,16 @@ export default class PopItHere extends Game {
   }
 
   onPopIt(obj) {
-    console.log('got popit fromm sserver!!')
-    console.log(obj)
     const positionString = obj.substr(0, 2)
     const textureName = obj.substr(2, obj.length)
     const pos = getRealPosition(positionString)
 
     if (this.hasTexture(textureName)) {
-      console.log('i have that texture!')
       this.placeTexture(textureName, pos)
     } else {
-      console.log('i dont have that texture')
       const sprite = this.placeTexture('.placeholder.', pos)
-      console.log(sprite)
       this.dataMan.getDataLater(textureName, async (data) => {
         const newTexture = await this.buildTextureAndPreview(textureName, data)
-        console.log(newTexture)
         sprite._textures = newTexture
         if (newTexture.length > 1) {
           sprite.gotoAndPlay(0)
