@@ -30,6 +30,36 @@ const notSubmit = (e) => {
   e.preventDefault()
 }
 
+const scaleMap = (num, inMin, inMax, outMin, outMax) => {
+  return (num - inMin) * (outMax - outMin) / (inMax - inMin) + outMin
+}
+
+const normalizeScale = (val) => {
+  let pos = val
+  if (pos > 30) pos = 30
+  if (pos < 0) pos = 0
+  if (pos === 1) return 50
+  if (pos > 1) {
+    return scaleMap(pos, 1, 30, 50, 100)
+  }
+  if (pos < 1) {
+    return scaleMap(pos, 0, 1, 0, 50)
+  }
+}
+
+const denormalizeScale = (val) => {
+  let pos = val
+  if (pos > 100) pos = 100
+  if (pos < 0) pos = 0
+  if (pos === 50) return 1
+  if (pos > 50) {
+    return scaleMap(pos, 50, 100, 1, 30)
+  }
+  if (pos < 50) {
+    return scaleMap(pos, 0, 50, 0, 1)
+  }
+}
+
 export default class PopItSelection extends Component {
   constructor(props) {
     super(props)
@@ -156,12 +186,12 @@ export default class PopItSelection extends Component {
   }
 
   handleResizeHeight(e) {
-    this.game.activeSprite.scale.y = e
+    this.game.activeSprite.scale.y = denormalizeScale(e)
   }
 
   handleResizeWidth(e) {
     console.log(e)
-    this.game.activeSprite.scale.x = e
+    this.game.activeSprite.scale.x = denormalizeScale(e)
     // e.preventDefault()
     // const { name, value } = e.target
     // if (name === 'width') {
@@ -242,15 +272,17 @@ export default class PopItSelection extends Component {
 
     if (choice === 'resize') {
       const { x, y } = this.game.activeSprite.scale
+      const normX = normalizeScale(x)
+      const normY = normalizeScale(y)
       return (
         <Col fluid>
           <Row>
             <Label for="rotateControl">Width</Label>
-            <Slider onChange={this.handleResizeWidth} min={0} max={20} defaultValue={x} />
+            <Slider onChange={this.handleResizeWidth} min={0} max={100} defaultValue={normX} />
           </Row>
           <Row>
             <Label for="rotateControl">Height</Label>
-            <Slider onChange={this.handleResizeHeight} min={0} max={20} defaultValue={y} />
+            <Slider onChange={this.handleResizeHeight} min={0} max={100} defaultValue={normY} />
           </Row>
         </Col>
       )
