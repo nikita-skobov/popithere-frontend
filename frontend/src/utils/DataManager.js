@@ -45,6 +45,7 @@ function DataManager(datastore) {
 
         const s3key = dataList[index].si
         const dataNumber = dataList[index].dn
+        fetchingMap[dataNumber] = true
         // this gets the s3 object key
         // which is appended to the api base
         // and then fetched
@@ -55,6 +56,7 @@ function DataManager(datastore) {
           .then((obj) => {
             console.log(`got ${s3key}, dn: ${dataNumber}`)
             dataObj[dataNumber] = obj
+            delete fetchingMap[dataNumber]
           })
       } catch (e) {
         console.error(e)
