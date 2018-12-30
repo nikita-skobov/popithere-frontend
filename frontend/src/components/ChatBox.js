@@ -118,7 +118,7 @@ export default class ChatBox extends Component {
               <Media style={{ width: '5em' }}>
                 <Media meta-name={name} meta-msg={msg} style={{ width: '100%', paddingTop: '10%', paddingBottom: '10%' }} object src={svg} alt="some alt" />
               </Media>
-              <Media body style={{ wordBreak: 'break-word', paddingTop: '5%' }}>{msg}</Media>
+              <Media body style={{ wordBreak: 'break-all', paddingTop: '5%' }}>{msg}</Media>
             </Media>
           )
         })}
