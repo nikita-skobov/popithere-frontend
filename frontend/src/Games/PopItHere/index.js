@@ -970,7 +970,12 @@ export default class PopItHere extends Game {
     } else {
       const sprite = this.placeTexture('.placeholder.', pos)
       this.dataMan.getDataLater(textureName, async (data) => {
-        const newTexture = await this.buildTextureAndPreview(textureName, data)
+        let newTexture
+        if (!this.hasTexture(textureName)) {
+          newTexture = await this.buildTextureAndPreview(textureName, data)
+        } else {
+          newTexture = this.textures[textureName]
+        }
         sprite._textures = newTexture
         if (newTexture.length > 1) {
           sprite.gotoAndPlay(0)
@@ -983,7 +988,7 @@ export default class PopItHere extends Game {
   }
 
   buildTextureAndPreview(name, data) {
-    this.textures[name] = []
+    const tempTextures = []
     return new Promise((res, rej) => {
       try {
         data.forEach(async (b64str, index) => {
@@ -993,7 +998,7 @@ export default class PopItHere extends Game {
               file: imgStr,
               alreadyURL: true,
             })
-            this.textures[name].push(texture)
+            tempTextures.push(texture)
             if (index === 0) {
               this.previewImages.push({
                 name,
@@ -1001,6 +1006,7 @@ export default class PopItHere extends Game {
               })
             }
             if (index === data.length - 1) {
+              this.textures[name] = tempTextures
               return res(this.textures[name])
             }
           } catch (e) {
