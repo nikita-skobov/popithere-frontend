@@ -63,7 +63,10 @@ function DataManager(datastore) {
         if (cb) {
           // if user provided callback, set fetch map
           // to an array of callbacks
-          fetchingMap[dataNumber] = [cb]
+          if (!fetchingMap[dataNumber]) {
+            fetchingMap[dataNumber] = []
+          }
+          fetchingMap[dataNumber].push(cb)
         } else {
           // otherwise set it to false. this way
           // if there are future hooks, theyll see that it is false,
@@ -74,7 +77,7 @@ function DataManager(datastore) {
         // which is appended to the api base
         // and then fetched
         const url = `${dataFetchBase}${s3key}`
-        console.log(url)
+        console.log(`starting fetch ${s3key} for dn: ${dataNumber}`)
         fetch(url)
           .then(resp => resp.json())
           .then((obj2) => {
@@ -86,7 +89,9 @@ function DataManager(datastore) {
               // getDataLater. if fetchingMap
               // of dataNumber is false, that means
               // no one hooked in
-              fetchingMap[dataNumber].forEach(cb2 => cb2(obj2))
+              fetchingMap[dataNumber].forEach((cb2) => {
+                cb2(obj2)
+              })
             }
 
             delete fetchingMap[dataNumber]
@@ -109,7 +114,9 @@ function DataManager(datastore) {
     },
     fetchKey: (key) => {
       return new Promise((res, rej) => {
-        fetchingMap[key] = false
+        if (!has.call(fetchingMap, key)) {
+          fetchingMap[key] = false
+        }
         const url = `${keyDataEndpoint}/${key}`
         fetch(url)
           .then(resp => resp.json())
@@ -177,13 +184,13 @@ function DataManager(datastore) {
       let s3key = s3keys[dataNumber]
       if (!s3key) {
         try {
+          fetchingMap[dataNumber] = [callback]
           s3key = await retObj.fetchKey(dataNumber)
         } catch (e) {
           console.error(`FAILED to fetch s3id from key: ${dataNumber}`)
           return null
         }
       }
-      console.log(s3key)
 
       retObj.fetchData(null, { key: s3key, dn: dataNumber, cb: callback })
     },
