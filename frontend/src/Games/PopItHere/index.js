@@ -48,17 +48,17 @@ export default class PopItHere extends Game {
       modalTitle: 'Choose your PopIt',
     }
 
-    this.endGameButton = {
-      name: 'endgame',
-      text: 'End Game',
-      on: () => {
-        console.log('ending game')
-        this.canvas.endGame()
-      },
-    }
+    // this.endGameButton = {
+    //   name: 'endgame',
+    //   text: 'End Game',
+    //   on: () => {
+    //     console.log('ending game')
+    //     this.canvas.endGame()
+    //   },
+    // }
 
     this.addButton(this.popItButton)
-    this.addButton(this.endGameButton)
+    // this.addButton(this.endGameButton)
 
     const initialFetchLimit = 2
     const dataNumbers = this.dataMan.getDataNumbers()
@@ -483,7 +483,7 @@ export default class PopItHere extends Game {
 
     this.removeButtons()
     this.addButton(this.popItButton)
-    this.addButton(this.endGameButton)
+    // this.addButton(this.endGameButton)
     this.canvas.newButtons(this.getButtons())
     this.buttonLayer = undefined
     this.controlLayer = undefined
@@ -851,7 +851,7 @@ export default class PopItHere extends Game {
     this.socket.off('po')
     this.customBuildMode = true
     this.removeButtons()
-    this.addButton(this.endGameButton)
+    // this.addButton(this.endGameButton)
     this.canvas.newButtons(this.getButtons())
 
     this.controlLayer = new PIXI.Container()
