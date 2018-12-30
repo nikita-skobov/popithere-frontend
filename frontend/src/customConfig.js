@@ -25,9 +25,9 @@ exports.defaultButtons = [
   'options',
 ]
 
-exports.keyDataEndpoint = 'https://api.popithere.com/list/key'
-exports.dataFetchBase = 'https://api.popithere.com/'
-exports.listDataEndpoint = 'https://api.popithere.com/list/data'
+exports.keyDataEndpoint = 'https://api-staging.popithere.com/list/key'
+exports.dataFetchBase = 'https://api-staging.popithere.com/'
+exports.listDataEndpoint = 'https://api-staging.popithere.com/list/data'
 exports.socketEndpoint = 'https://sockets.popithere.com'
-exports.loginEndpoint = 'https://5wwuqdullg.execute-api.us-east-1.amazonaws.com/staging/issue/login'
-exports.urlEndpoint = 'https://5wwuqdullg.execute-api.us-east-1.amazonaws.com/staging/issue/url'
+exports.loginEndpoint = 'https://qkoxnxynx8.execute-api.us-east-1.amazonaws.com/staging/issue/login'
+exports.urlEndpoint = 'https://qkoxnxynx8.execute-api.us-east-1.amazonaws.com/staging/issue/url'
