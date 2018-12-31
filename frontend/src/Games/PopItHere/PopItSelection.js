@@ -6,6 +6,8 @@ import {
   CustomInput,
   Form,
   FormGroup,
+  InputGroup,
+  InputGroupAddon,
   Label,
   Progress,
   Input,
@@ -63,8 +65,12 @@ export default class PopItSelection extends Component {
     this.maxImages = 10
 
     this.state = {
+      searchNum: '',
+      loopArray: [...this.game.previewImages],
       ready: true,
       maxSize: 100,
+      isSearching: false,
+      isLoading: false,
       invalidInput: false,
       textInput: '',
       fontSize: 26,
@@ -377,27 +383,70 @@ export default class PopItSelection extends Component {
     }
 
     if (choice === 'image') {
-      const { offset, ready } = this.state
+      const { offset, ready, isSearching, loopArray, isLoading } = this.state
 
       const refresh = () => {
-        this.setState({ ready: false })
+        this.setState({ ready: false, isSearching: false, isLoading: true })
         this.game.reloadTextures(this)
+      }
+
+      const search = () => {
+        this.setState((prevState) => {
+          const tempState = prevState
+          tempState.isSearching = !tempState.isSearching
+          return tempState
+        })
+      }
+
+      const handlePreSearch = (e) => {
+        const { name, value } = e.target
+        if (name === 'searchnum') {
+          this.setState({ searchNum: value })
+        } else if (name === 'go') {
+          this.setState((prevState) => {
+            const tempState = prevState
+            const { searchNum } = tempState
+            if (tempState.ready) {
+              tempState.ready = false
+              tempState.isLoading = true
+
+              this.game.searchForDataNumber(searchNum, (newList) => {
+                this.setState({ ready: true, loopArray: newList, isLoading: false })
+              })
+
+              return tempState
+            }
+            // dont search if already searching
+            return tempState
+          })
+        }
       }
 
       return (
         <div>
-          <Button className="mb1em mr1em" onClick={this.handleButton} name="back">Back</Button>
-          <Button className="mb1em mr1em" onClick={refresh} name="refresh">Refresh</Button>
-          <Button className="mb1em" onClick={this.handleButton} name="prev" block disabled={offset === 0}> Previous </Button>
+          <Button disabled={isLoading} className="mb1em mr1em" onClick={this.handleButton} name="back">Back</Button>
+          <Button disabled={isLoading} className="mb1em mr1em" onClick={refresh} name="refresh">Refresh</Button>
+          <Button disabled={isLoading} className="mb1em mr1em" onClick={search} name="search">Search</Button>
+          {isSearching && (
+            <InputGroup className="mb1em">
+              <Input onChange={handlePreSearch} type="text" placeholder="Enter a data number" id="searchnum" name="searchnum" />
+              <InputGroupAddon addonType="append">
+                <Button disabled={isLoading} onClick={handlePreSearch} name="go">Go</Button>
+              </InputGroupAddon>
+            </InputGroup>
+          )}
+          <Button className="mb1em" onClick={this.handleButton} name="prev" block disabled={offset === 0 || isLoading}> Previous </Button>
           {ready && (
             <RowGenerator
+              isSearching={isSearching}
+              key={Date.now()}
               cb={this.popItChosen}
               cellCount={this.maxImages}
               offset={offset}
-              loopArray={this.game.previewImages}
+              loopArray={loopArray}
             />
           )}
-          <Button onClick={this.handleButton} name="next" block disabled={this.game.previewImages.length - this.maxImages <= offset}> Next </Button>
+          <Button onClick={this.handleButton} name="next" block disabled={loopArray.length - this.maxImages <= offset || isLoading}> Next </Button>
         </div>
       )
     }

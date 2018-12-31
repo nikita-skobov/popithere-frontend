@@ -46,6 +46,7 @@ function DataManager(datastore) {
       let s3key
       let dataNumber
       let cb = false
+      let alreadyCallback = false
       if (typeof index === 'number') {
         if (index > dataList.length) throw new Error('Fetch index out of range')
         s3key = dataList[index].si
@@ -58,6 +59,8 @@ function DataManager(datastore) {
         dataNumber = obj.dn
         // eslint-disable-next-line
         cb = obj.cb
+        // eslint-disable-next-line
+        alreadyCallback = obj.alreadyCallback
       }
       try {
         if (cb) {
@@ -66,7 +69,11 @@ function DataManager(datastore) {
           if (!fetchingMap[dataNumber]) {
             fetchingMap[dataNumber] = []
           }
-          fetchingMap[dataNumber].push(cb)
+          if (!alreadyCallback) {
+            // theres a chance that we already pushed this callback on
+            // so dont duplicate it!
+            fetchingMap[dataNumber].push(cb)
+          }
         } else {
           // otherwise set it to false. this way
           // if there are future hooks, theyll see that it is false,
@@ -90,18 +97,27 @@ function DataManager(datastore) {
               // of dataNumber is false, that means
               // no one hooked in
               fetchingMap[dataNumber].forEach((cb2) => {
-                cb2(obj2)
+                cb2(null, obj2)
               })
             }
 
             delete fetchingMap[dataNumber]
           })
           .catch((err) => {
-            if (cb) {
-              cb(err)
+            if (fetchingMap[dataNumber]) {
+              fetchingMap[dataNumber].forEach((cb2) => {
+                cb2(err, null)
+              })
+              delete fetchingMap[dataNumber]
             }
           })
       } catch (e) {
+        if (fetchingMap[dataNumber]) {
+          fetchingMap[dataNumber].forEach((cb2) => {
+            cb2(e, null)
+          })
+          delete fetchingMap[dataNumber]
+        }
         console.error(e)
       }
     },
@@ -166,7 +182,7 @@ function DataManager(datastore) {
 
       if (has.call(dataObj, dataNumber)) {
         // if we already have it, just return it
-        callback(dataObj[dataNumber])
+        callback(null, dataObj[dataNumber])
         return null
       }
 
@@ -181,18 +197,27 @@ function DataManager(datastore) {
         return null
       }
 
+      let alreadyCallback = false
       let s3key = s3keys[dataNumber]
       if (!s3key) {
         try {
           fetchingMap[dataNumber] = [callback]
+          alreadyCallback = true
           s3key = await retObj.fetchKey(dataNumber)
+          console.log(`got key: ${s3key}`)
         } catch (e) {
           console.error(`FAILED to fetch s3id from key: ${dataNumber}`)
+          if (fetchingMap[dataNumber]) {
+            fetchingMap[dataNumber].forEach((cb2) => {
+              cb2(e, null)
+            })
+            delete fetchingMap[dataNumber]
+          }
           return null
         }
       }
 
-      retObj.fetchData(null, { key: s3key, dn: dataNumber, cb: callback })
+      retObj.fetchData(null, { key: s3key, dn: dataNumber, cb: callback, alreadyCallback })
     },
     getDataNumbers: () => [...dataNumberList],
   }

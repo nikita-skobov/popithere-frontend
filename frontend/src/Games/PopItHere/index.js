@@ -136,7 +136,7 @@ export default class PopItHere extends Game {
 
   loadTextures(iterator = this.dataNumbers) {
     iterator.forEach((num) => {
-      this.dataMan.getDataLater(num, (data) => {
+      this.dataMan.getDataLater(num, (err, data) => {
         const hasTexture = this.hasTexture(num)
         if (!hasTexture) {
           this.buildTextureAndPreview(num, data)
@@ -164,7 +164,7 @@ export default class PopItHere extends Game {
       // modal stuck. this way it is guaranteed to come back
       const timeout = 500
       setTimeout(() => {
-        reactElement.setState({ ready: true })
+        reactElement.setState({ ready: true, loopArray: [...this.previewImages], isLoading: false })
       }, timeout)
     })
   }
@@ -1009,7 +1009,7 @@ export default class PopItHere extends Game {
       this.placeTexture(textureName, pos)
     } else {
       const sprite = this.placeTexture(this.placeholder.name, pos)
-      this.dataMan.getDataLater(textureName, async (data) => {
+      this.dataMan.getDataLater(textureName, async (err, data) => {
         let newTexture
         if (!this.hasTexture(textureName)) {
           newTexture = await this.buildTextureAndPreview(textureName, data)
@@ -1022,6 +1022,61 @@ export default class PopItHere extends Game {
         } else {
           sprite._texture = newTexture[0]
           sprite.gotoAndStop(0)
+        }
+      })
+    }
+  }
+
+  searchForDataNumber(num, callback) {
+    const handleFilter = (n, cb) => {
+      const searchNum = n
+      const newLoopArray = []
+      const emptyStrRegEx = /^\s*$/
+      if (searchNum && !emptyStrRegEx.test(searchNum)) {
+        // only search if user entered something other
+        // than empty space
+        this.previewImages.forEach((obj) => {
+          const len = searchNum.length
+          const { name } = obj
+          if (name.substr(0, len) === searchNum) {
+            newLoopArray.push(obj)
+          }
+          if (name.substr(0, len + 1) === `.${searchNum}`) {
+            // also try to search a potentially modified search value
+            // this happens when two uploads happen simultaneously. lets say both
+            // have a data number of 1c. when one gets uploaded it stays 1c, when the
+            // next one gets uploaded it gets a . prepended, and some random numbers at the end
+            // so it might become .1cwzzy
+            newLoopArray.push(obj)
+          }
+        })
+        cb([...newLoopArray])
+      } else {
+        // if the user entered spaces, revert back to previous loopArray?
+        cb([...this.game.previewImages])
+      }
+    }
+
+    if (this.hasTexture(num)) {
+      handleFilter(num, callback)
+    } else {
+      this.dataMan.getDataLater(num, (err, data) => {
+        if (err) {
+          handleFilter(num, callback)
+          return null
+        }
+
+        const hasTexture = this.hasTexture(num)
+        if (!hasTexture) {
+          this.buildTextureAndPreview(num, data)
+            .then(() => {
+              handleFilter(num, callback)
+            })
+            .catch(() => {
+              handleFilter(num, callback)
+            })
+        } else {
+          handleFilter(num, callback)
         }
       })
     }
