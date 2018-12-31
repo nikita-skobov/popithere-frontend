@@ -325,7 +325,7 @@ export default class PopItHere extends Game {
           // we will ask the user if they want to go back, or keep
           // editing their popit
           setTimeout(() => {
-            this.customCancel()
+            this.customCancel(null, 'Go back to home page?')
           }, 500)
         }
         this.uploader.clearData('myo-data')
@@ -469,12 +469,12 @@ export default class PopItHere extends Game {
     })
   }
 
-  customCancel() {
+  customCancel(event, title = 'Are you sure you want to discard your popit creation?') {
     this.modal.toggle({
       modal: () => (
         <PopItSelection game={this} startingChoice="cancel" />
       ),
-      modalTitle: 'Are you sure you want to discard your popit creation?',
+      modalTitle: title,
     })
   }
 
