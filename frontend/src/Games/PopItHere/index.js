@@ -1062,6 +1062,11 @@ export default class PopItHere extends Game {
       handleFilter(num, callback)
     } else {
       this.dataMan.getDataLater(num, (err, data) => {
+        if (err) {
+          handleFilter(num, callback)
+          return null
+        }
+
         const hasTexture = this.hasTexture(num)
         if (!hasTexture) {
           this.buildTextureAndPreview(num, data)
