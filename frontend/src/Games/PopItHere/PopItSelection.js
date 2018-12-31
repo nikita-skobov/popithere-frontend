@@ -402,7 +402,7 @@ export default class PopItSelection extends Component {
         if (searchNum && !emptyStrRegEx.test(searchNum)) {
           // only search if user entered something other
           // than empty space
-          loopArray.forEach((obj) => {
+          this.game.previewImages.forEach((obj) => {
             const len = searchNum.length
             const { name } = obj
             if (name.substr(0, len) === searchNum) {
