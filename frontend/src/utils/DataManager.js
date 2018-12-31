@@ -90,18 +90,25 @@ function DataManager(datastore) {
               // of dataNumber is false, that means
               // no one hooked in
               fetchingMap[dataNumber].forEach((cb2) => {
-                cb2(obj2)
+                cb2(null, obj2)
               })
             }
 
             delete fetchingMap[dataNumber]
           })
           .catch((err) => {
-            if (cb) {
-              cb(err)
+            if (fetchingMap[dataNumber]) {
+              fetchingMap[dataNumber].forEach((cb2) => {
+                cb2(err, null)
+              })
             }
           })
       } catch (e) {
+        if (fetchingMap[dataNumber]) {
+          fetchingMap[dataNumber].forEach((cb2) => {
+            cb2(e, null)
+          })
+        }
         console.error(e)
       }
     },
@@ -166,7 +173,7 @@ function DataManager(datastore) {
 
       if (has.call(dataObj, dataNumber)) {
         // if we already have it, just return it
-        callback(dataObj[dataNumber])
+        callback(null, dataObj[dataNumber])
         return null
       }
 

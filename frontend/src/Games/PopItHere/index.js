@@ -136,7 +136,7 @@ export default class PopItHere extends Game {
 
   loadTextures(iterator = this.dataNumbers) {
     iterator.forEach((num) => {
-      this.dataMan.getDataLater(num, (data) => {
+      this.dataMan.getDataLater(num, (err, data) => {
         const hasTexture = this.hasTexture(num)
         if (!hasTexture) {
           this.buildTextureAndPreview(num, data)
@@ -1009,7 +1009,7 @@ export default class PopItHere extends Game {
       this.placeTexture(textureName, pos)
     } else {
       const sprite = this.placeTexture(this.placeholder.name, pos)
-      this.dataMan.getDataLater(textureName, async (data) => {
+      this.dataMan.getDataLater(textureName, async (err, data) => {
         let newTexture
         if (!this.hasTexture(textureName)) {
           newTexture = await this.buildTextureAndPreview(textureName, data)
@@ -1061,7 +1061,7 @@ export default class PopItHere extends Game {
       console.log('already have that texture, so just filtering')
       handleFilter(num, callback)
     } else {
-      this.dataMan.getDataLater(num, (data) => {
+      this.dataMan.getDataLater(num, (err, data) => {
         const hasTexture = this.hasTexture(num)
         if (!hasTexture) {
           this.buildTextureAndPreview(num, data)
