@@ -188,6 +188,11 @@ function DataManager(datastore) {
           s3key = await retObj.fetchKey(dataNumber)
         } catch (e) {
           console.error(`FAILED to fetch s3id from key: ${dataNumber}`)
+          if (fetchingMap[dataNumber]) {
+            fetchingMap[dataNumber].forEach((cb2) => {
+              cb2(e, null)
+            })
+          }
           return null
         }
       }
