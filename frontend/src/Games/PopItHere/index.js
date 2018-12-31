@@ -1058,7 +1058,6 @@ export default class PopItHere extends Game {
     }
 
     if (this.hasTexture(num)) {
-      console.log('already have that texture, so just filtering')
       handleFilter(num, callback)
     } else {
       this.dataMan.getDataLater(num, (err, data) => {

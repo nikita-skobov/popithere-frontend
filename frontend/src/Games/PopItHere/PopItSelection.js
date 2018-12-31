@@ -398,7 +398,6 @@ export default class PopItSelection extends Component {
       }
 
       const handlePreSearch = (e) => {
-        console.log(e.target.name)
         const { name, value } = e.target
         if (name === 'searchnum') {
           this.setState({ searchNum: value })
@@ -406,13 +405,10 @@ export default class PopItSelection extends Component {
           this.setState((prevState) => {
             const tempState = prevState
             const { searchNum } = tempState
-            console.log(`searching for: ${searchNum}`)
             if (tempState.ready) {
               tempState.ready = false
 
               this.game.searchForDataNumber(searchNum, (newList) => {
-                console.log('got new list:')
-                console.log(newList)
                 this.setState({ ready: true, loopArray: newList })
               })
 
