@@ -527,9 +527,27 @@ export default class PopItHere extends Game {
       const newFrames = reduceFrames(image, this.maxGifFrames)
       myImg = this.addGif(newFrames, { x, y, container: this.stage, atIndex: this.stage.children.length, play: false })
       this.customGifSprites.push(myImg)
+      if (myImg.width > this.renderer.width || myImg.height > this.renderer.height) {
+        // scale down gif to fit canvas
+        // find which of the directions is the largest
+        const biggestDir = myImg.width > myImg.height ? 'width' : 'height'
+        const scaleFactor = this.renderer[biggestDir] / myImg[biggestDir]
+        // then apply scale to both width and height
+        myImg.width *= scaleFactor
+        myImg.height *= scaleFactor
+      }
     } else {
       const { x, y } = calculateCenterPosition(image, this.center)
       myImg = this.addImage(image, { x, y, container: this.stage, atIndex: this.stage.children.length })
+      if (myImg.width > this.renderer.width || myImg.height > this.renderer.height) {
+        // scale down image to fit canvas
+        // find which of the directions is the largest
+        const biggestDir = myImg.width > myImg.height ? 'width' : 'height'
+        const scaleFactor = this.renderer[biggestDir] / myImg[biggestDir]
+        // then apply scale to both width and height
+        myImg.width *= scaleFactor
+        myImg.height *= scaleFactor
+      }
     }
 
     myImg.interactive = true
