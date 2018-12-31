@@ -408,6 +408,14 @@ export default class PopItSelection extends Component {
             if (name.substr(0, len) === searchNum) {
               newLoopArray.push(obj)
             }
+            if (name.substr(0, len + 1) === `.${searchNum}`) {
+              // also try to search a potentially modified search value
+              // this happens when two uploads happen simultaneously. lets say both
+              // have a data number of 1c. when one gets uploaded it stays 1c, when the
+              // next one gets uploaded it gets a . prepended, and some random numbers at the end
+              // so it might become .1cwzzy
+              newLoopArray.push(obj)
+            }
           })
           this.setState({ loopArray: [...newLoopArray] })
         } else {
