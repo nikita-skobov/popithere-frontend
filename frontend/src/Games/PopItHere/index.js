@@ -164,7 +164,7 @@ export default class PopItHere extends Game {
       // modal stuck. this way it is guaranteed to come back
       const timeout = 500
       setTimeout(() => {
-        reactElement.setState({ ready: true, loopArray: [...this.previewImages] })
+        reactElement.setState({ ready: true, loopArray: [...this.previewImages], isLoading: false })
       }, timeout)
     })
   }
