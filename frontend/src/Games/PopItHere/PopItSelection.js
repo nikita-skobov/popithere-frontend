@@ -65,6 +65,7 @@ export default class PopItSelection extends Component {
     this.state = {
       ready: true,
       maxSize: 100,
+      isSearching: false,
       invalidInput: false,
       textInput: '',
       fontSize: 26,
@@ -377,17 +378,29 @@ export default class PopItSelection extends Component {
     }
 
     if (choice === 'image') {
-      const { offset, ready } = this.state
+      const { offset, ready, isSearching } = this.state
 
       const refresh = () => {
         this.setState({ ready: false })
         this.game.reloadTextures(this)
       }
 
+      const search = () => {
+        this.setState((prevState) => {
+          const tempState = prevState
+          tempState.isSearching = !tempState.isSearching
+          return tempState
+        })
+      }
+
       return (
         <div>
           <Button className="mb1em mr1em" onClick={this.handleButton} name="back">Back</Button>
           <Button className="mb1em mr1em" onClick={refresh} name="refresh">Refresh</Button>
+          <Button className="mb1em mr1em" onClick={search} name="search">Search</Button>
+          {isSearching && (
+            <Input className="mb1em" onChange={this.searchNumber} type="text" placeholder="Enter a data number" id="searchnum" name="searchnum" />
+          )}
           <Button className="mb1em" onClick={this.handleButton} name="prev" block disabled={offset === 0}> Previous </Button>
           {ready && (
             <RowGenerator
