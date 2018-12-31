@@ -101,6 +101,7 @@ function DataManager(datastore) {
               fetchingMap[dataNumber].forEach((cb2) => {
                 cb2(err, null)
               })
+              delete fetchingMap[dataNumber]
             }
           })
       } catch (e) {
@@ -108,6 +109,7 @@ function DataManager(datastore) {
           fetchingMap[dataNumber].forEach((cb2) => {
             cb2(e, null)
           })
+          delete fetchingMap[dataNumber]
         }
         console.error(e)
       }
@@ -199,6 +201,7 @@ function DataManager(datastore) {
             fetchingMap[dataNumber].forEach((cb2) => {
               cb2(e, null)
             })
+            delete fetchingMap[dataNumber]
           }
           return null
         }
