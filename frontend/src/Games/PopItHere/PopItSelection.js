@@ -6,6 +6,8 @@ import {
   CustomInput,
   Form,
   FormGroup,
+  InputGroup,
+  InputGroupAddon,
   Label,
   Progress,
   Input,
@@ -63,6 +65,7 @@ export default class PopItSelection extends Component {
     this.maxImages = 10
 
     this.state = {
+      searchNum: '',
       loopArray: [...this.game.previewImages],
       ready: true,
       maxSize: 100,
@@ -394,6 +397,31 @@ export default class PopItSelection extends Component {
         })
       }
 
+      const handlePreSearch = (e) => {
+        console.log(e.target.name)
+        const { name, value } = e.target
+        if (name === 'searchnum') {
+          this.setState({ searchNum: value })
+        } else if (name === 'go') {
+          this.setState((prevState) => {
+            const tempState = prevState
+            const { searchNum } = tempState
+            console.log(`searching for: ${searchNum}`)
+            if (tempState.ready) {
+              tempState.ready = false
+
+              setTimeout(() => {
+                this.setState({ ready: true })
+              }, 2000)
+
+              return tempState
+            }
+            // dont search if already searching
+            return tempState
+          })
+        }
+      }
+
       const handleSearch = (e) => {
         console.log(e.target.value)
         const searchNum = e.target.value
@@ -430,7 +458,12 @@ export default class PopItSelection extends Component {
           <Button className="mb1em mr1em" onClick={refresh} name="refresh">Refresh</Button>
           <Button className="mb1em mr1em" onClick={search} name="search">Search</Button>
           {isSearching && (
-            <Input className="mb1em" onChange={handleSearch} type="text" placeholder="Enter a data number" id="searchnum" name="searchnum" />
+            <InputGroup className="mb1em">
+              <Input onChange={handlePreSearch} type="text" placeholder="Enter a data number" id="searchnum" name="searchnum" />
+              <InputGroupAddon addonType="append">
+                <Button onClick={handlePreSearch} name="go">Go</Button>
+              </InputGroupAddon>
+            </InputGroup>
           )}
           <Button className="mb1em" onClick={this.handleButton} name="prev" block disabled={offset === 0}> Previous </Button>
           {ready && (
