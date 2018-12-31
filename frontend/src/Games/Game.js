@@ -1,5 +1,7 @@
 import * as PIXI from 'pixi.js'
 
+import { placeholder } from '../customConfig'
+
 const has = Object.prototype.hasOwnProperty
 
 export default class Game {
@@ -13,6 +15,7 @@ export default class Game {
     this.canvas = props.canvas
     this.ticker = PIXI.ticker.shared
     this.buttons = []
+    this.placeholder = placeholder
     this.animating = false
 
     this.gameIsActive = true
