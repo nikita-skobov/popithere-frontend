@@ -320,6 +320,14 @@ export default class PopItHere extends Game {
           // user should decide on their own if they want to leave preview mode.
           return null
         }
+        if (err === false && typeof err === 'boolean') {
+          // this means the user just submitted a popit without an error,
+          // we will ask the user if they want to go back, or keep
+          // editing their popit
+          setTimeout(() => {
+            this.customCancel(null, 'Go back to home page?')
+          }, 500)
+        }
         this.uploader.clearData('myo-data')
         // resets everything to how it was prior to starting preview mode
         const ind = this.root.getChildIndex(tempButtonLayer)
@@ -461,12 +469,12 @@ export default class PopItHere extends Game {
     })
   }
 
-  customCancel() {
+  customCancel(event, title = 'Are you sure you want to discard your popit creation?') {
     this.modal.toggle({
       modal: () => (
         <PopItSelection game={this} startingChoice="cancel" />
       ),
-      modalTitle: 'Are you sure you want to discard your popit creation?',
+      modalTitle: title,
     })
   }
 
