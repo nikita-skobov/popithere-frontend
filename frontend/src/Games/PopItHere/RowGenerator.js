@@ -10,9 +10,23 @@ const RowGenerator = (props) => {
     loopArray,
     offset,
     cb,
+    isSearching,
   } = props
 
   const cellList = [...Array(cellCount).keys()]
+
+  if (loopArray.length === 0) {
+    return (
+      <Row>
+        <Col>
+          <p>
+            No results found. {isSearching && 'Sometimes it might take a while for a popit to show up.'}
+          </p>
+        </Col>
+      </Row>
+    )
+  }
+
   return cellList.map((index) => {
     if (index % 2 === 0) {
       if (loopArray[index + offset]) {
@@ -71,6 +85,7 @@ RowGenerator.propTypes = {
   loopArray: PropTypes.instanceOf(Array).isRequired,
   offset: PropTypes.number,
   cb: PropTypes.func.isRequired,
+  isSearching: PropTypes.bool.isRequired,
 }
 
 export default RowGenerator

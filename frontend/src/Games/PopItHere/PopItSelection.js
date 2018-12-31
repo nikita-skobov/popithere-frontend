@@ -427,6 +427,7 @@ export default class PopItSelection extends Component {
           <Button className="mb1em" onClick={this.handleButton} name="prev" block disabled={offset === 0}> Previous </Button>
           {ready && (
             <RowGenerator
+              isSearching={isSearching}
               key={Date.now()}
               cb={this.popItChosen}
               cellCount={this.maxImages}
