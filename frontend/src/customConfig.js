@@ -25,6 +25,11 @@ exports.defaultButtons = [
   'options',
 ]
 
+exports.placeholder = {
+  name: '.placeholder.',
+  url: 'images/temp/placeholder.png',
+}
+
 exports.keyDataEndpoint = 'https://api-staging.popithere.com/list/key'
 exports.dataFetchBase = 'https://api-staging.popithere.com/'
 exports.listDataEndpoint = 'https://api-staging.popithere.com/list/data'

@@ -110,6 +110,20 @@ export default class PopItHere extends Game {
     this.changeBackgroundColor([255, 0, 0], 1, 2, 100, conditionCallback.bind(this))
 
     this.setupLivePopping()
+
+
+    this.socket.on('REMOVE', (textureName) => {
+      console.log(`REMOVING TEXTURE: ${textureName}`)
+      if (this.hasTexture(textureName)) {
+        this.textures[textureName] = [PIXI.loader.resources[this.placeholder.name]]
+      }
+
+      this.previewImages.forEach((obj) => {
+        if (obj.name === textureName) {
+          obj.url = this.placeholder.url
+        }
+      })
+    })
   }
 
   static endGame() {
@@ -943,7 +957,7 @@ export default class PopItHere extends Game {
   placeTexture(name, position) {
     let textures = []
     let play
-    if (name === '.placeholder.') {
+    if (name === this.placeholder.name) {
       const { texture } = PIXI.loader.resources[name]
       textures = [texture]
       play = false // because placeholder texture is a single frame
@@ -968,7 +982,7 @@ export default class PopItHere extends Game {
     if (this.hasTexture(textureName)) {
       this.placeTexture(textureName, pos)
     } else {
-      const sprite = this.placeTexture('.placeholder.', pos)
+      const sprite = this.placeTexture(this.placeholder.name, pos)
       this.dataMan.getDataLater(textureName, async (data) => {
         let newTexture
         if (!this.hasTexture(textureName)) {
