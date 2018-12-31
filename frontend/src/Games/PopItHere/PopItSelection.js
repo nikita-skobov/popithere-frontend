@@ -380,6 +380,8 @@ export default class PopItSelection extends Component {
     if (choice === 'image') {
       const { offset, ready, isSearching } = this.state
 
+      let loopArray = [...this.game.previewImages]
+
       const refresh = () => {
         this.setState({ ready: false })
         this.game.reloadTextures(this)
@@ -393,24 +395,50 @@ export default class PopItSelection extends Component {
         })
       }
 
+      const handleSearch = (e) => {
+        console.log(e.target.value)
+        const searchNum = e.target.value
+        const newLoopArray = []
+        const emptyStrRegEx = /^\s*$/
+        if (searchNum && !emptyStrRegEx.test(searchNum)) {
+          // only search if user entered something other
+          // than empty space
+          loopArray.forEach((obj) => {
+            const len = searchNum.length
+            const { name } = obj
+            if (name.substr(0, len) === searchNum) {
+              newLoopArray.push(obj)
+            }
+          })
+          loopArray = newLoopArray
+          console.log(newLoopArray)
+          this.forceUpdate()
+        } else {
+          // if the user entered spaces, revert back to previous loopArray?
+          loopArray = [...this.game.previewImages]
+          this.forceUpdate()
+        }
+      }
+
       return (
         <div>
           <Button className="mb1em mr1em" onClick={this.handleButton} name="back">Back</Button>
           <Button className="mb1em mr1em" onClick={refresh} name="refresh">Refresh</Button>
           <Button className="mb1em mr1em" onClick={search} name="search">Search</Button>
           {isSearching && (
-            <Input className="mb1em" onChange={this.searchNumber} type="text" placeholder="Enter a data number" id="searchnum" name="searchnum" />
+            <Input className="mb1em" onChange={handleSearch} type="text" placeholder="Enter a data number" id="searchnum" name="searchnum" />
           )}
           <Button className="mb1em" onClick={this.handleButton} name="prev" block disabled={offset === 0}> Previous </Button>
           {ready && (
             <RowGenerator
+              key={Date.now()}
               cb={this.popItChosen}
               cellCount={this.maxImages}
               offset={offset}
-              loopArray={this.game.previewImages}
+              loopArray={loopArray}
             />
           )}
-          <Button onClick={this.handleButton} name="next" block disabled={this.game.previewImages.length - this.maxImages <= offset}> Next </Button>
+          <Button onClick={this.handleButton} name="next" block disabled={loopArray.length - this.maxImages <= offset}> Next </Button>
         </div>
       )
     }
