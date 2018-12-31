@@ -63,6 +63,7 @@ export default class PopItSelection extends Component {
     this.maxImages = 10
 
     this.state = {
+      loopArray: [...this.game.previewImages],
       ready: true,
       maxSize: 100,
       isSearching: false,
@@ -378,9 +379,7 @@ export default class PopItSelection extends Component {
     }
 
     if (choice === 'image') {
-      const { offset, ready, isSearching } = this.state
-
-      let loopArray = [...this.game.previewImages]
+      const { offset, ready, isSearching, loopArray } = this.state
 
       const refresh = () => {
         this.setState({ ready: false })
@@ -410,13 +409,10 @@ export default class PopItSelection extends Component {
               newLoopArray.push(obj)
             }
           })
-          loopArray = newLoopArray
-          console.log(newLoopArray)
-          this.forceUpdate()
+          this.setState({ loopArray: [...newLoopArray] })
         } else {
           // if the user entered spaces, revert back to previous loopArray?
-          loopArray = [...this.game.previewImages]
-          this.forceUpdate()
+          this.setState({ loopArray: [...this.game.previewImages] })
         }
       }
 
