@@ -385,7 +385,7 @@ export default class PopItSelection extends Component {
       const { offset, ready, isSearching, loopArray } = this.state
 
       const refresh = () => {
-        this.setState({ ready: false })
+        this.setState({ ready: false, isSearching: false })
         this.game.reloadTextures(this)
       }
 
