@@ -62,20 +62,7 @@ export default class PopItHere extends Game {
 
     const initialFetchLimit = 10
     let dataNumbers = this.dataMan.getDataNumbers()
-    console.log(dataNumbers)
-    // make it integer for easy sorting
-    dataNumbers = dataNumbers.map(n => parseInt(n, 32))
-    console.log(dataNumbers)
-    // sort ascending
-    dataNumbers = dataNumbers.sort((a, b) => a - b)
-    console.log(dataNumbers)
-    // limit how many are fetched initially
-    dataNumbers = dataNumbers.slice(0, initialFetchLimit)
-    console.log(dataNumbers)
-    // back to string
-    dataNumbers = dataNumbers.map(n => n.toString(32))
-    console.log(dataNumbers)
-    this.dataNumbers = dataNumbers
+    this.dataNumbers = this.sortBaseX(dataNumbers, undefined, 32, initialFetchLimit)
 
     this.textures = {}
     this.previewImages = []
@@ -145,6 +132,21 @@ export default class PopItHere extends Game {
     this.root.off('pointerdown', this.emitPopIt)
     this.root.off('pointerdown', this.pointerDown)
     super.endGame()
+  }
+
+  sortBaseX(arr, keyName = false, base = 32, limit = -1, direction = '+') {
+    let tempArr = arr
+    tempArr = tempArr.map(item => keyName ? parseInt(item[keyName], base) : parseInt(item, base))
+    if (direction === '+') {
+      tempArr = tempArr.sort((a, b) => keyName ? a[keyName] - b[keyName] : a - b)
+    } else {
+      tempArr = tempArr.sort((a, b) => keyName ? a[keyName] - b[keyName] : a + b)
+    }
+    if (limit > -1) {
+      tempArr = tempArr.slice(0, limit)
+    }
+    tempArr = tempArr.map(n => keyName ? n[keyName].toString(base) : n.toString(base))
+    return tempArr
   }
 
   loadTextures(iterator = this.dataNumbers) {
