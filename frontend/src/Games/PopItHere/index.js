@@ -1061,31 +1061,24 @@ export default class PopItHere extends Game {
     const handleFilter = (n, cb) => {
       const searchNum = n
       const newLoopArray = []
-      const emptyStrRegEx = /^\s*$/
-      if (searchNum && !emptyStrRegEx.test(searchNum)) {
-        // only search if user entered something other
-        // than empty space
-        this.previewImages.forEach((obj) => {
-          const len = searchNum.length
-          const { name } = obj
-          if (name.substr(0, len) === searchNum) {
-            newLoopArray.push(obj)
-          }
-          if (name.substr(0, len + 1) === `.${searchNum}`) {
-            // also try to search a potentially modified search value
-            // this happens when two uploads happen simultaneously. lets say both
-            // have a data number of 1c. when one gets uploaded it stays 1c, when the
-            // next one gets uploaded it gets a . prepended, and some random numbers at the end
-            // so it might become .1cwzzy
-            newLoopArray.push(obj)
-          }
-        })
-
-        cb([...this.sortBaseX(newLoopArray, 'name', 32)])
-      } else {
-        // if the user entered spaces, revert back to previous loopArray?
-        cb([...this.sortBaseX(this.game.previewImages, 'name', 32)])
-      }
+      // only search if user entered something other
+      // than empty space
+      this.previewImages.forEach((obj) => {
+        const len = searchNum.length
+        const { name } = obj
+        if (name.substr(0, len) === searchNum) {
+          newLoopArray.push(obj)
+        }
+        if (name.substr(0, len + 1) === `.${searchNum}`) {
+          // also try to search a potentially modified search value
+          // this happens when two uploads happen simultaneously. lets say both
+          // have a data number of 1c. when one gets uploaded it stays 1c, when the
+          // next one gets uploaded it gets a . prepended, and some random numbers at the end
+          // so it might become .1cwzzy
+          newLoopArray.push(obj)
+        }
+      })
+      cb([...this.sortBaseX(newLoopArray, 'name', 32)])
     }
 
     if (this.hasTexture(num)) {

@@ -406,6 +406,13 @@ export default class PopItSelection extends Component {
           this.setState((prevState) => {
             const tempState = prevState
             const { searchNum } = tempState
+
+            const emptyStrRegEx = /^\s*$/
+            if (!searchNum || emptyStrRegEx.test(searchNum)) {
+              // if it is empty string, or only contains spaces
+              return tempState
+            }
+
             if (tempState.ready) {
               tempState.ready = false
               tempState.isLoading = true
