@@ -394,6 +394,10 @@ export default class PopItSelection extends Component {
         this.setState((prevState) => {
           const tempState = prevState
           tempState.isSearching = !tempState.isSearching
+          if (!tempState.isSearching) {
+            // if we set it back to false
+            tempState.loopArray = this.game.previewImages
+          }
           return tempState
         })
       }
