@@ -41,6 +41,7 @@ export default class PopItHere extends Game {
       text: 'Pop It!',
       on: () => {
         console.log('ya pressed tha button!!!')
+        this.previewImages = this.sortBaseX(this.previewImages, 'name', 32)
       },
       modal: () => (
         <PopItSelection game={this} />
@@ -136,7 +137,14 @@ export default class PopItHere extends Game {
 
   sortBaseX(arr, keyName = false, base = 32, limit = -1, direction = '+') {
     let tempArr = arr
-    tempArr = tempArr.map(item => keyName ? parseInt(item[keyName], base) : parseInt(item, base))
+    tempArr = tempArr.map((item) => {
+      if (keyName) {
+        item[keyName] = parseInt(item[keyName], base)
+      } else {
+        item = parseInt(item, base)
+      }
+      return item
+    })
     if (direction === '+') {
       tempArr = tempArr.sort((a, b) => keyName ? a[keyName] - b[keyName] : a - b)
     } else {
@@ -145,7 +153,14 @@ export default class PopItHere extends Game {
     if (limit > -1) {
       tempArr = tempArr.slice(0, limit)
     }
-    tempArr = tempArr.map(n => keyName ? n[keyName].toString(base) : n.toString(base))
+    tempArr = tempArr.map((item) => {
+      if (keyName) {
+        item[keyName] = item[keyName].toString(base)
+      } else {
+        item = item.toString(base)
+      }
+      return item
+    })
     return tempArr
   }
 
