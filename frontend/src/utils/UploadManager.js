@@ -1,4 +1,4 @@
-/* global fetch Headers Blob */
+/* global fetch Headers Blob XMLHttpRequest */
 import React from 'react'
 
 import {
@@ -65,11 +65,15 @@ function UploadManager(datastore) {
       })
 
       const data = tempData[key]
-      console.log('data length:', data.length)
 
       const resp1 = (r) => {
         brain.tell.Welcome.addMessage('Got response', true)
-        if (r.url !== urlEndpoint) {
+
+        // if r.responseURL then that is a response from XML request
+        // otherwise its a response from fetch request. XML used to upload to S3
+        // fetch used to get presigned URL. see comment below for explanation
+        const respURL = r.responseURL
+        if (respURL) {
           // this is a response from S3
           if (r.status === 200) {
             brain.tell.Welcome.addMessage('Successfully Uploaded!')
@@ -143,11 +147,29 @@ function UploadManager(datastore) {
           brain.tell.Welcome.addMessage('Successfully got signature')
           brain.tell.Welcome.addMessage('Uploading data to storage server')
           const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
-          fetch(URL, {
-            method: 'PUT',
-            body: blob,
-          }).then(resp1)
-            .catch(errCatcher)
+
+          const xhr = new XMLHttpRequest()
+          xhr.open('PUT', URL, true)
+
+          xhr.onload = () => {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+              resp1(xhr)
+            } else {
+              errCatcher(xhr)
+            }
+          }
+
+          xhr.send(blob)
+
+          // here, I switched to using xhr request because for some reason
+          // occasionally a fetch put request (only on mobile?) will end up
+          // sending 0 bytes.
+
+          // fetch(URL, {
+          //   method: 'PUT',
+          //   body: blob,
+          // }).then(resp1)
+          //   .catch(errCatcher)
         }
       }
 
