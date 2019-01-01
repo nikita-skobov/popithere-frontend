@@ -1,4 +1,4 @@
-/* global fetch Headers Blob */
+/* global fetch Headers Blob XMLHttpRequest */
 import React from 'react'
 
 import {
