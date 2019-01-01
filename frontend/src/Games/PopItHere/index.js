@@ -60,10 +60,23 @@ export default class PopItHere extends Game {
     this.addButton(this.popItButton)
     // this.addButton(this.endGameButton)
 
-    const initialFetchLimit = 2
-    const dataNumbers = this.dataMan.getDataNumbers()
-    const shuffled = dataNumbers.sort(() => 0.5 - Math.random())
-    this.dataNumbers = shuffled.slice(0, initialFetchLimit)
+    const initialFetchLimit = 10
+    let dataNumbers = this.dataMan.getDataNumbers()
+    console.log(dataNumbers)
+    // make it integer for easy sorting
+    dataNumbers = dataNumbers.map(n => parseInt(n, 32))
+    console.log(dataNumbers)
+    // sort ascending
+    dataNumbers = dataNumbers.sort((a, b) => a - b)
+    console.log(dataNumbers)
+    // limit how many are fetched initially
+    dataNumbers = dataNumbers.slice(0, initialFetchLimit)
+    console.log(dataNumbers)
+    // back to string
+    dataNumbers = dataNumbers.map(n => n.toString(32))
+    console.log(dataNumbers)
+    this.dataNumbers = dataNumbers
+
     this.textures = {}
     this.previewImages = []
     this.loadTextures()
