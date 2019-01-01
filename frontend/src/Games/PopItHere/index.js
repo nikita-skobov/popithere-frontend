@@ -41,6 +41,7 @@ export default class PopItHere extends Game {
       text: 'Pop It!',
       on: () => {
         console.log('ya pressed tha button!!!')
+        this.previewImages = this.sortBaseX(this.previewImages, 'name', 32)
       },
       modal: () => (
         <PopItSelection game={this} />
@@ -60,10 +61,10 @@ export default class PopItHere extends Game {
     this.addButton(this.popItButton)
     // this.addButton(this.endGameButton)
 
-    const initialFetchLimit = 2
-    const dataNumbers = this.dataMan.getDataNumbers()
-    const shuffled = dataNumbers.sort(() => 0.5 - Math.random())
-    this.dataNumbers = shuffled.slice(0, initialFetchLimit)
+    const initialFetchLimit = 10
+    let dataNumbers = this.dataMan.getDataNumbers()
+    this.dataNumbers = this.sortBaseX(dataNumbers, undefined, 32, initialFetchLimit)
+
     this.textures = {}
     this.previewImages = []
     this.loadTextures()
@@ -134,6 +135,35 @@ export default class PopItHere extends Game {
     super.endGame()
   }
 
+  sortBaseX(arr, keyName = false, base = 32, limit = -1, direction = '+') {
+    let tempArr = arr
+    tempArr = tempArr.map((item) => {
+      if (keyName) {
+        item[keyName] = parseInt(item[keyName], base)
+      } else {
+        item = parseInt(item, base)
+      }
+      return item
+    })
+    if (direction === '+') {
+      tempArr = tempArr.sort((a, b) => keyName ? a[keyName] - b[keyName] : a - b)
+    } else {
+      tempArr = tempArr.sort((a, b) => keyName ? a[keyName] - b[keyName] : a + b)
+    }
+    if (limit > -1) {
+      tempArr = tempArr.slice(0, limit)
+    }
+    tempArr = tempArr.map((item) => {
+      if (keyName) {
+        item[keyName] = item[keyName].toString(base)
+      } else {
+        item = item.toString(base)
+      }
+      return item
+    })
+    return tempArr
+  }
+
   loadTextures(iterator = this.dataNumbers) {
     iterator.forEach((num) => {
       this.dataMan.getDataLater(num, (err, data) => {
@@ -164,7 +194,7 @@ export default class PopItHere extends Game {
       // modal stuck. this way it is guaranteed to come back
       const timeout = 500
       setTimeout(() => {
-        reactElement.setState({ ready: true, loopArray: [...this.previewImages], isLoading: false })
+        reactElement.setState({ ready: true, loopArray: [...this.sortBaseX(this.previewImages, 'name', 32)], isLoading: false })
       }, timeout)
     })
   }
@@ -1050,10 +1080,11 @@ export default class PopItHere extends Game {
             newLoopArray.push(obj)
           }
         })
-        cb([...newLoopArray])
+
+        cb([...this.sortBaseX(newLoopArray, 'name', 32)])
       } else {
         // if the user entered spaces, revert back to previous loopArray?
-        cb([...this.game.previewImages])
+        cb([...this.sortBaseX(this.game.previewImages, 'name', 32)])
       }
     }
 
