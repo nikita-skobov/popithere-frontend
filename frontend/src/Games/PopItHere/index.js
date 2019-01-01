@@ -194,7 +194,7 @@ export default class PopItHere extends Game {
       // modal stuck. this way it is guaranteed to come back
       const timeout = 500
       setTimeout(() => {
-        reactElement.setState({ ready: true, loopArray: [...this.previewImages], isLoading: false })
+        reactElement.setState({ ready: true, loopArray: [...this.sortBaseX(this.previewImages, 'name', 32)], isLoading: false })
       }, timeout)
     })
   }
@@ -1080,10 +1080,11 @@ export default class PopItHere extends Game {
             newLoopArray.push(obj)
           }
         })
-        cb([...newLoopArray])
+
+        cb([...this.sortBaseX(newLoopArray, 'name', 32)])
       } else {
         // if the user entered spaces, revert back to previous loopArray?
-        cb([...this.game.previewImages])
+        cb([...this.sortBaseX(this.game.previewImages, 'name', 32)])
       }
     }
 
