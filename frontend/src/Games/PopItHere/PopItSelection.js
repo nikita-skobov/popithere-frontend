@@ -336,7 +336,7 @@ export default class PopItSelection extends Component {
               <FormGroup>
                 <Label for="filebrowser">Choose an image</Label>
                 <CustomInput onChange={this.handleFile} type="file" label="Choose an image" id="filebrowser" name="customFileBrowser" />
-                <Button onClick={this.game.modal.toggle} name="cancel" block>Cancel</Button>
+                <Button onClick={this.game.modal.toggle} name="cancel">Cancel</Button>
               </FormGroup>
             </Form>
           </Col>
