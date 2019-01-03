@@ -25,6 +25,8 @@ export default class App extends Component {
     this.shouldResize = this.shouldResize.bind(this)
     this.afterLogIn = this.afterLogIn.bind(this)
     this.afterSocketConnect = this.afterSocketConnect.bind(this)
+    this.afterSocketVerification = this.afterSocketVerification.bind(this)
+    this.doLogInProcess = this.doLogInProcess.bind(this)
     this.onWelcomeDone = this.onWelcomeDone.bind(this)
 
     const tokenManager = this.brain.ask.Tokens
@@ -50,12 +52,12 @@ export default class App extends Component {
     const { loggedIn } = this.state
     if (!loggedIn) {
       // fetch new token first
-      // doLogInProcess()
+      this.doLogInProcess()
 
       // if developing, no need to do log in process
-      this.brain.tell.Welcome.addMessage(this.customMessages.logInSuccess)
-      this.brain.tell.Welcome.addMessage(this.customMessages.connecting)
-      this.afterLogIn()
+      // this.brain.tell.Welcome.addMessage(this.customMessages.logInSuccess)
+      // this.brain.tell.Welcome.addMessage(this.customMessages.connecting)
+      // this.afterLogIn()
     } else {
       // already logged in
       this.afterLogIn()
@@ -116,50 +118,57 @@ export default class App extends Component {
     })
   }
 
-  afterSocketConnect() {
+  afterSocketVerification() {
+    this.brain.ask.DataMan.fetchList((err, listSize) => {
+      if (err) {
+        // not sure what else to do here...
+        console.error(err)
+        return null
+      }
 
+      // if no error, proceed to download the objects
+      // in that list
+      let fetchUpTo = listSize
+      if (fetchUpTo > this.maxInitialFetch) {
+        fetchUpTo = this.maxInitialFetch
+      }
+      this.brain.ask.DataMan.fetchRange([0, fetchUpTo])
+      this.brain.tell.Welcome.welcomeDone()
+    })
   }
 
+  afterSocketConnect(socket) {
+    console.log('connected')
+    socket.emit('sni', '')
+    socket.on('sno', (sn) => {
+      console.log(`got servername: ${sn}`)
+      this.brain.tell.Welcome.addMessage(this.customMessages.connectSuccess)
+      this.brain.tell.Welcome.addMessage(this.customMessages.loadingAssets)
+      // here we should fetch the new data list, only
+      // after the user has been verified
+      this.afterSocketVerification()
+    })
+
+    socket.on('it', () => {
+      // invalid token
+      this.brain.tell.Tokens.removeToken()
+      this.brain.tell.Welcome.addMessage({
+        error: this.customMessages.invalidToken,
+      }, true)
+      this.brain.tell.Welcome.welcomeDone()
+    })
+  }
 
   afterLogIn() {
     const token = this.brain.ask.Tokens.getToken()
 
-    this.brain.tell.Sockets.connect(token, (socket) => {
-      console.log('connected')
-      socket.emit('sni', '')
-      socket.on('sno', (sn) => {
-        console.log(`got servername: ${sn}`)
-        this.brain.tell.Welcome.addMessage(this.customMessages.connectSuccess)
-        this.brain.tell.Welcome.addMessage(this.customMessages.loadingAssets)
-        // here we should fetch the new data list, only
-        // after the user has been verified
-        this.brain.ask.DataMan.fetchList((err, listSize) => {
-          if (err) {
-            // not sure what else to do here...
-            console.error(err)
-            return null
-          }
+    // if developing, no need to connect to sockets
+    this.brain.tell.Sockets.connect(token, this.afterSocketConnect)
 
-          // if no error, proceed to download the objects
-          // in that list
-          let fetchUpTo = listSize
-          if (fetchUpTo > this.maxInitialFetch) {
-            fetchUpTo = this.maxInitialFetch
-          }
-          this.brain.ask.DataMan.fetchRange([0, fetchUpTo])
-          this.brain.tell.Welcome.welcomeDone()
-        })
-      })
 
-      socket.on('it', () => {
-        // invalid token
-        this.brain.tell.Tokens.removeToken()
-        this.brain.tell.Welcome.addMessage({
-          error: this.customMessages.invalidToken,
-        }, true)
-        this.brain.tell.Welcome.welcomeDone()
-      })
-    })
+    // this.brain.tell.Welcome.addMessage(this.customMessages.connectSuccess)
+    // this.brain.tell.Welcome.addMessage(this.customMessages.loadingAssets)
+    // this.afterSocketVerification()
   }
 
   shouldResize(iw, ih) {
