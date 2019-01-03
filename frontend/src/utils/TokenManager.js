@@ -16,9 +16,22 @@ function TokenManager(datastore) {
   const retObj = {
     fillClaims: () => {
       try {
-        const decoded = jwtDecode(token)
-        delete decoded.swv
-        claims = decoded
+        if (token === 'notoken') {
+          const rn = Math.floor(Date.now() / 1000)
+          claims = {
+            cht: 0,
+            exp: rn + 3600, // 1 hour from now
+            iat: rn,
+            id: 'notoken',
+            mcbb: 300,
+            myo: 0,
+            pit: 0,
+          }
+        } else {
+          const decoded = jwtDecode(token)
+          delete decoded.swv
+          claims = decoded
+        }
       } catch (e) {
         // just console log it i guess?
         console.error(e)
@@ -34,6 +47,8 @@ function TokenManager(datastore) {
       localStorage.removeItem('token')
     },
     isTokenExpired: () => {
+      if (token === 'notoken') return true
+
       const { exp } = claims
       const bufferTime = 30 // give a 30 second buffer to expiration
       const rightNow = Math.floor(new Date().getTime() / 1000) + (bufferTime)
@@ -43,7 +58,7 @@ function TokenManager(datastore) {
     },
     fetchToken: (cb) => {
       const oldToken = retObj.getToken()
-      if (oldToken) {
+      if (oldToken && oldToken !== 'notoken') {
         // old token already exists, so well add it as a header
         fetch(loginEndpoint, {
           headers: {

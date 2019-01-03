@@ -149,8 +149,8 @@ export default class App extends Component {
 
   afterSocketConnect(socket) {
     console.log('connected')
-    socket.emit('sni', '')
-    socket.on('sno', (sn) => {
+
+    let serverNameOut = (sn) => {
       console.log(`got servername: ${sn}`)
       this.brain.tell.Welcome.addMessage(this.customMessages.connectSuccess)
       this.brain.tell.Welcome.addMessage(this.customMessages.loadingAssets)
@@ -158,15 +158,48 @@ export default class App extends Component {
       // after the user has been verified
 
       this.afterSocketVerification()
-    })
+    }
+    serverNameOut = serverNameOut.bind(this)
 
-    socket.on('it', () => {
+    socket.emit('sni', '')
+    socket.on('sno', serverNameOut)
+
+
+    let invalidTokenHandler = () => {
       // invalid token
-      this.brain.tell.Tokens.removeToken()
-      this.brain.tell.Welcome.addMessage({
-        error: this.customMessages.invalidToken,
-      }, true)
-      this.brain.tell.Welcome.welcomeDone()
+      console.log('invalid token')
+      const { ready } = this.state
+      if (!ready) {
+        // this is an invalid token event that happens
+        // immediately on page load. This is bad because in theory
+        // a token that is issued from lambda should work right away
+        this.brain.tell.Tokens.removeToken()
+        this.brain.tell.Welcome.addMessage({
+          error: this.customMessages.invalidToken,
+        }, true)
+        this.brain.tell.Welcome.welcomeDone()
+      } else {
+        // this happens later during the App, when the user has already been
+        // using the socket server, but there was some kind of disconnect
+        // and after the reconnection, the socket server found that the users
+        // token has expired. In this case, create a new token and try again
+        const tokenManager = this.brain.ask.Tokens
+        tokenManager.fetchToken((err, tk) => {
+          if (tk) {
+            tokenManager.storeToken(tk)
+            this.brain.tell.Sockets.connect(tk, this.afterSocketConnect, socket._callbacks)
+          }
+        })
+      }
+    }
+    invalidTokenHandler = invalidTokenHandler.bind(this)
+
+    socket.on('it', invalidTokenHandler)
+
+    socket.on('disconnect', () => {
+      socket.removeListener('it', invalidTokenHandler)
+      socket.removeListener('sno', serverNameOut)
+      socket.removeListener('disconnect')
     })
   }
 
