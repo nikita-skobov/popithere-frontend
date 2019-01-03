@@ -24,6 +24,7 @@ export default class App extends Component {
 
     this.shouldResize = this.shouldResize.bind(this)
     this.afterLogIn = this.afterLogIn.bind(this)
+    this.afterSocketConnect = this.afterSocketConnect.bind(this)
     this.onWelcomeDone = this.onWelcomeDone.bind(this)
 
     const tokenManager = this.brain.ask.Tokens
@@ -43,56 +44,18 @@ export default class App extends Component {
       connectSuccess: 'Successfully connected to socket server',
       invalidToken: 'Socket server rejected your token. Try refreshing the page to generate a new one',
     }
+  }
 
+  componentDidMount() {
     const { loggedIn } = this.state
     if (!loggedIn) {
       // fetch new token first
-      tokenManager.fetchToken((err, tk, msg, badErr) => {
-        if (badErr) {
-          // a bad error is an http error, something like
-          // the lambda function responding with forbidden or something
-          this.brain.tell.Welcome.addMessage({
-            warning: this.customMessages.logInFail,
-          }, true)
-          this.brain.tell.Welcome.addMessage({
-            error: typeof badErr === 'object' ? badErr.message : badErr,
-          })
-          this.brain.tell.Welcome.welcomeDone()
-        } else if (err) {
-          // a regular error is something possibly expected like
-          // ip limit, or database being unavailable for some reason
-          // in this case, I still want to allow access to the site, just
-          // with a token that doesnt allow chatting/popping
-          this.brain.tell.Welcome.addMessage({
-            warning: this.customMessages.logInFail,
-          }, true)
-          this.brain.tell.Welcome.addMessage({
-            warning: typeof err === 'object' ? err.message : err,
-          })
+      // doLogInProcess()
 
-          // TODO: Implement this on socket server
-          this.brain.tell.Tokens.storeToken('notoken')
-          this.afterLogIn()
-        } else if (tk && msg) {
-          // if token, and also warning messsage
-          // tell user something about how someone might
-          // have used their token!
-          this.brain.tell.Welcome.addMessage({
-            message: this.customMessages.logInSuccess,
-            warning: msg,
-          }, true)
-          this.brain.tell.Welcome.addMessage(this.customMessages.connecting)
-
-          tokenManager.storeToken(tk)
-          this.afterLogIn()
-        } else if (tk) {
-          // if just the token then everything is good
-          this.brain.tell.Welcome.addMessage(this.customMessages.logInSuccess)
-          this.brain.tell.Welcome.addMessage(this.customMessages.connecting)
-          tokenManager.storeToken(tk)
-          this.afterLogIn()
-        }
-      })
+      // if developing, no need to do log in process
+      this.brain.tell.Welcome.addMessage(this.customMessages.logInSuccess)
+      this.brain.tell.Welcome.addMessage(this.customMessages.connecting)
+      this.afterLogIn()
     } else {
       // already logged in
       this.afterLogIn()
@@ -102,6 +65,61 @@ export default class App extends Component {
   onWelcomeDone() {
     this.setState({ ready: true })
   }
+
+  doLogInProcess() {
+    const tokenManager = this.brain.ask.Tokens
+    tokenManager.fetchToken((err, tk, msg, badErr) => {
+      if (badErr) {
+        // a bad error is an http error, something like
+        // the lambda function responding with forbidden or something
+        this.brain.tell.Welcome.addMessage({
+          warning: this.customMessages.logInFail,
+        }, true)
+        this.brain.tell.Welcome.addMessage({
+          error: typeof badErr === 'object' ? badErr.message : badErr,
+        })
+        this.brain.tell.Welcome.welcomeDone()
+      } else if (err) {
+        // a regular error is something possibly expected like
+        // ip limit, or database being unavailable for some reason
+        // in this case, I still want to allow access to the site, just
+        // with a token that doesnt allow chatting/popping
+        this.brain.tell.Welcome.addMessage({
+          warning: this.customMessages.logInFail,
+        }, true)
+        this.brain.tell.Welcome.addMessage({
+          warning: typeof err === 'object' ? err.message : err,
+        })
+
+        // TODO: Implement this on socket server
+        this.brain.tell.Tokens.storeToken('notoken')
+        this.afterLogIn()
+      } else if (tk && msg) {
+        // if token, and also warning messsage
+        // tell user something about how someone might
+        // have used their token!
+        this.brain.tell.Welcome.addMessage({
+          message: this.customMessages.logInSuccess,
+          warning: msg,
+        }, true)
+        this.brain.tell.Welcome.addMessage(this.customMessages.connecting)
+
+        tokenManager.storeToken(tk)
+        this.afterLogIn()
+      } else if (tk) {
+        // if just the token then everything is good
+        this.brain.tell.Welcome.addMessage(this.customMessages.logInSuccess)
+        this.brain.tell.Welcome.addMessage(this.customMessages.connecting)
+        tokenManager.storeToken(tk)
+        this.afterLogIn()
+      }
+    })
+  }
+
+  afterSocketConnect() {
+
+  }
+
 
   afterLogIn() {
     const token = this.brain.ask.Tokens.getToken()
