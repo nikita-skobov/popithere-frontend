@@ -25,6 +25,8 @@ exports.defaultButtons = [
   'options',
 ]
 
+exports.DEV_MODE = true
+
 exports.placeholder = {
   name: '.placeholder.',
   url: 'images/temp/placeholder.png',
