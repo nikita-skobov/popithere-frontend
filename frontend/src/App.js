@@ -12,6 +12,8 @@ export default class App extends Component {
     super(props)
     this.brain = props.brain
 
+    this.DEV_MODE = true // probably change this to come from customConfig ?
+
     const iw = window.innerWidth
     const ih = window.innerHeight
 
@@ -52,12 +54,14 @@ export default class App extends Component {
     const { loggedIn } = this.state
     if (!loggedIn) {
       // fetch new token first
-      this.doLogInProcess()
-
-      // if developing, no need to do log in process
-      // this.brain.tell.Welcome.addMessage(this.customMessages.logInSuccess)
-      // this.brain.tell.Welcome.addMessage(this.customMessages.connecting)
-      // this.afterLogIn()
+      if (!this.DEV_MODE) {
+        this.doLogInProcess()
+      } else {
+        // if developing, no need to do log in process
+        this.brain.tell.Welcome.addMessage(this.customMessages.logInSuccess)
+        this.brain.tell.Welcome.addMessage(this.customMessages.connecting)
+        this.afterLogIn()
+      }
     } else {
       // already logged in
       this.afterLogIn()
@@ -162,13 +166,14 @@ export default class App extends Component {
   afterLogIn() {
     const token = this.brain.ask.Tokens.getToken()
 
-    // if developing, no need to connect to sockets
-    this.brain.tell.Sockets.connect(token, this.afterSocketConnect)
-
-
-    // this.brain.tell.Welcome.addMessage(this.customMessages.connectSuccess)
-    // this.brain.tell.Welcome.addMessage(this.customMessages.loadingAssets)
-    // this.afterSocketVerification()
+    if (!this.DEV_MODE) {
+      this.brain.tell.Sockets.connect(token, this.afterSocketConnect)
+    } else {
+      // if developing, no need to connect to sockets
+      this.brain.tell.Welcome.addMessage(this.customMessages.connectSuccess)
+      this.brain.tell.Welcome.addMessage(this.customMessages.loadingAssets)
+      this.afterSocketVerification()
+    }
   }
 
   shouldResize(iw, ih) {
