@@ -22,12 +22,16 @@ function SocketManager(datastore) {
 
     isConnected: () => socket && socket.connected,
 
-    connect: (token, cb) => {
+    connect: (token, cb, callbacks) => {
       socket = io.connect(`${socketEndpoint}?ua=${token}`, {
         transports: ['websocket', 'xhr-polling'],
       })
 
       socket.on('connect', () => {
+        if (callbacks) {
+          socket._callbacks = callbacks
+        }
+
         cb(socket)
       })
     },
