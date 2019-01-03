@@ -10,10 +10,14 @@ function SocketManager(datastore) {
 
   const retObj = {
     on: (type, cb) => {
-      socket.on(type, cb)
+      if (retObj.isConnected()) {
+        socket.on(type, cb)
+      }
     },
     off: (type) => {
-      socket.off(type)
+      if (retObj.isConnected()) {
+        socket.off(type)
+      }
     },
 
     isConnected: () => socket && socket.connected,
@@ -29,11 +33,15 @@ function SocketManager(datastore) {
     },
 
     disconnect: () => {
-      socket.disconnect()
+      if (retObj.isConnected()) {
+        socket.disconnect()
+      }
     },
 
     emit: (type, msg) => {
-      socket.emit(type, msg)
+      if (retObj.isConnected()) {
+        socket.emit(type, msg)
+      }
     },
   }
 
