@@ -58,7 +58,7 @@ function TokenManager(datastore) {
     },
     fetchToken: (cb) => {
       const oldToken = retObj.getToken()
-      if (oldToken) {
+      if (oldToken && oldToken !== 'notoken') {
         // old token already exists, so well add it as a header
         fetch(loginEndpoint, {
           headers: {
