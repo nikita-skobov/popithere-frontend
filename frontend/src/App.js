@@ -123,6 +123,11 @@ export default class App extends Component {
   }
 
   afterSocketVerification() {
+    if (DEV_MODE) {
+      this.brain.tell.Welcome.welcomeDone()
+      return null
+    }
+
     this.brain.ask.DataMan.fetchList((err, listSize) => {
       if (err) {
         // not sure what else to do here...
@@ -139,6 +144,7 @@ export default class App extends Component {
       this.brain.ask.DataMan.fetchRange([0, fetchUpTo])
       this.brain.tell.Welcome.welcomeDone()
     })
+    return null
   }
 
   afterSocketConnect(socket) {
@@ -150,6 +156,7 @@ export default class App extends Component {
       this.brain.tell.Welcome.addMessage(this.customMessages.loadingAssets)
       // here we should fetch the new data list, only
       // after the user has been verified
+
       this.afterSocketVerification()
     })
 
