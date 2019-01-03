@@ -149,8 +149,8 @@ export default class App extends Component {
 
   afterSocketConnect(socket) {
     console.log('connected')
-    socket.emit('sni', '')
-    socket.on('sno', (sn) => {
+
+    let serverNameOut = (sn) => {
       console.log(`got servername: ${sn}`)
       this.brain.tell.Welcome.addMessage(this.customMessages.connectSuccess)
       this.brain.tell.Welcome.addMessage(this.customMessages.loadingAssets)
@@ -158,15 +158,31 @@ export default class App extends Component {
       // after the user has been verified
 
       this.afterSocketVerification()
-    })
+    }
+    serverNameOut = serverNameOut.bind(this)
 
-    socket.on('it', () => {
+    socket.emit('sni', '')
+    socket.on('sno', serverNameOut)
+
+
+    let invalidTokenHandler = () => {
       // invalid token
+      console.log('invalid token')
+      console.log(this.brain.tell.Welcome)
       this.brain.tell.Tokens.removeToken()
       this.brain.tell.Welcome.addMessage({
         error: this.customMessages.invalidToken,
       }, true)
       this.brain.tell.Welcome.welcomeDone()
+    }
+    invalidTokenHandler = invalidTokenHandler.bind(this)
+
+    socket.on('it', invalidTokenHandler)
+
+    socket.on('disconnect', () => {
+      socket.removeListener('it', invalidTokenHandler)
+      socket.removeListener('sno', serverNameOut)
+      socket.removeListener('disconnect')
     })
   }
 
