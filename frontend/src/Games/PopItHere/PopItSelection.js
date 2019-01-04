@@ -405,7 +405,7 @@ export default class PopItSelection extends Component {
       const handlePreSearch = (e) => {
         const { name, value } = e.target
         if (name === 'searchnum') {
-          this.setState({ searchNum: value })
+          this.setState({ searchNum: value.toLowerCase() })
         } else if (name === 'go') {
           this.setState((prevState) => {
             const tempState = prevState
