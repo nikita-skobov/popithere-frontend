@@ -15,8 +15,8 @@ export default class MyModal extends Component {
     this.brain = props.brain
 
     this.state = {
-      modal: false,
-      type: '',
+      modal: (props.startingModal && 1) || false,
+      type: props.startingModal,
     }
 
     this.brain.store('MyModal', this)
@@ -70,6 +70,11 @@ export default class MyModal extends Component {
   }
 }
 
+MyModal.defaultProps = {
+  startingModal: '',
+}
+
 MyModal.propTypes = {
   brain: PropTypes.instanceOf(Object).isRequired,
+  startingModal: PropTypes.instanceOf(Object),
 }

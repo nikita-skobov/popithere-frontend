@@ -24,6 +24,8 @@ export default class App extends Component {
 
     this.brain.store('App', this)
 
+    this.startingModal = ''
+
     this.shouldResize = this.shouldResize.bind(this)
     this.afterLogIn = this.afterLogIn.bind(this)
     this.afterSocketConnect = this.afterSocketConnect.bind(this)
@@ -35,6 +37,7 @@ export default class App extends Component {
     const token = tokenManager.getToken()
 
     this.state = {
+      firstTime: !token, // if no token provided then its first time visiting site
       loggedIn: token && !tokenManager.isTokenExpired(),
       ready: false,
     }
@@ -69,6 +72,15 @@ export default class App extends Component {
   }
 
   onWelcomeDone() {
+    const { firstTime } = this.state
+    if (firstTime) {
+      this.startingModal = {
+        text: 'Welcome to Pop It Here!',
+        modal: () => (
+          <div>adadsadsadsa</div>
+        ),
+      }
+    }
     this.setState({ ready: true })
   }
 
@@ -245,7 +257,7 @@ export default class App extends Component {
     return [
       <Canvas brain={this.brain} />,
       <Chat brain={this.brain} />,
-      <MyModal brain={this.brain} />,
+      <MyModal startingModal={this.startingModal} brain={this.brain} />,
     ]
   }
 }
