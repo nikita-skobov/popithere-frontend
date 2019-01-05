@@ -307,20 +307,26 @@ export default class PopItHere extends Game {
         child.visible = false
       })
 
-      // keeps changing background color as long as we are in customPreviewMode
-      const conditionCallback = () => this.customPreviewMode
-      this.changeBackgroundColor([255, 0, 0], 1, 2, 100, conditionCallback.bind(this))
+      let conditionCallback
+      let childIndexBeforePopping
+      let tempButtonLayer
 
-      const childIndexBeforePopping = this.stage.children.length
-      this.popItChosen('image', newTextures)
-      // reset scale for drawing
-      this.stage.scale.x = previousScales.x
-      this.stage.scale.y = previousScales.y
+      if (choice === 'preview') {
+        // keeps changing background color as long as we are in customPreviewMode
+        conditionCallback = () => this.customPreviewMode
+        this.changeBackgroundColor([255, 0, 0], 1, 2, 100, conditionCallback.bind(this))
 
-      const tempButtonLayer = new PIXI.Container()
-      this.root.addChild(tempButtonLayer)
+        childIndexBeforePopping = this.stage.children.length
+        this.popItChosen('image', newTextures)
+        // reset scale for drawing
+        this.stage.scale.x = previousScales.x
+        this.stage.scale.y = previousScales.y
 
-      callback(this.modal.isOpen()) // notifies modal that the preview mode is ready
+        tempButtonLayer = new PIXI.Container()
+        this.root.addChild(tempButtonLayer)
+
+        callback(this.modal.isOpen()) // notifies modal that the preview mode is ready
+      }
 
       let dataArr
       if (Array.isArray(newTextures)) {
@@ -387,6 +393,11 @@ export default class PopItHere extends Game {
         setTimeout(() => {
           this.setBackgroundColor('white')
         }, 100)
+      }
+
+      if (choice === 'submit') {
+        goSubmit()
+        return null
       }
 
       // create 2 buttons: back and submit so user can

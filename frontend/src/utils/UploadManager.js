@@ -56,6 +56,18 @@ function UploadManager(datastore) {
         cb(cbErr)
       }
 
+      if (modal.isOpen()) {
+        const waitFunc = (time) => {
+          return new Promise((res) => {
+            setTimeout(() => {
+              res()
+            }, time)
+          })
+        }
+        modal.toggle()
+        await waitFunc(400)
+      }
+
       modal.toggle({
         modal: () => (
           <Welcome brain={brain} callback={onWelcomeDone} btnText="Ok" initialMessage="Requesting data signature" />
