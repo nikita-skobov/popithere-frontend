@@ -5,13 +5,10 @@ import {
   Carousel,
   CarouselItem,
   CarouselControl,
-  CarouselIndicators,
-  CarouselCaption
+  CarouselCaption,
 } from 'reactstrap'
 
 import { firstTimeItems } from '../customConfig'
-
-const has = Object.prototype.hasOwnProperty
 
 export default class FirstTime extends Component {
   constructor(props) {
@@ -29,13 +26,7 @@ export default class FirstTime extends Component {
     this.onExiting = this.onExiting.bind(this)
     this.onExited = this.onExited.bind(this)
 
-    this.handleButton = this.handleButton.bind(this)
-
     this.items = firstTimeItems.latest
-  }
-
-  handleButton(e) {
-    e.preventDefault()
   }
 
   onExiting() {
@@ -62,18 +53,16 @@ export default class FirstTime extends Component {
 
   render() {
     const { activeIndex } = this.state
-    const slides = this.items.map((item) => {
-      return (
-        <CarouselItem
-          onExiting={this.onExiting}
-          onExited={this.onExited}
-          key={item.src}
-        >
-          <img src={item.src} alt={item.altText} />
-          <CarouselCaption captionText={item.caption} captionHeader={item.header} />
-        </CarouselItem>
-      )
-    })
+    const slides = this.items.map(item => (
+      <CarouselItem
+        onExiting={this.onExiting}
+        onExited={this.onExited}
+        key={item.src}
+      >
+        <img src={item.src} alt={item.altText} />
+        <CarouselCaption captionText={item.caption} captionHeader={item.header} />
+      </CarouselItem>
+    ))
 
     return (
       <Carousel
