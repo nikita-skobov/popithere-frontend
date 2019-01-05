@@ -153,6 +153,8 @@ export default class PopItSelection extends Component {
           }
         })
       }
+    } else if (name === 'cancel') {
+      this.game.modal.toggle()
     }
   }
 
@@ -321,7 +323,8 @@ export default class PopItSelection extends Component {
               </FormGroup>
             </Row>
             <Row>
-              <Button onClick={this.handlePreview} name="submit">Submit</Button>
+              <Button className="mr1em" onClick={this.handlePreview} name="submit">Submit</Button>
+              <Button onClick={this.handlePreview} name="cancel">Cancel</Button>
             </Row>
           </Form>
         </Col>
