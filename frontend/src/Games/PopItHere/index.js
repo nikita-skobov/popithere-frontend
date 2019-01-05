@@ -941,7 +941,7 @@ export default class PopItHere extends Game {
     const xOffset = 12
     const textStyle = { fontSize: 40 }
     const myButtons = []
-    const buttonTexts = ['Cancel', 'Preview', 'Add Image', 'Add Text', 'Toggle Controls', 'Copy', 'Rotate', 'Resize', 'Delete']
+    const buttonTexts = ['Cancel', 'Preview', 'Submit', 'Add Image', 'Add Text', 'Toggle Controls', 'Copy', 'Rotate', 'Resize', 'Delete']
     buttonTexts.forEach((txt) => {
       const btn = this.addCanvasButton(txt, {
         x: xOffset,
@@ -982,6 +982,8 @@ export default class PopItHere extends Game {
         btn.on('pointerdown', this.customDelete)
         this.customButtons.delete = btn
       } else if (txt === 'Preview') {
+        btn.on('pointerdown', this.customPrePreview)
+      } else if (txt === 'Submit') {
         btn.on('pointerdown', this.customPrePreview)
       }
       myButtons.push(btn)
