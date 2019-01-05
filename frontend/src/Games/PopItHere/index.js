@@ -318,15 +318,16 @@ export default class PopItHere extends Game {
 
         childIndexBeforePopping = this.stage.children.length
         this.popItChosen('image', newTextures)
-        // reset scale for drawing
-        this.stage.scale.x = previousScales.x
-        this.stage.scale.y = previousScales.y
 
         tempButtonLayer = new PIXI.Container()
         this.root.addChild(tempButtonLayer)
 
         callback(this.modal.isOpen()) // notifies modal that the preview mode is ready
       }
+
+      // reset scale for drawing
+      this.stage.scale.x = previousScales.x
+      this.stage.scale.y = previousScales.y
 
       let dataArr
       if (Array.isArray(newTextures)) {
@@ -366,14 +367,19 @@ export default class PopItHere extends Game {
         }
         this.uploader.clearData('myo-data')
         // resets everything to how it was prior to starting preview mode
-        const ind = this.root.getChildIndex(tempButtonLayer)
-        this.root.removeChildAt(ind)
-        tempButtonLayer.destroy(true)
-        this.stopPopping()
+        if (choice === 'preview') {
+          const ind = this.root.getChildIndex(tempButtonLayer)
+          this.root.removeChildAt(ind)
+          tempButtonLayer.destroy(true)
+          this.stopPopping()
+        }
         this.controlLayer.visible = true
         this.buttonLayer.visible = true
-        if (childIndexBeforePopping !== this.stage.children.length) {
-          this.stage.removeChildren(childIndexBeforePopping, this.stage.children.length)
+
+        if (choice === 'preview') {
+          if (childIndexBeforePopping !== this.stage.children.length) {
+            this.stage.removeChildren(childIndexBeforePopping, this.stage.children.length)
+          }
         }
 
         if (Array.isArray(newTextures)) {
