@@ -59,7 +59,7 @@ export default class FirstTime extends Component {
         onExited={this.onExited}
         key={item.src}
       >
-        <img src={item.src} alt={item.altText} />
+        <img className="w100" src={item.src} alt={item.altText} />
         <CarouselCaption captionText={item.caption} captionHeader={item.header} />
       </CarouselItem>
     ))
@@ -69,6 +69,7 @@ export default class FirstTime extends Component {
         activeIndex={activeIndex}
         next={this.next}
         previous={this.previous}
+        interval={false}
       >
         {slides}
         {activeIndex > 0 && (
