@@ -6,6 +6,7 @@ import Canvas from './components/Canvas'
 import Chat from './components/Chat'
 import MyModal from './components/MyModal'
 import Welcome from './components/Welcome'
+import FirstTime from './components/FirstTime'
 
 import { DEV_MODE } from './customConfig'
 
@@ -77,7 +78,7 @@ export default class App extends Component {
       this.startingModal = {
         text: 'Welcome to Pop It Here!',
         modal: () => (
-          <div>adadsadsadsa</div>
+          <FirstTime brain={this.brain} />
         ),
       }
     }
