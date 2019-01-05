@@ -82,7 +82,9 @@ export default class FirstTime extends Component {
         previous={this.previous}
       >
         {slides}
-        <CarouselControl direction="prev" directionText="Previous" onClickHandler={this.previous} />
+        {activeIndex > 0 && (
+          <CarouselControl direction="prev" directionText="Previous" onClickHandler={this.previous} />
+        )}
         <CarouselControl direction="next" directionText="Next" onClickHandler={this.next} />
       </Carousel>
     )
