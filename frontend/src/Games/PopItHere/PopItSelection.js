@@ -144,15 +144,17 @@ export default class PopItSelection extends Component {
         this.setState({ invalidInput: true })
       }
     } else if (name === 'submit') {
-      const { invalidInput, maxSize } = this.state
+      const { invalidInput, maxSize, choice } = this.state
       if (!invalidInput) {
         this.setState({ choice: 'loading' })
         this.game.customPreview(maxSize, (closeit) => {
           if (closeit) {
             this.game.modal.toggle()
           }
-        })
+        }, choice)
       }
+    } else if (name === 'cancel') {
+      this.game.modal.toggle()
     }
   }
 
@@ -309,7 +311,7 @@ export default class PopItSelection extends Component {
       )
     }
 
-    if (choice === 'preview') {
+    if (choice === 'preview' || choice === 'submit') {
       const { invalidInput, maxSize } = this.state
       return (
         <Col fluid>
@@ -321,7 +323,8 @@ export default class PopItSelection extends Component {
               </FormGroup>
             </Row>
             <Row>
-              <Button onClick={this.handlePreview} name="submit">Submit</Button>
+              <Button className="mr1em" onClick={this.handlePreview} name="submit">Submit</Button>
+              <Button onClick={this.handlePreview} name="cancel">Cancel</Button>
             </Row>
           </Form>
         </Col>

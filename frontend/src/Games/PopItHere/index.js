@@ -250,18 +250,18 @@ export default class PopItHere extends Game {
     this.stage.removeChildren()
   }
 
-  customPrePreview() {
+  customPrePreview(event, title = 'Preview Setup', choice = 'preview') {
     // function that toggles a modal to ask user about max size before generating texture(s)
     this.modal.toggle({
       modal: () => (
-        <PopItSelection game={this} startingChoice="preview" />
+        <PopItSelection game={this} startingChoice={choice} />
       ),
       notCloseable: true,
-      modalTitle: 'Preview Setup',
+      modalTitle: title,
     })
   }
 
-  customPreview(userVal, callback) {
+  customPreview(userVal, callback, choice) {
     if (!callback) {
       callback = () => {}
     }
@@ -307,20 +307,27 @@ export default class PopItHere extends Game {
         child.visible = false
       })
 
-      // keeps changing background color as long as we are in customPreviewMode
-      const conditionCallback = () => this.customPreviewMode
-      this.changeBackgroundColor([255, 0, 0], 1, 2, 100, conditionCallback.bind(this))
+      let conditionCallback
+      let childIndexBeforePopping
+      let tempButtonLayer
 
-      const childIndexBeforePopping = this.stage.children.length
-      this.popItChosen('image', newTextures)
+      if (choice === 'preview') {
+        // keeps changing background color as long as we are in customPreviewMode
+        conditionCallback = () => this.customPreviewMode
+        this.changeBackgroundColor([255, 0, 0], 1, 2, 100, conditionCallback.bind(this))
+
+        childIndexBeforePopping = this.stage.children.length
+        this.popItChosen('image', newTextures)
+
+        tempButtonLayer = new PIXI.Container()
+        this.root.addChild(tempButtonLayer)
+
+        callback(this.modal.isOpen()) // notifies modal that the preview mode is ready
+      }
+
       // reset scale for drawing
       this.stage.scale.x = previousScales.x
       this.stage.scale.y = previousScales.y
-
-      const tempButtonLayer = new PIXI.Container()
-      this.root.addChild(tempButtonLayer)
-
-      callback(this.modal.isOpen()) // notifies modal that the preview mode is ready
 
       let dataArr
       if (Array.isArray(newTextures)) {
@@ -344,7 +351,7 @@ export default class PopItHere extends Game {
           // argument that can either be an actual error, or a pointerdown event
           actualErr = false
         }
-        if (actualErr) {
+        if (actualErr && choice === 'preview') {
           console.log(actualErr)
           // if there was an error submitting, then dont leave the preview mode.
           // user should decide on their own if they want to leave preview mode.
@@ -360,14 +367,19 @@ export default class PopItHere extends Game {
         }
         this.uploader.clearData('myo-data')
         // resets everything to how it was prior to starting preview mode
-        const ind = this.root.getChildIndex(tempButtonLayer)
-        this.root.removeChildAt(ind)
-        tempButtonLayer.destroy(true)
-        this.stopPopping()
+        if (choice === 'preview') {
+          const ind = this.root.getChildIndex(tempButtonLayer)
+          this.root.removeChildAt(ind)
+          tempButtonLayer.destroy(true)
+          this.stopPopping()
+        }
         this.controlLayer.visible = true
         this.buttonLayer.visible = true
-        if (childIndexBeforePopping !== this.stage.children.length) {
-          this.stage.removeChildren(childIndexBeforePopping, this.stage.children.length)
+
+        if (choice === 'preview') {
+          if (childIndexBeforePopping !== this.stage.children.length) {
+            this.stage.removeChildren(childIndexBeforePopping, this.stage.children.length)
+          }
         }
 
         if (Array.isArray(newTextures)) {
@@ -387,6 +399,11 @@ export default class PopItHere extends Game {
         setTimeout(() => {
           this.setBackgroundColor('white')
         }, 100)
+      }
+
+      if (choice === 'submit') {
+        goSubmit()
+        return null
       }
 
       // create 2 buttons: back and submit so user can
@@ -941,7 +958,7 @@ export default class PopItHere extends Game {
     const xOffset = 12
     const textStyle = { fontSize: 40 }
     const myButtons = []
-    const buttonTexts = ['Cancel', 'Preview', 'Add Image', 'Add Text', 'Toggle Controls', 'Copy', 'Rotate', 'Resize', 'Delete']
+    const buttonTexts = ['Cancel', 'Preview', 'Submit', 'Add Image', 'Add Text', 'Toggle Controls', 'Copy', 'Rotate', 'Resize', 'Delete']
     buttonTexts.forEach((txt) => {
       const btn = this.addCanvasButton(txt, {
         x: xOffset,
@@ -983,6 +1000,10 @@ export default class PopItHere extends Game {
         this.customButtons.delete = btn
       } else if (txt === 'Preview') {
         btn.on('pointerdown', this.customPrePreview)
+      } else if (txt === 'Submit') {
+        btn.on('pointerdown', () => {
+          this.customPrePreview(null, 'Submit Setup', 'submit')
+        })
       }
       myButtons.push(btn)
     })
