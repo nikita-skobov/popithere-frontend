@@ -5,7 +5,7 @@ import {
   UncontrolledCarousel,
 } from 'reactstrap'
 
-import firstTimeItems from '../customConfig'
+import { firstTimeItems } from '../customConfig'
 
 const has = Object.prototype.hasOwnProperty
 
