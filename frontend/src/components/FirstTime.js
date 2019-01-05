@@ -2,10 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 import {
-  ButtonDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
+  UncontrolledCarousel,
 } from 'reactstrap'
 
 const has = Object.prototype.hasOwnProperty
@@ -18,6 +15,13 @@ export default class FirstTime extends Component {
     this.brain.store('FirstTime', this)
 
     this.handleButton = this.handleButton.bind(this)
+
+    this.items = [
+      {
+        src: '/images/temp/longgif.gif',
+        header: 'This is a quick slideshow on how to use the site',
+      },
+    ]
   }
 
   handleButton(e) {
@@ -26,9 +30,7 @@ export default class FirstTime extends Component {
 
   render() {
     return (
-      <div>
-        dsadsa
-      </div>
+      <UncontrolledCarousel autoPlay={false} items={this.items} />
     )
   }
 }
