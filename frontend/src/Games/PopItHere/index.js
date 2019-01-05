@@ -351,7 +351,7 @@ export default class PopItHere extends Game {
           // argument that can either be an actual error, or a pointerdown event
           actualErr = false
         }
-        if (actualErr) {
+        if (actualErr && choice === 'preview') {
           console.log(actualErr)
           // if there was an error submitting, then dont leave the preview mode.
           // user should decide on their own if they want to leave preview mode.
