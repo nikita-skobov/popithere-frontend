@@ -77,6 +77,7 @@ export default class App extends Component {
     if (firstTime) {
       this.startingModal = {
         text: 'Welcome to Pop It Here!',
+        size: 'lg',
         modal: () => (
           <FirstTime brain={this.brain} />
         ),
