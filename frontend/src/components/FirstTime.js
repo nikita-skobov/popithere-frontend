@@ -5,6 +5,8 @@ import {
   UncontrolledCarousel,
 } from 'reactstrap'
 
+import firstTimeItems from '../customConfig'
+
 const has = Object.prototype.hasOwnProperty
 
 export default class FirstTime extends Component {
@@ -16,12 +18,7 @@ export default class FirstTime extends Component {
 
     this.handleButton = this.handleButton.bind(this)
 
-    this.items = [
-      {
-        src: '/images/temp/longgif.gif',
-        header: 'This is a quick slideshow on how to use the site',
-      },
-    ]
+    this.items = firstTimeItems.latest
   }
 
   handleButton(e) {

@@ -1,3 +1,12 @@
+exports.firstTimeItems = {
+  latest: [
+    {
+      src: '/images/temp/longgif.gif',
+      header: 'This is a quick slideshow on how to use the site',
+    },
+  ],
+}
+
 exports.assetList = [
   {
     name: 'P_rotate',
