@@ -88,6 +88,7 @@ exports.assetList = [
 
 exports.defaultButtons = [
   'options',
+  'mutechat',
 ]
 
 exports.DEV_MODE = true
