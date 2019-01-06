@@ -44,11 +44,14 @@ export default class ChatBox extends Component {
       colorIndex: 0,
       maxHeight: 300,
       maxChatItems: 50,
+      isMuted: false,
       chats: [],
     }
 
     this.brain.store('ChatBox', this)
     this.addChat = this.addChat.bind(this)
+    this.isChatMuted = this.isChatMuted.bind(this)
+    this.toggleMuteChat = this.toggleMuteChat.bind(this)
 
     this.socket = this.brain.ask.Sockets
     if (this.socket.isConnected()) {
@@ -69,7 +72,25 @@ export default class ChatBox extends Component {
     }
   }
 
+  isChatMuted() {
+    const { isMuted } = this.state
+    return isMuted
+  }
+
+  toggleMuteChat() {
+    this.setState((prevState) => {
+      const tempState = prevState
+      const { isMuted } = tempState
+      tempState.isMuted = !isMuted
+      return tempState
+    })
+  }
+
   addChat(chat) {
+    if (this.isChatMuted()) {
+      return null
+    }
+
     this.setState((prevState) => {
       const tempState = prevState
       const { colorIndex, maxChatItems } = tempState
@@ -105,6 +126,8 @@ export default class ChatBox extends Component {
       tempState.chats.push(newChat)
       return tempState
     })
+
+    return null
   }
 
   render() {
