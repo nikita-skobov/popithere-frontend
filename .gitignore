@@ -4,4 +4,5 @@ backend/.gitignore
 frontend/dist/scripts/**
 frontend/dist/index.html
 frontend/dist/images/temp/**
+frontend/dist/images/tutorial_clips/**
 backend/.serverless
