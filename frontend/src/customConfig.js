@@ -26,7 +26,7 @@ exports.firstTimeItems = {
     },
     {
       src: '/images/tutorial_clips/v1/anim7.gif',
-      header: 'You can choose a size you want. For example, a size of 20 will cover up about 0.001% of the canvas',
+      header: 'You can choose a size you want. For example, a size of 20 will cover up about 1% of the canvas',
     },
     {
       src: '/images/tutorial_clips/v1/anim8.gif',
