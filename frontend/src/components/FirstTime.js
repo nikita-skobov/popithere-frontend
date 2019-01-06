@@ -60,7 +60,7 @@ export default class FirstTime extends Component {
         key={item.src}
       >
         <img className="w100" src={item.src} alt={item.altText} />
-        <CarouselCaption captionText={item.caption} captionHeader={item.header} />
+        <CarouselCaption className="crsbk" captionText={item.caption} captionHeader={item.header} />
       </CarouselItem>
     ))
 
@@ -73,10 +73,10 @@ export default class FirstTime extends Component {
       >
         {slides}
         {activeIndex > 0 && (
-          <CarouselControl direction="prev" directionText="Previous" onClickHandler={this.previous} />
+          <CarouselControl className="ccc" direction="prev" directionText="Previous" onClickHandler={this.previous} />
         )}
         {activeIndex < this.items.length - 1 && (
-          <CarouselControl direction="next" directionText="Next" onClickHandler={this.next} />
+          <CarouselControl className="ccc" direction="next" directionText="Next" onClickHandler={this.next} />
         )}
       </Carousel>
     )
