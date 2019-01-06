@@ -48,7 +48,7 @@ function UploadManager(datastore) {
 
       let cbErr = false
       let tokenReFetched = false
-      let dataName = '-'
+      let dataNumber = '-'
       let rootFetch
 
       const onWelcomeDone = () => {
@@ -89,9 +89,9 @@ function UploadManager(datastore) {
           // this is a response from S3
           if (r.status === 200) {
             brain.tell.Welcome.addMessage('Successfully Uploaded!')
-            brain.tell.Welcome.addMessage(`Your data name should be: ${dataName}`)
+            brain.tell.Welcome.addMessage(`Your data number should be: ${dataNumber}`)
             brain.tell.Welcome.addMessage(`
-            Please Note: there is a chance that your data name might be altered slightly. In
+            Please Note: there is a chance that your data number might be altered slightly. In
             this case, it will have a . in front, and it will be followed by several random characters.
             `)
             brain.tell.Welcome.welcomeDone()
@@ -154,7 +154,7 @@ function UploadManager(datastore) {
         } else {
           const splitUrl = URL.split('/')
           const path = splitUrl[3]; // wow I actually needed to use a semicolon here
-          [dataName] = path.split('.')
+          [dataNumber] = path.split('.')
 
           brain.tell.Welcome.addMessage('Successfully got signature')
           brain.tell.Welcome.addMessage('Uploading data to storage server')
