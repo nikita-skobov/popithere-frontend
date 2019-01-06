@@ -5,7 +5,7 @@ exports.firstTimeItems = {
       header: 'This is a quick tutorial on how to use the site. Press the arrow to continue, or click the X at the top if you already know how to use the site.',
     },
     {
-      src: '/images/tutorial_clips/v1/anim__2.gif',
+      src: '/images/tutorial_clips/v1/anim__1.gif',
       header: 'PopItHere is part game, part collaborative art piece. Users can choose an image or gif and pop it down anywhere on the canvas. Whenever you pop something down, it covers up whatever is underneath. Users see the images pop up in real time!',
     },
     {
