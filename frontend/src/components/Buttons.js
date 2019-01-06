@@ -49,7 +49,12 @@ export default class Buttons extends Component {
     // first check for one of the default buttons
     // like options, help, about, etc
     if (defaultButtons.includes(name)) {
-      this.brain.tell.MyModal.toggle(name)
+      if (name === 'mutechat') {
+        this.brain.tell.ChatBox.toggleMuteChat()
+        console.log('muting chat')
+      } else {
+        this.brain.tell.MyModal.toggle(name)
+      }
     } else {
       // otherwise it is a game buttons defined by user
 
@@ -79,6 +84,8 @@ export default class Buttons extends Component {
   render() {
     const { toggleDropdown } = this
     const { open, gameButtons } = this.state
+    const isChatMuted = this.brain.ask.ChatBox && this.brain.ask.ChatBox.isChatMuted()
+    const muteChatText = isChatMuted ? 'Unmute Chat' : 'Mute Chat'
 
     return (
       <ButtonDropdown direction="left" isOpen={open} toggle={toggleDropdown}>
@@ -91,6 +98,7 @@ export default class Buttons extends Component {
             <DropdownItem name={item.name} onClick={this.handleButton}>{item.text}</DropdownItem>
           ))}
           <DropdownItem name="options" onClick={this.handleButton}>Options</DropdownItem>
+          <DropdownItem name="mutechat" onClick={this.handleButton}>{muteChatText}</DropdownItem>
           <DropdownItem>Support</DropdownItem>
         </DropdownMenu>
       </ButtonDropdown>
