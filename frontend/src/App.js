@@ -7,6 +7,7 @@ import Chat from './components/Chat'
 import MyModal from './components/MyModal'
 import Welcome from './components/Welcome'
 import FirstTime from './components/FirstTime'
+import PatreonBenefits from './components/PatreonBenefits'
 
 import { DEV_MODE } from './customConfig'
 
@@ -32,6 +33,16 @@ export default class App extends Component {
     this.brain.store('App', this)
 
     this.startingModal = ''
+
+    if (redirect) {
+      this.startingModal = {
+        text: 'You have successfully linked your Patreon benefits!',
+        size: 'lg',
+        modal: () => (
+          <PatreonBenefits brain={this.brain} />
+        ),
+      }
+    }
 
     this.shouldResize = this.shouldResize.bind(this)
     this.afterLogIn = this.afterLogIn.bind(this)
