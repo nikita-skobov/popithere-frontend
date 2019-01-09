@@ -100,7 +100,7 @@ export default class PatreonBenefits extends Component {
         )}
         <Row>
           <Col>
-            <h5 className="text-center">If you are a patron, you have access to benefits on this site. All you need to do is click the {'"Log in with Patreon"'} button, which will unlock your benefits for this specific device. If you have multiple devices, you just need to click this button again on your other devices.</h5>
+            <h6>If you are a patron, you have access to benefits on this site. All you need to do is click the {'"Log in with Patreon"'} button, which will unlock your benefits for this specific device. If you have multiple devices, you just need to click this button again on your other devices.</h6>
           </Col>
         </Row>
         <Row className="mb1em">
@@ -110,7 +110,7 @@ export default class PatreonBenefits extends Component {
         </Row>
         <Row>
           <Col>
-            <h5 className="text-center">If you are not a patron, you can become a patron on my patreon page by clicking the button below. Afterwards, come back here, and click the {'"Log in with Patreon"'} button above to get your benefits.</h5>
+            <h6>If you are not a patron, you can become a patron on my patreon page by clicking the button below. Afterwards, come back here, and click the {'"Log in with Patreon"'} button above to get your benefits.</h6>
           </Col>
         </Row>
         <Row className="mb1em">
