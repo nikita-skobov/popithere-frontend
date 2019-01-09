@@ -8,6 +8,9 @@ import {
   DropdownItem,
   Row,
   Col,
+  Card,
+  CardTitle,
+  CardText,
 } from 'reactstrap'
 
 import { benefitTiers } from '../customConfig'
@@ -61,6 +64,11 @@ export default class PatreonBenefits extends Component {
     const { tierLevel } = this.state
     return (
       <Col fluid>
+        {tierLevel === 'notoken' && (
+          <Row>
+            <h2 className="text-center">You are using this site without a token. You cannot link your patreon account until you aquire a token. Please try refreshing the page. If this issue persists, please contact equilateralllc@gmail.com</h2>
+          </Row>
+        )}
         <Row>
           <Col>
           {`your tier level: ${tierLevel}`}
