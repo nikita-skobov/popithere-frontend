@@ -126,6 +126,7 @@ exports.placeholder = {
   url: '/images/temp/placeholder.png',
 }
 
+exports.patreonPage = 'https://www.patreon.com/equilateral'
 exports.patreonClientId = 'i2bAT_IDUs86TadxLNJJ4FoTXfMsFCOOPtOyGW2IJEbBxAkb0ue2RCP-DMf0VJlN'
 
 exports.keyDataEndpoint = 'https://api-staging.popithere.com/list/key'

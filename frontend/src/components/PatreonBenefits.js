@@ -14,7 +14,7 @@ import {
   Button,
 } from 'reactstrap'
 
-import { benefitTiers, patreonEndpoint, patreonClientId } from '../customConfig'
+import { benefitTiers, patreonEndpoint, patreonClientId, patreonPage } from '../customConfig'
 
 const has = Object.prototype.hasOwnProperty
 
@@ -99,10 +99,22 @@ export default class PatreonBenefits extends Component {
           </Row>
         )}
         <Row>
-          <h5 className="text-center">If you are a patron, you have access to benefits on this site. All you need to do is click the {'"Log in with Patreon"'} button, which will unlock your benefits for this specific device. If you have multiple devices, you just need to click this button again on your other devices.</h5>
+          <Col>
+            <h5 className="text-center">If you are a patron, you have access to benefits on this site. All you need to do is click the {'"Log in with Patreon"'} button, which will unlock your benefits for this specific device. If you have multiple devices, you just need to click this button again on your other devices.</h5>
+          </Col>
         </Row>
         <Row className="mb1em">
           <a className="ma" href={this.patreonAuthorization}>
+            <Button className="btn-patreon">Log in with Patreon</Button>
+          </a>
+        </Row>
+        <Row>
+          <Col>
+            <h5 className="text-center">If you are not a patron, you can become a patron on my patreon page by clicking the button below. Afterwards, come back here, and click the {'"Log in with Patreon"'} button above to get your benefits.</h5>
+          </Col>
+        </Row>
+        <Row className="mb1em">
+          <a className="ma" href={patreonPage}>
             <Button className="btn-patreon">Log in with Patreon</Button>
           </a>
         </Row>
