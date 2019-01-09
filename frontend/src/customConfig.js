@@ -66,23 +66,23 @@ exports.firstTimeItems = {
 exports.assetList = [
   {
     name: 'P_rotate',
-    url: 'images/temp/rotateBetter.png',
+    url: '/images/temp/rotateBetter.png',
   },
   {
     name: '8panels',
-    url: 'images/temp/8panels.png',
+    url: '/images/temp/8panels.png',
   },
   {
     name: 'test2',
-    url: 'images/temp/test1.png',
+    url: '/images/temp/test1.png',
   },
   {
     name: 'test1',
-    url: 'images/temp/hqdefault.jpg',
+    url: '/images/temp/hqdefault.jpg',
   },
   {
     name: '.placeholder.',
-    url: 'images/temp/placeholder.png',
+    url: '/images/temp/placeholder.png',
   },
 ]
 
@@ -95,7 +95,7 @@ exports.DEV_MODE = true
 
 exports.placeholder = {
   name: '.placeholder.',
-  url: 'images/temp/placeholder.png',
+  url: '/images/temp/placeholder.png',
 }
 
 exports.keyDataEndpoint = 'https://api-staging.popithere.com/list/key'
