@@ -62,20 +62,40 @@ export default class PatreonBenefits extends Component {
 
   render() {
     const { tierLevel } = this.state
+
+    const makeList = benefitObj => (
+      <ul>
+        <li>Chat messages: {`${benefitObj.cht}`} every 5 seconds</li>
+        <li>Place PopIts: {`${benefitObj.pit}`} every 5 seconds</li>
+        <li>Make your own PopIts: {`${benefitObj.myo}`} every 30 minutes</li>
+      </ul>
+    )
+
     return (
       <Col fluid>
         {tierLevel === 'notoken' && (
           <Row>
-            <h2 className="text-center">You are using this site without a token. You cannot link your patreon account until you aquire a token. Please try refreshing the page. If this issue persists, please contact equilateralllc@gmail.com</h2>
+            <h3 className="text-center">You are using this site without a token. You cannot link your patreon account until you aquire a token. Please try refreshing the page. If this issue persists, please contact equilateralllc@gmail.com</h3>
           </Row>
         )}
         <Row>
           <Col>
-          {`your tier level: ${tierLevel}`}
+            <Card body outline color="success">
+              <CardTitle>No Tier</CardTitle>
+              {makeList(benefitTiers.notier)}
+            </Card>
           </Col>
           <Col>
+            <Card body outline color="success">
+              <CardTitle>Basic Tier</CardTitle>
+              {makeList(benefitTiers.basic)}
+            </Card>
           </Col>
           <Col>
+            <Card body outline color="success">
+              <CardTitle>Premium Tier</CardTitle>
+              {makeList(benefitTiers.premium)}
+            </Card>
           </Col>
         </Row>
       </Col>
