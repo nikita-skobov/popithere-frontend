@@ -71,6 +71,15 @@ export default class PatreonBenefits extends Component {
       </ul>
     )
 
+    const makeCard = (tierName, tierText) => (
+      <Col>
+        <Card body inverse={tierLevel === tierName} outline={tierLevel !== tierName} color="success">
+          <CardTitle>{tierText} {tierLevel === tierName && <h6>(This is your tier)</h6>}</CardTitle>
+          {makeList(benefitTiers[tierName])}
+        </Card>
+      </Col>
+    )
+
     return (
       <Col fluid>
         {tierLevel === 'notoken' && (
@@ -79,24 +88,9 @@ export default class PatreonBenefits extends Component {
           </Row>
         )}
         <Row>
-          <Col>
-            <Card body inverse={tierLevel === 'notier'} outline={tierLevel !== 'notier'} color="success">
-              <CardTitle>No Tier {tierLevel === 'notier' && <h6>(This is your tier)</h6>}</CardTitle>
-              {makeList(benefitTiers.notier)}
-            </Card>
-          </Col>
-          <Col>
-            <Card body inverse={tierLevel === 'basic'} outline={tierLevel !== 'basic'} color="success">
-              <CardTitle>Basic Tier {tierLevel === 'basic' && <h6>(This is your tier)</h6>}</CardTitle>
-              {makeList(benefitTiers.basic)}
-            </Card>
-          </Col>
-          <Col>
-            <Card body inverse={tierLevel === 'premium'} outline={tierLevel !== 'premium'} color="success">
-              <CardTitle>Premium Tier {tierLevel === 'premium' && <h6>(This is your tier)</h6>}</CardTitle>
-              {makeList(benefitTiers.premium)}
-            </Card>
-          </Col>
+          {makeCard('notier', 'No Tier')}
+          {makeCard('basic', 'Basic Tier')}
+          {makeCard('premium', 'Premium Tier')}
         </Row>
       </Col>
     )
