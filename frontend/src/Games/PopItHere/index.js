@@ -72,6 +72,8 @@ export default class PopItHere extends Game {
     this.poppingName = null
     this.currentlyPopping = false
     this.maxGifFrames = 60
+    this.maxPopitScale = 0.2
+    this.maxPopitSize = this.maxPopitScale * 1024
 
     this.stage = new PIXI.Container()
     this.root.addChild(this.stage)
@@ -273,7 +275,7 @@ export default class PopItHere extends Game {
     // theyll see that it doesnt pop to the whole page.
     // while creating a custom popit, it might seem that your creation
     // would cover the whole screen, but thats not the case
-    let scaleFactor = (userVal * 0.2 / 100)
+    let scaleFactor = (userVal * this.maxPopitScale / 100)
     scaleFactor = scaleFactor <= 0.01 ? 0.01 : scaleFactor // prevents a 0 scale
     const previousScales = { x: this.stage.scale.x, y: this.stage.scale.y }
     this.stage.scale.x = scaleFactor
