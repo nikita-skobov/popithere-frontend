@@ -92,6 +92,29 @@ exports.defaultButtons = [
   'benefits',
 ]
 
+exports.benefitTiers = {
+  notoken: {
+    cht: 0,
+    pit: 0,
+    myo: 0,
+  },
+  notier: {
+    cht: 10,
+    pit: 10,
+    myo: 10,
+  },
+  basic: {
+    cht: 12,
+    pit: 52,
+    myo: 12,
+  },
+  premium: {
+    cht: 23,
+    pit: 103,
+    myo: 23,
+  },
+}
+
 exports.DEV_MODE = true
 
 exports.placeholder = {

@@ -8,6 +8,8 @@ import {
   DropdownItem,
 } from 'reactstrap'
 
+import PatreonBenefits from './PatreonBenefits'
+
 import { defaultButtons } from '../customConfig'
 
 const has = Object.prototype.hasOwnProperty
@@ -31,10 +33,10 @@ export default class Buttons extends Component {
 
     this.defaultModals = {
       benefits: {
-        text: 'Are you a patron? If so, you can get extra benefits!',
+        text: 'You can get extra benefits if you become a patron!',
         size: 'lg',
         modal: () => (
-          <div>addsadsadsa</div>
+          <PatreonBenefits brain={this.brain} />
         ),
       },
     }
