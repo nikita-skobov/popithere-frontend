@@ -115,7 +115,7 @@ export default class PatreonBenefits extends Component {
         </Row>
         <Row className="mb1em">
           <a className="ma" href={patreonPage}>
-            <Button className="btn-patreon">Log in with Patreon</Button>
+            <Button className="btn-patreon">Become a Patron</Button>
           </a>
         </Row>
         <Row>
