@@ -80,20 +80,20 @@ export default class PatreonBenefits extends Component {
         )}
         <Row>
           <Col>
-            <Card body outline color="success">
-              <CardTitle>No Tier</CardTitle>
+            <Card body inverse={tierLevel === 'notier'} outline={tierLevel !== 'notier'} color="success">
+              <CardTitle>No Tier {tierLevel === 'notier' && <h6>(This is your tier)</h6>}</CardTitle>
               {makeList(benefitTiers.notier)}
             </Card>
           </Col>
           <Col>
-            <Card body outline color="success">
-              <CardTitle>Basic Tier</CardTitle>
+            <Card body inverse={tierLevel === 'basic'} outline={tierLevel !== 'basic'} color="success">
+              <CardTitle>Basic Tier {tierLevel === 'basic' && <h6>(This is your tier)</h6>}</CardTitle>
               {makeList(benefitTiers.basic)}
             </Card>
           </Col>
           <Col>
-            <Card body outline color="success">
-              <CardTitle>Premium Tier</CardTitle>
+            <Card body inverse={tierLevel === 'premium'} outline={tierLevel !== 'premium'} color="success">
+              <CardTitle>Premium Tier {tierLevel === 'premium' && <h6>(This is your tier)</h6>}</CardTitle>
               {makeList(benefitTiers.premium)}
             </Card>
           </Col>
