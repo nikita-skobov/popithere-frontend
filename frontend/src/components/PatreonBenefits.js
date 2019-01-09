@@ -101,12 +101,11 @@ export default class PatreonBenefits extends Component {
         <Row>
           <h5 className="text-center">If you are a patron, you have access to benefits on this site. All you need to do is click the {'"Log in with Patreon"'} button, which will unlock your benefits for this specific device. If you have multiple devices, you just need to click this button again on your other devices.</h5>
         </Row>
-        <Row>
+        <Row className="mb1em">
           <a className="ma" href={this.patreonAuthorization}>
             <Button className="btn-patreon">Log in with Patreon</Button>
           </a>
         </Row>
-        <Row />
         <Row>
           {makeCard('notier', 'No Tier')}
           {makeCard('basic', 'Basic Tier')}
