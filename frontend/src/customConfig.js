@@ -66,37 +66,68 @@ exports.firstTimeItems = {
 exports.assetList = [
   {
     name: 'P_rotate',
-    url: 'images/temp/rotateBetter.png',
+    url: '/images/temp/rotateBetter.png',
   },
   {
     name: '8panels',
-    url: 'images/temp/8panels.png',
+    url: '/images/temp/8panels.png',
   },
   {
     name: 'test2',
-    url: 'images/temp/test1.png',
+    url: '/images/temp/test1.png',
   },
   {
     name: 'test1',
-    url: 'images/temp/hqdefault.jpg',
+    url: '/images/temp/hqdefault.jpg',
   },
   {
     name: '.placeholder.',
-    url: 'images/temp/placeholder.png',
+    url: '/images/temp/placeholder.png',
   },
 ]
 
 exports.defaultButtons = [
   'options',
   'mutechat',
+  'benefits',
 ]
+
+exports.benefitTiers = {
+  notoken: {
+    cht: 0,
+    pit: 0,
+    myo: 0,
+    price: 'Free',
+  },
+  notier: {
+    cht: 10,
+    pit: 10,
+    myo: 10,
+    price: 'Free',
+  },
+  basic: {
+    cht: 12,
+    pit: 52,
+    myo: 12,
+    price: '$1 a month',
+  },
+  premium: {
+    cht: 23,
+    pit: 103,
+    myo: 23,
+    price: '$5 a month',
+  },
+}
 
 exports.DEV_MODE = true
 
 exports.placeholder = {
   name: '.placeholder.',
-  url: 'images/temp/placeholder.png',
+  url: '/images/temp/placeholder.png',
 }
+
+exports.patreonPage = 'https://www.patreon.com/equilateral'
+exports.patreonClientId = 'i2bAT_IDUs86TadxLNJJ4FoTXfMsFCOOPtOyGW2IJEbBxAkb0ue2RCP-DMf0VJlN'
 
 exports.keyDataEndpoint = 'https://api-staging.popithere.com/list/key'
 exports.dataFetchBase = 'https://api-staging.popithere.com/'
@@ -104,3 +135,4 @@ exports.listDataEndpoint = 'https://api-staging.popithere.com/list/data'
 exports.socketEndpoint = 'https://staging-sockets.popithere.com'
 exports.loginEndpoint = 'https://l48yc0l7sc.execute-api.us-east-1.amazonaws.com/staging/issue/login'
 exports.urlEndpoint = 'https://l48yc0l7sc.execute-api.us-east-1.amazonaws.com/staging/issue/url'
+exports.patreonEndpoint = 'https://l48yc0l7sc.execute-api.us-east-1.amazonaws.com/staging/issue/patreon'

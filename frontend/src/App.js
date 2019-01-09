@@ -7,6 +7,7 @@ import Chat from './components/Chat'
 import MyModal from './components/MyModal'
 import Welcome from './components/Welcome'
 import FirstTime from './components/FirstTime'
+import PatreonBenefits from './components/PatreonBenefits'
 
 import { DEV_MODE } from './customConfig'
 
@@ -14,6 +15,12 @@ export default class App extends Component {
   constructor(props) {
     super(props)
     this.brain = props.brain
+
+    console.log(window.location.pathname)
+
+    const redirect = (window.location.pathname.includes('/redirect/success'))
+
+    console.log(`redirect? ${redirect}`)
 
     const iw = window.innerWidth
     const ih = window.innerHeight
@@ -27,6 +34,16 @@ export default class App extends Component {
 
     this.startingModal = ''
 
+    if (redirect) {
+      this.startingModal = {
+        text: 'You have successfully linked your Patreon benefits!',
+        size: 'lg',
+        modal: () => (
+          <PatreonBenefits brain={this.brain} redirect />
+        ),
+      }
+    }
+
     this.shouldResize = this.shouldResize.bind(this)
     this.afterLogIn = this.afterLogIn.bind(this)
     this.afterSocketConnect = this.afterSocketConnect.bind(this)
@@ -39,7 +56,7 @@ export default class App extends Component {
 
     this.state = {
       firstTime: !token, // if no token provided then its first time visiting site
-      loggedIn: token && !tokenManager.isTokenExpired(),
+      loggedIn: token && !tokenManager.isTokenExpired() && !redirect,
       ready: false,
     }
 
