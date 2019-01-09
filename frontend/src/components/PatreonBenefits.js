@@ -50,6 +50,7 @@ export default class PatreonBenefits extends Component {
 
     this.state = {
       tierLevel,
+      redirect: props.redirect,
     }
 
     this.brain.store('PatreonBenefits', this)
@@ -70,7 +71,7 @@ export default class PatreonBenefits extends Component {
   }
 
   render() {
-    const { tierLevel } = this.state
+    const { tierLevel, redirect } = this.state
 
     const makeList = benefitObj => (
       <ul className="pl1em">
@@ -98,26 +99,28 @@ export default class PatreonBenefits extends Component {
             <h3 className="text-center">You are using this site without a token. You cannot link your patreon account until you aquire a token. Please try refreshing the page. If this issue persists, please contact equilateralllc@gmail.com</h3>
           </Row>
         )}
-        <Row>
-          <Col>
-            <h6>If you are a patron, you have access to benefits on this site. All you need to do is click the {'"Log in with Patreon"'} button, which will unlock your benefits for this specific device. If you have multiple devices, you just need to click this button again on your other devices.</h6>
-          </Col>
-        </Row>
-        <Row className="mb1em">
-          <a className="ma" href={this.patreonAuthorization}>
-            <Button disabled={tierLevel === 'notoken'} className="btn-patreon">Log in with Patreon</Button>
-          </a>
-        </Row>
-        <Row>
-          <Col>
-            <h6>If you are not a patron, you can become a patron on my patreon page by clicking the button below. Afterwards, come back here, and click the {'"Log in with Patreon"'} button above to get your benefits.</h6>
-          </Col>
-        </Row>
-        <Row className="mb1em">
-          <a className="ma" href={patreonPage}>
-            <Button className="btn-patreon">Become a Patron</Button>
-          </a>
-        </Row>
+        {!redirect && [
+          <Row>
+            <Col>
+              <h6>If you are a patron, you have access to benefits on this site. All you need to do is click the {'"Log in with Patreon"'} button, which will unlock your benefits for this specific device. If you have multiple devices, you just need to click this button again on your other devices.</h6>
+            </Col>
+          </Row>,
+          <Row className="mb1em">
+            <a className="ma" href={this.patreonAuthorization}>
+              <Button disabled={tierLevel === 'notoken'} className="btn-patreon">Log in with Patreon</Button>
+            </a>
+          </Row>,
+          <Row>
+            <Col>
+              <h6>If you are not a patron, you can become a patron on my patreon page by clicking the button below. Afterwards, come back here, and click the {'"Log in with Patreon"'} button above to get your benefits.</h6>
+            </Col>
+          </Row>,
+          <Row className="mb1em">
+            <a className="ma" href={patreonPage}>
+              <Button className="btn-patreon">Become a Patron</Button>
+            </a>
+          </Row>,
+        ]}
         <Row>
           {makeCard('notier', 'No Tier')}
           {makeCard('basic', 'Basic Tier')}
@@ -128,6 +131,11 @@ export default class PatreonBenefits extends Component {
   }
 }
 
+PatreonBenefits.defaultProps = {
+  redirect: false,
+}
+
 PatreonBenefits.propTypes = {
   brain: PropTypes.instanceOf(Object).isRequired,
+  redirect: PropTypes.bool,
 }

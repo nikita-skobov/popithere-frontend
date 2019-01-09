@@ -39,7 +39,7 @@ export default class App extends Component {
         text: 'You have successfully linked your Patreon benefits!',
         size: 'lg',
         modal: () => (
-          <PatreonBenefits brain={this.brain} />
+          <PatreonBenefits brain={this.brain} redirect />
         ),
       }
     }
