@@ -37,6 +37,12 @@ function TokenManager(datastore) {
         console.error(e)
       }
     },
+    getClaim: (claim) => {
+      if (has.call(claims, claim)) {
+        return claims[claim]
+      }
+      return null
+    },
     getToken: () => token,
     storeToken: (tk) => {
       localStorage.setItem('token', tk)
