@@ -15,6 +15,12 @@ export default class App extends Component {
     super(props)
     this.brain = props.brain
 
+    console.log(window.location.pathname)
+
+    const redirect = (window.location.pathname.includes('/redirect/success'))
+
+    console.log(`redirect? ${redirect}`)
+
     const iw = window.innerWidth
     const ih = window.innerHeight
 
@@ -39,7 +45,7 @@ export default class App extends Component {
 
     this.state = {
       firstTime: !token, // if no token provided then its first time visiting site
-      loggedIn: token && !tokenManager.isTokenExpired(),
+      loggedIn: token && !tokenManager.isTokenExpired() && !redirect,
       ready: false,
     }
 
