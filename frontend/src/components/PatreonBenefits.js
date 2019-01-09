@@ -64,7 +64,7 @@ export default class PatreonBenefits extends Component {
     const { tierLevel } = this.state
 
     const makeList = benefitObj => (
-      <ul>
+      <ul className="pl1em">
         <li>Chat messages: {`${benefitObj.cht}`} every 5 seconds</li>
         <li>Place PopIts: {`${benefitObj.pit}`} every 5 seconds</li>
         <li>Make your own PopIts: {`${benefitObj.myo}`} every 30 minutes</li>
