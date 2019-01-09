@@ -273,7 +273,7 @@ export default class PopItHere extends Game {
     // theyll see that it doesnt pop to the whole page.
     // while creating a custom popit, it might seem that your creation
     // would cover the whole screen, but thats not the case
-    let scaleFactor = (userVal * 0.3 / 100)
+    let scaleFactor = (userVal * 0.2 / 100)
     scaleFactor = scaleFactor <= 0.01 ? 0.01 : scaleFactor // prevents a 0 scale
     const previousScales = { x: this.stage.scale.x, y: this.stage.scale.y }
     this.stage.scale.x = scaleFactor
