@@ -11,7 +11,8 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: './scripts/bundle.[contenthash].js',
+    publicPath: '/',
+    filename: 'scripts/bundle.[contenthash].js',
     // chunkFileName: 'bundle.[contenthash].js',
   },
   plugins: [
