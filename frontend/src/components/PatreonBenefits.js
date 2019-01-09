@@ -105,7 +105,7 @@ export default class PatreonBenefits extends Component {
         </Row>
         <Row className="mb1em">
           <a className="ma" href={this.patreonAuthorization}>
-            <Button className="btn-patreon">Log in with Patreon</Button>
+            <Button disabled={tierLevel === 'notoken'} className="btn-patreon">Log in with Patreon</Button>
           </a>
         </Row>
         <Row>
