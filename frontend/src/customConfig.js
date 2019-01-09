@@ -97,21 +97,25 @@ exports.benefitTiers = {
     cht: 0,
     pit: 0,
     myo: 0,
+    price: 'Free',
   },
   notier: {
     cht: 10,
     pit: 10,
     myo: 10,
+    price: 'Free',
   },
   basic: {
     cht: 12,
     pit: 52,
     myo: 12,
+    price: '$1 a month',
   },
   premium: {
     cht: 23,
     pit: 103,
     myo: 23,
+    price: '$5 a month',
   },
 }
 

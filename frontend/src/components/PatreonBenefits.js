@@ -75,7 +75,9 @@ export default class PatreonBenefits extends Component {
       <Col>
         <Card body inverse={tierLevel === tierName} outline={tierLevel !== tierName} color="success">
           <CardTitle>{tierText} {tierLevel === tierName && <h6>(This is your tier)</h6>}</CardTitle>
+          <CardText>You are allowed to: </CardText>
           {makeList(benefitTiers[tierName])}
+          <CardText>Price: {benefitTiers[tierName].price}</CardText>
         </Card>
       </Col>
     )
