@@ -43,8 +43,8 @@ export default class PatreonBenefits extends Component {
       tierLevel = 'basic'
     }
 
-    if (tierLevel === 'basic' && claims.pit >= benefitTiers.basic.pit
-    && claims.cht >= benefitTiers.basic.cht && claims.myo >= benefitTiers.basic.myo) {
+    if (tierLevel === 'basic' && claims.pit > benefitTiers.basic.pit
+    && claims.cht > benefitTiers.basic.cht && claims.myo > benefitTiers.basic.myo) {
       tierLevel = 'premium'
     }
 
