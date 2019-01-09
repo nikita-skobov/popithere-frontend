@@ -28,6 +28,16 @@ export default class Buttons extends Component {
 
     this.toggleDropdown = this.toggleDropdown.bind(this)
     this.handleButton = this.handleButton.bind(this)
+
+    this.defaultModals = {
+      benefits: {
+        text: 'Are you a patron? If so, you can get extra benefits!',
+        size: 'lg',
+        modal: () => (
+          <div>addsadsadsa</div>
+        ),
+      },
+    }
   }
 
   newButtons(buttons) {
@@ -52,6 +62,8 @@ export default class Buttons extends Component {
       if (name === 'mutechat') {
         this.brain.tell.ChatBox.toggleMuteChat()
         console.log('muting chat')
+      } else if (has.call(this.defaultModals, name)) {
+        this.brain.tell.MyModal.toggle(this.defaultModals[name])
       } else {
         this.brain.tell.MyModal.toggle(name)
       }
@@ -99,6 +111,7 @@ export default class Buttons extends Component {
           ))}
           <DropdownItem name="options" onClick={this.handleButton}>Options</DropdownItem>
           <DropdownItem name="mutechat" onClick={this.handleButton}>{muteChatText}</DropdownItem>
+          <DropdownItem name="benefits" onClick={this.handleButton}>Benefits</DropdownItem>
           <DropdownItem>Support</DropdownItem>
         </DropdownMenu>
       </ButtonDropdown>
