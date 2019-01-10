@@ -393,6 +393,11 @@ export default class PopItSelection extends Component {
         this.game.reloadTextures(this)
       }
 
+      const mylist = () => {
+        this.setState({ ready: false, isSearching: false, isLoading: true })
+        this.game.reloadTextures(this, true)
+      }
+
       const search = () => {
         this.setState((prevState) => {
           const tempState = prevState
@@ -440,6 +445,7 @@ export default class PopItSelection extends Component {
         <div>
           <Button disabled={isLoading} className="mb1em mr1em" onClick={this.handleButton} name="back">Back</Button>
           <Button disabled={isLoading} className="mb1em mr1em" onClick={refresh} name="refresh">Refresh</Button>
+          <Button disabled={isLoading} className="mb1em mr1em" onClick={mylist} name="mylist">My PopIts</Button>
           <Button disabled={isLoading} className="mb1em mr1em" onClick={search} name="search">Search</Button>
           {isSearching && (
             <InputGroup className="mb1em">
