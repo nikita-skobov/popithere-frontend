@@ -64,7 +64,7 @@ export default class AlertSystem extends Component {
     const { open, alerts } = this.state
     if (!open) return null
 
-    return <AlertItem data={alerts[alerts.length - 1]} brain={this.brain} />
+    return <AlertItem data={alerts[0]} brain={this.brain} />
   }
 }
 
