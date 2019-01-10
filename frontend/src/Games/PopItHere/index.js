@@ -178,26 +178,34 @@ export default class PopItHere extends Game {
   }
 
   reloadTextures(reactElement) {
-    this.dataMan.fetchList(null, () => {
-      const newNumbers = this.dataMan.getDataNumbers()
+    // I think its better to set state guaranateed after a certain time
+    // instead of waiting for all textures to be loaded. you never know
+    // there might be a network error, or something, and that would make the
+    // modal stuck. this way it is guaranteed to come back
+    const timeout = 500
+    setTimeout(() => {
+      reactElement.setState({ ready: true, loopArray: [...this.sortBaseX(this.previewImages, 'name', 32)], isLoading: false })
+    }, timeout)
+
+    this.dataMan.fetchList(null, (err, list) => {
+      if (!list) {
+        return null
+      }
+
       const appendNumbers = []
-      newNumbers.forEach((num) => {
+      list.forEach((obj) => {
+        const num = obj.dn
         if (this.dataNumbers.indexOf(num) === -1) {
           appendNumbers.push(num)
         }
       })
       if (appendNumbers.length) {
-        this.dataNumbers = [...this.dataNumbers, ...newNumbers]
+        this.dataNumbers = [...this.dataNumbers, ...appendNumbers]
         this.loadTextures(appendNumbers)
       }
-      // I think its better to set state guaranateed after a certain time
-      // instead of waiting for all textures to be loaded. you never know
-      // there might be a network error, or something, and that would make the
-      // modal stuck. this way it is guaranteed to come back
-      const timeout = 500
-      setTimeout(() => {
-        reactElement.setState({ ready: true, loopArray: [...this.sortBaseX(this.previewImages, 'name', 32)], isLoading: false })
-      }, timeout)
+
+      reactElement.setState({ ready: true, loopArray: [...this.sortBaseX(this.previewImages, 'name', 32)], isLoading: false })
+      return null
     })
   }
 
