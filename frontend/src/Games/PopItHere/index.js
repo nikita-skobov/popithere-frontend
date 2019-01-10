@@ -1082,6 +1082,9 @@ export default class PopItHere extends Game {
         } else {
           newTexture = this.textures[textureName]
         }
+        const scaleFactor = this.adjustScaleFactor(newTexture[0].orig)
+        sprite.width *= scaleFactor
+        sprite.height *= scaleFactor
         sprite._textures = newTexture
         if (newTexture.length > 1) {
           sprite.gotoAndPlay(0)
