@@ -13,23 +13,26 @@ function LimitManager(datastore) {
         // initial action, so yes it is allowed
         limiter.push(Date.now())
         limiter.push(1)
-        return true
+        return { allowed: true, limit, current: limiter[1], nextTime: undefined, interval }
       }
 
       const previousTime = limiter[0]
       const thisTime = Date.now()
-      if (thisTime - previousTime > interval) {
+      const timeDiff = thisTime - previousTime
+      if (timeDiff > interval) {
         // if it has been past the interval, then reset to allowed
         limiter[0] = Date.now()
         limiter[1] = 1
-        return true
+        return { allowed: true, limit, current: limiter[1], nextTime: interval - timeDiff, interval }
       }
 
-      if (limiter[1] >= limit) return false
+      if (limiter[1] >= limit) {
+        return { allowed: false, limit, current: limiter[1], nextTime: interval - timeDiff, interval }
+      }
 
       // otherwise we are still within the limit, so just increment and allow
       limiter[1] += 1
-      return true
+      return { allowed: true, limit, current: limiter[1], nextTime: interval - timeDiff, interval }
     },
     setLimit: (name, interval, limit) => {
       if (!has.call(counter, name)) {
