@@ -8,6 +8,7 @@ import MyModal from './components/MyModal'
 import Welcome from './components/Welcome'
 import FirstTime from './components/FirstTime'
 import PatreonBenefits from './components/PatreonBenefits'
+import AlertSystem from './components/AlertSystem'
 
 import { DEV_MODE } from './customConfig'
 
@@ -278,6 +279,7 @@ export default class App extends Component {
       <Canvas brain={this.brain} />,
       <Chat brain={this.brain} />,
       <MyModal startingModal={this.startingModal} brain={this.brain} />,
+      <AlertSystem brain={this.brain} />,
     ]
   }
 }
