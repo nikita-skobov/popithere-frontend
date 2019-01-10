@@ -65,6 +65,8 @@ export default class PopItHere extends Game {
     let dataNumbers = this.dataMan.getDataNumbers()
     this.dataNumbers = this.sortBaseX(dataNumbers, undefined, 32, initialFetchLimit)
 
+    this.limitMan.setLimit('popit', 5000, 5)
+
     this.textures = {}
     this.previewImages = []
     this.userPopitList = []
@@ -1212,10 +1214,14 @@ export default class PopItHere extends Game {
   }
 
   emitPopIt(event) {
-    const position = getLocalPosition(event, this.root)
-    const name = this.poppingName
-    const posString = positionToString(position)
-    const msg = `${posString}${name}`
-    this.socket.emit('pi', msg)
+    const canPerformAction = this.limitMan.canPerformAction('popit')
+    console.log(`can perform? ${canPerformAction}`)
+    if (canPerformAction) {
+      const position = getLocalPosition(event, this.root)
+      const name = this.poppingName
+      const posString = positionToString(position)
+      const msg = `${posString}${name}`
+      this.socket.emit('pi', msg)
+    }
   }
 }
