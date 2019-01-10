@@ -23,7 +23,7 @@ export default class AlertSystem extends Component {
   render() {
     const { data } = this
     return (
-      <Alert color={data.color}>
+      <Alert transition={{ appear: true, exit: true }} color={data.color}>
         {data.text}
       </Alert>
     )
