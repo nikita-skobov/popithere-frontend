@@ -2,13 +2,8 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 import {
-  ButtonDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
+  Alert,
 } from 'reactstrap'
-
-import AlertItem from './AlertItem'
 
 const has = Object.prototype.hasOwnProperty
 
@@ -16,13 +11,7 @@ export default class AlertSystem extends Component {
   constructor(props) {
     super(props)
     this.brain = props.brain
-
-    this.state = {
-      open: false,
-      alerts: [],
-    }
-
-    this.brain.store('AlertSystem', this)
+    this.data = props.data
 
     this.handleButton = this.handleButton.bind(this)
   }
@@ -32,13 +21,16 @@ export default class AlertSystem extends Component {
   }
 
   render() {
-    const { open, alerts } = this.state
-    if (!open) return null
-
-    return <AlertItem data={alerts[alerts.length - 1]} brain={this.brain} />
+    const { data } = this
+    return (
+      <Alert color={data.color}>
+        {data.text}
+      </Alert>
+    )
   }
 }
 
 AlertSystem.propTypes = {
   brain: PropTypes.instanceOf(Object).isRequired,
+  data: PropTypes.instanceOf(Object).isRequired,
 }
