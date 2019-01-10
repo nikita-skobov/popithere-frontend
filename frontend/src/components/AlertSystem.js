@@ -29,6 +29,7 @@ export default class AlertSystem extends Component {
     this.addAlert = this.addAlert.bind(this)
     this.endAlert = this.endAlert.bind(this)
     this.reposition = this.reposition.bind(this)
+    this.updateList = this.updateList.bind(this)
 
     this.brain.onResize(this.reposition)
   }
@@ -60,20 +61,24 @@ export default class AlertSystem extends Component {
     })
   }
 
+  updateList() {
+    this.setState((prevState) => {
+      const tempState = prevState
+
+      // removes from beginning
+      tempState.alerts.shift()
+
+      if (!tempState.alerts.length) {
+        tempState.open = false
+      }
+
+      return tempState
+    })
+  }
+
   endAlert() {
     this.brain.tell.AlertItem.endAlert(() => {
-      this.setState((prevState) => {
-        const tempState = prevState
-
-        // removes from beginning
-        tempState.alerts.shift()
-
-        if (!tempState.alerts.length) {
-          tempState.open = false
-        }
-
-        return tempState
-      })
+      this.updateList()
     })
   }
 
