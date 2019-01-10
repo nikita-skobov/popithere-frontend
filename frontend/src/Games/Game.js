@@ -11,6 +11,7 @@ export default class Game {
     this.modal = props.modal
     this.uploader = props.uploader
     this.dataMan = props.dataMan
+    this.alertSystem = props.alertSystem
     this.limitMan = props.limitMan
     this.socket = props.socket
     this.canvas = props.canvas
