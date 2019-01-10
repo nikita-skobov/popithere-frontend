@@ -58,17 +58,19 @@ export default class AlertSystem extends Component {
   }
 
   endAlert() {
-    this.setState((prevState) => {
-      const tempState = prevState
+    this.brain.tell.AlertItem.endAlert(() => {
+      this.setState((prevState) => {
+        const tempState = prevState
 
-      // removes from beginning
-      tempState.alerts.shift()
+        // removes from beginning
+        tempState.alerts.shift()
 
-      if (!tempState.alerts.length) {
-        tempState.open = false
-      }
+        if (!tempState.alerts.length) {
+          tempState.open = false
+        }
 
-      return tempState
+        return tempState
+      })
     })
   }
 

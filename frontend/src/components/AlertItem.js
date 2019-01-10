@@ -15,6 +15,11 @@ export default class AlertItem extends Component {
 
     this.brain.store('AlertItem', this)
 
+    this.state = {
+      open: true,
+    }
+
+    this.endAlert = this.endAlert.bind(this)
     this.handleButton = this.handleButton.bind(this)
   }
 
@@ -22,10 +27,19 @@ export default class AlertItem extends Component {
     e.preventDefault()
   }
 
+  endAlert(cb) {
+    this.setState({ open: false })
+    setTimeout(() => {
+      cb()
+    }, 300)
+  }
+
   render() {
     const { data } = this
+    const { open } = this.state
+
     return (
-      <Alert transition={{ appear: true, exit: true }} color={data.color}>
+      <Alert isOpen={open} transition={{ appear: true, exit: true }} color={data.color}>
         {data.text}
       </Alert>
     )
