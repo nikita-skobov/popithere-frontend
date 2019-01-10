@@ -145,7 +145,14 @@ function DataManager(datastore) {
           .catch(err => rej(err))
       })
     },
-    fetchList: (cb) => {
+    fetchList: (user, cb) => {
+      let pathParam = user
+      if (!pathParam) {
+        pathParam = '0'
+      } else {
+        pathParam = brain.ask.Tokens.getClaim('id')
+      }
+
       let callback = cb
       if (!callback) {
         callback = () => {}
@@ -159,7 +166,7 @@ function DataManager(datastore) {
       }
 
 
-      fetch(listDataEndpoint)
+      fetch(`${listDataEndpoint}/${pathParam}`)
         .then(resp => resp.json())
         .then((list) => {
           dataList = list
