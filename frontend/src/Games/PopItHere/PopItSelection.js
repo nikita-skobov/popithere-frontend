@@ -389,12 +389,12 @@ export default class PopItSelection extends Component {
       const { offset, ready, isSearching, loopArray, isLoading } = this.state
 
       const refresh = () => {
-        this.setState({ ready: false, isSearching: false, isLoading: true })
+        this.setState({ offset: 0, ready: false, isSearching: false, isLoading: true })
         this.game.reloadTextures(this)
       }
 
       const mylist = () => {
-        this.setState({ ready: false, isSearching: false, isLoading: true })
+        this.setState({ offset: 0, ready: false, isSearching: false, isLoading: true })
         this.game.reloadTextures(this, true)
       }
 
@@ -430,7 +430,7 @@ export default class PopItSelection extends Component {
               tempState.isLoading = true
 
               this.game.searchForDataNumber(searchNum, (newList) => {
-                this.setState({ ready: true, loopArray: newList, isLoading: false })
+                this.setState({ offset: 0, ready: true, loopArray: newList, isLoading: false })
               })
 
               return tempState
