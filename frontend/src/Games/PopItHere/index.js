@@ -1214,18 +1214,20 @@ export default class PopItHere extends Game {
   }
 
   emitPopIt(event) {
-    const canPerformAction = this.limitMan.canPerformAction('popit')
-    console.log(`can perform? ${canPerformAction}`)
-    if (canPerformAction) {
+    const action = this.limitMan.canPerformAction('popit')
+    const { allowed } = action
+    console.log(`can perform? ${allowed}`)
+    if (allowed) {
       const position = getLocalPosition(event, this.root)
       const name = this.poppingName
       const posString = positionToString(position)
       const msg = `${posString}${name}`
       this.socket.emit('pi', msg)
     } else {
+      const { limit, nextTime, interval } = action
       this.alertSystem.addAlert({
         color: 'warning',
-        text: 'Slow down!',
+        text: `You have reached your limit of ${limit} popits per ${Math.floor(interval / 1000)} seconds. You will be able to place popits again in about ${Math.floor(nextTime / 1000)} seconds`,
         countdown: 5000,
       })
     }
