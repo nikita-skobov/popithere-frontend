@@ -89,7 +89,8 @@ function UploadManager(datastore) {
           // this is a response from S3
           if (r.status === 200) {
             brain.tell.Welcome.addMessage('Successfully Uploaded!')
-            brain.tell.Welcome.addMessage(`Your data number should be: ${dataNumber}`)
+            brain.tell.Welcome.addMessage('Your data number is: ')
+            brain.tell.Welcome.addMessage(`${dataNumber}`)
             brain.tell.Welcome.welcomeDone()
           } else {
             cbErr = 'Error uploading data to server'
