@@ -67,6 +67,7 @@ export default class PopItHere extends Game {
 
     this.textures = {}
     this.previewImages = []
+    this.userPopitList = []
     this.loadTextures()
 
     this.poppingName = null
@@ -180,7 +181,7 @@ export default class PopItHere extends Game {
   reloadTextures(reactElement, onlyUser) {
     let outputList = this.previewImages
     if (onlyUser) {
-      outputList = []
+      outputList = this.userPopitList
     }
 
     this.dataMan.fetchList(onlyUser, (err, list) => {
@@ -217,6 +218,7 @@ export default class PopItHere extends Game {
               }
             })
           })
+          this.userPopitList = outputList
         }
         reactElement.setState({ ready: true, loopArray: [...this.sortBaseX(outputList, 'name', 32)], isLoading: false })
       }, timeout)
