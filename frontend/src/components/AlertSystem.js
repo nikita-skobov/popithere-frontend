@@ -56,7 +56,10 @@ export default class AlertSystem extends Component {
         this.brain.tell.AlertItem.addWaiting()
       }
 
-      tempState.alerts.push(obj)
+      tempState.alerts.push({
+        random: Math.random(),
+        ...obj,
+      })
       return tempState
     })
   }
@@ -95,7 +98,7 @@ export default class AlertSystem extends Component {
 
     return (
       <div style={{ position: 'absolute', top: '0px', width }}>
-        <AlertItem key={alerts[0].text} data={alerts[0]} waiting={waiting} brain={this.brain} />
+        <AlertItem key={`${alerts[0].random}.${alerts[0].text}`} data={alerts[0]} waiting={waiting} brain={this.brain} />
       </div>
     )
   }
