@@ -17,6 +17,7 @@ export default class AlertItem extends Component {
 
     this.state = {
       open: true,
+      waiting: props.waiting,
     }
 
     this.endAlert = this.endAlert.bind(this)
@@ -36,11 +37,16 @@ export default class AlertItem extends Component {
 
   render() {
     const { data } = this
-    const { open } = this.state
+    const { open, waiting } = this.state
 
     return (
       <Alert isOpen={open} transition={{ appear: true, exit: true }} color={data.color}>
-        {data.text}
+        <div>
+          {waiting > 0 && (
+            <span>{waiting}</span>
+          )}
+          {data.text}
+        </div>
       </Alert>
     )
   }
@@ -49,4 +55,5 @@ export default class AlertItem extends Component {
 AlertItem.propTypes = {
   brain: PropTypes.instanceOf(Object).isRequired,
   data: PropTypes.instanceOf(Object).isRequired,
+  waiting: PropTypes.number.isRequired,
 }

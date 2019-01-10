@@ -83,9 +83,11 @@ export default class AlertSystem extends Component {
     const { open, alerts, width } = this.state
     if (!open) return null
 
+    const waiting = alerts.length - 1
+
     return (
       <div style={{ position: 'absolute', top: '0px', width }}>
-        <AlertItem key={alerts[0].text} data={alerts[0]} brain={this.brain} />
+        <AlertItem key={alerts[0].text} data={alerts[0]} waiting={waiting} brain={this.brain} />
       </div>
     )
   }
