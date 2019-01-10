@@ -20,11 +20,21 @@ export default class AlertSystem extends Component {
     this.state = {
       open: false,
       alerts: [],
+      width: 100,
     }
 
     this.brain.store('AlertSystem', this)
 
     this.handleButton = this.handleButton.bind(this)
+    this.addAlert = this.addAlert.bind(this)
+    this.endAlert = this.endAlert.bind(this)
+    this.reposition = this.reposition.bind(this)
+
+    this.brain.onResize(this.reposition)
+  }
+
+  componentDidMount() {
+    this.reposition()
   }
 
   handleButton(e) {
@@ -62,15 +72,17 @@ export default class AlertSystem extends Component {
     })
   }
 
+  reposition() {
+    const canvasWidth = this.brain.ask.Canvas.leaflet.offsetWidth
+    this.setState({ width: canvasWidth })
+  }
+
   render() {
-    const { open, alerts } = this.state
+    const { open, alerts, width } = this.state
     if (!open) return null
 
-    const canvasWidth = this.brain.ask.Canvas.leaflet.offsetWidth
-    console.log(`canvas width: ${canvasWidth}`)
-
     return (
-      <div style={{ position: 'absolute', top: '0px', width: canvasWidth }}>
+      <div style={{ position: 'absolute', top: '0px', width }}>
         <AlertItem data={alerts[0]} brain={this.brain} />
       </div>
     )
