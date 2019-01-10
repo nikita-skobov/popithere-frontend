@@ -31,6 +31,35 @@ export default class AlertSystem extends Component {
     e.preventDefault()
   }
 
+  addAlert(obj) {
+    this.setState((prevState) => {
+      const tempState = prevState
+
+      const { open } = tempState
+      if (!open) {
+        tempState.open = true
+      }
+
+      tempState.alerts.push(obj)
+      return tempState
+    })
+  }
+
+  endAlert() {
+    this.setState((prevState) => {
+      const tempState = prevState
+
+      // removes from beginning
+      tempState.alerts.shift()
+
+      if (!tempState.alerts.length) {
+        tempState.open = false
+      }
+
+      return tempState
+    })
+  }
+
   render() {
     const { open, alerts } = this.state
     if (!open) return null
