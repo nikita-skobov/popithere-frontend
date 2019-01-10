@@ -1046,7 +1046,20 @@ export default class PopItHere extends Game {
     }
     const { x, y } = calculateCenterPosition(textures[0], position)
     const sprite = this.addGif(textures, { x, y, play, container: this.stage })
+    const scaleFactor = this.adjustScaleFactor(sprite)
+    sprite.width *= scaleFactor
+    sprite.height *= scaleFactor
     return sprite
+  }
+
+  adjustScaleFactor(sprite) {
+    const adjustedMax = this.maxPopitSize * 1.03
+    let scaleFactor = 1
+    if (sprite.width > adjustedMax || sprite.height > adjustedMax) {
+      const biggestDir = sprite.width > sprite.height ? 'width' : 'height'
+      scaleFactor = this.maxPopitSize / sprite[biggestDir]
+    }
+    return scaleFactor
   }
 
   hasTexture(name) {
