@@ -7,11 +7,13 @@ import {
 
 const has = Object.prototype.hasOwnProperty
 
-export default class AlertSystem extends Component {
+export default class AlertItem extends Component {
   constructor(props) {
     super(props)
     this.brain = props.brain
     this.data = props.data
+
+    this.brain.store('AlertItem', this)
 
     this.handleButton = this.handleButton.bind(this)
   }
@@ -30,7 +32,7 @@ export default class AlertSystem extends Component {
   }
 }
 
-AlertSystem.propTypes = {
+AlertItem.propTypes = {
   brain: PropTypes.instanceOf(Object).isRequired,
   data: PropTypes.instanceOf(Object).isRequired,
 }
