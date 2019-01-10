@@ -46,7 +46,7 @@ export function getCurrentGame({ renderer, modal, canvas, limitMan, dataMan, soc
 
   const limitInner = {
     canPerformAction: (type) => {
-      if (type !== 'chat') {
+      if (type === 'chat') {
         // prevent game class from affecting chat limit
         return undefined
       }
