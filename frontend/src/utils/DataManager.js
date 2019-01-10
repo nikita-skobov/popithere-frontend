@@ -13,8 +13,13 @@ const has = Object.prototype.hasOwnProperty
 
 function DataManager(datastore) {
   const brain = datastore
-  let lastFetchListTime = 0
-  const listFetchDelay = 1 * 30 // 30 seconds
+
+  const fetchTimes = {
+    list: 0,
+    user: 0,
+  }
+
+  const listFetchDelay = 1 * 10 // 10 seconds
 
   // a list of data that is fetched on page load
   // this is a list of objects with 2 keys:
@@ -145,13 +150,22 @@ function DataManager(datastore) {
           .catch(err => rej(err))
       })
     },
-    fetchList: (cb) => {
+    fetchList: (user, cb) => {
+      let pathParam = user
+      if (!pathParam) {
+        pathParam = '0'
+      } else {
+        pathParam = brain.ask.Tokens.getClaim('id')
+      }
+
       let callback = cb
       if (!callback) {
         callback = () => {}
       }
 
+      const fetchTimeKey = pathParam === '0' ? 'list' : 'user'
       const rightNow = Math.floor(Date.now() / 1000)
+      const lastFetchListTime = fetchTimes[fetchTimeKey]
       if (rightNow < lastFetchListTime + listFetchDelay) {
         console.log('preventing early list fetch')
         callback('too early', null)
@@ -159,17 +173,17 @@ function DataManager(datastore) {
       }
 
 
-      fetch(listDataEndpoint)
+      fetch(`${listDataEndpoint}/${pathParam}`)
         .then(resp => resp.json())
         .then((list) => {
           dataList = list
-          lastFetchListTime = Math.floor(Date.now() / 1000)
+          fetchTimes[fetchTimeKey] = Math.floor(Date.now() / 1000)
           dataNumberList = []
           dataList.forEach((obj) => {
             dataNumberList.push(obj.dn)
             s3keys[obj.dn] = obj.si
           })
-          callback(null, list.length)
+          callback(null, list)
         })
         .catch(err => callback(err))
     },

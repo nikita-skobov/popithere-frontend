@@ -67,6 +67,7 @@ export default class PopItHere extends Game {
 
     this.textures = {}
     this.previewImages = []
+    this.userPopitList = []
     this.loadTextures()
 
     this.poppingName = null
@@ -177,27 +178,60 @@ export default class PopItHere extends Game {
     })
   }
 
-  reloadTextures(reactElement) {
-    this.dataMan.fetchList(() => {
-      const newNumbers = this.dataMan.getDataNumbers()
+  reloadTextures(reactElement, onlyUser) {
+    let outputList = this.previewImages
+    if (onlyUser) {
+      outputList = this.userPopitList
+    }
+
+    this.dataMan.fetchList(onlyUser, (err, list) => {
+      if (!list) {
+        reactElement.setState({ ready: true, loopArray: [...this.sortBaseX(outputList, 'name', 32)], isLoading: false })
+        return null
+      }
+
       const appendNumbers = []
-      newNumbers.forEach((num) => {
+      list.forEach((obj) => {
+        const num = obj.dn
         if (this.dataNumbers.indexOf(num) === -1) {
           appendNumbers.push(num)
         }
       })
       if (appendNumbers.length) {
-        this.dataNumbers = [...this.dataNumbers, ...newNumbers]
+        this.dataNumbers = [...this.dataNumbers, ...appendNumbers]
         this.loadTextures(appendNumbers)
       }
+
+
       // I think its better to set state guaranateed after a certain time
       // instead of waiting for all textures to be loaded. you never know
       // there might be a network error, or something, and that would make the
       // modal stuck. this way it is guaranteed to come back
       const timeout = 500
       setTimeout(() => {
-        reactElement.setState({ ready: true, loopArray: [...this.sortBaseX(this.previewImages, 'name', 32)], isLoading: false })
+        if (onlyUser) {
+          list.forEach((obj) => {
+            const num = obj.dn
+            this.previewImages.forEach((obj2) => {
+              if (obj2.name === num) {
+                let outputListHasItem = false
+                outputList.forEach((obj3) => {
+                  if (obj3.name === num) {
+                    outputListHasItem = true
+                  }
+                })
+                if (!outputListHasItem) {
+                  // only append list if this is a new item
+                  outputList.push({ name: num, url: obj2.url })
+                }
+              }
+            })
+          })
+          this.userPopitList = outputList
+        }
+        reactElement.setState({ ready: true, loopArray: [...this.sortBaseX(outputList, 'name', 32)], isLoading: false })
       }, timeout)
+      return null
     })
   }
 
