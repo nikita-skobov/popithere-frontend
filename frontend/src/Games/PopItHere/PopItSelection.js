@@ -430,7 +430,7 @@ export default class PopItSelection extends Component {
               tempState.isLoading = true
 
               this.game.searchForDataNumber(searchNum, (newList) => {
-                this.setState({ ready: true, loopArray: newList, isLoading: false })
+                this.setState({ offset: 0, ready: true, loopArray: newList, isLoading: false })
               })
 
               return tempState
