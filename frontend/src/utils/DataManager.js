@@ -176,7 +176,7 @@ function DataManager(datastore) {
             dataNumberList.push(obj.dn)
             s3keys[obj.dn] = obj.si
           })
-          callback(null, list.length)
+          callback(null, list)
         })
         .catch(err => callback(err))
     },
