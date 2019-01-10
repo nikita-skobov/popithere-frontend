@@ -18,6 +18,7 @@ export default class AlertItem extends Component {
     this.state = {
       open: true,
       waiting: props.waiting,
+      mutable: true,
     }
 
     this.endAlert = this.endAlert.bind(this)
@@ -29,10 +30,21 @@ export default class AlertItem extends Component {
   }
 
   endAlert(cb) {
-    this.setState({ open: false })
+    this.setState({ open: false, mutable: false })
     setTimeout(() => {
       cb()
     }, 300)
+  }
+
+  addWaiting() {
+    const { mutable } = this.state
+    if (mutable) {
+      this.setState((prevState) => {
+        const tempState = prevState
+        tempState.waiting += 1
+        return tempState
+      })
+    }
   }
 
   render() {

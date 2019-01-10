@@ -50,6 +50,9 @@ export default class AlertSystem extends Component {
       const { open } = tempState
       if (!open) {
         tempState.open = true
+      } else {
+        // if it is already open, then increment the wait list
+        this.brain.tell.AlertItem.addWaiting()
       }
 
       tempState.alerts.push(obj)
