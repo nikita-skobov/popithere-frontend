@@ -1,16 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import {
-  ButtonDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-} from 'reactstrap'
-
 import AlertItem from './AlertItem'
-
-const has = Object.prototype.hasOwnProperty
 
 export default class AlertSystem extends Component {
   constructor(props) {
@@ -25,7 +16,6 @@ export default class AlertSystem extends Component {
 
     this.brain.store('AlertSystem', this)
 
-    this.handleButton = this.handleButton.bind(this)
     this.addAlert = this.addAlert.bind(this)
     this.endAlert = this.endAlert.bind(this)
     this.reposition = this.reposition.bind(this)
@@ -38,13 +28,7 @@ export default class AlertSystem extends Component {
     this.reposition()
   }
 
-  handleButton(e) {
-    e.preventDefault()
-  }
-
   addAlert(obj) {
-    console.log(this.brain.ask.Canvas)
-    console.log(this.brain.ask.Canvas.leaflet)
     this.setState((prevState) => {
       const tempState = prevState
 

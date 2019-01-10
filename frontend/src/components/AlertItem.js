@@ -6,8 +6,6 @@ import {
   Button,
 } from 'reactstrap'
 
-const has = Object.prototype.hasOwnProperty
-
 export default class AlertItem extends Component {
   constructor(props) {
     super(props)
@@ -45,11 +43,6 @@ export default class AlertItem extends Component {
     }
 
     this.endAlert = this.endAlert.bind(this)
-    this.handleButton = this.handleButton.bind(this)
-  }
-
-  handleButton(e) {
-    e.preventDefault()
   }
 
   endAlert(cb) {
