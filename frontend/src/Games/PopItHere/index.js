@@ -214,7 +214,16 @@ export default class PopItHere extends Game {
             const num = obj.dn
             this.previewImages.forEach((obj2) => {
               if (obj2.name === num) {
-                outputList.push({ name: num, url: obj2.url })
+                let outputListHasItem = false
+                outputList.forEach((obj3) => {
+                  if (obj3.name === num) {
+                    outputListHasItem = true
+                  }
+                })
+                if (!outputListHasItem) {
+                  // only append list if this is a new item
+                  outputList.push({ name: num, url: obj2.url })
+                }
               }
             })
           })
