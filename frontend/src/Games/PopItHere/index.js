@@ -72,6 +72,8 @@ export default class PopItHere extends Game {
     this.poppingName = null
     this.currentlyPopping = false
     this.maxGifFrames = 60
+    this.maxPopitScale = 0.2
+    this.maxPopitSize = this.maxPopitScale * 1024
 
     this.stage = new PIXI.Container()
     this.root.addChild(this.stage)
@@ -273,7 +275,7 @@ export default class PopItHere extends Game {
     // theyll see that it doesnt pop to the whole page.
     // while creating a custom popit, it might seem that your creation
     // would cover the whole screen, but thats not the case
-    let scaleFactor = (userVal * 0.3 / 100)
+    let scaleFactor = (userVal * this.maxPopitScale / 100)
     scaleFactor = scaleFactor <= 0.01 ? 0.01 : scaleFactor // prevents a 0 scale
     const previousScales = { x: this.stage.scale.x, y: this.stage.scale.y }
     this.stage.scale.x = scaleFactor
@@ -1044,7 +1046,20 @@ export default class PopItHere extends Game {
     }
     const { x, y } = calculateCenterPosition(textures[0], position)
     const sprite = this.addGif(textures, { x, y, play, container: this.stage })
+    const scaleFactor = this.adjustScaleFactor(sprite)
+    sprite.width *= scaleFactor
+    sprite.height *= scaleFactor
     return sprite
+  }
+
+  adjustScaleFactor(sprite) {
+    const adjustedMax = this.maxPopitSize * 1.03
+    let scaleFactor = 1
+    if (sprite.width > adjustedMax || sprite.height > adjustedMax) {
+      const biggestDir = sprite.width > sprite.height ? 'width' : 'height'
+      scaleFactor = this.maxPopitSize / sprite[biggestDir]
+    }
+    return scaleFactor
   }
 
   hasTexture(name) {
@@ -1067,6 +1082,9 @@ export default class PopItHere extends Game {
         } else {
           newTexture = this.textures[textureName]
         }
+        const scaleFactor = this.adjustScaleFactor(newTexture[0].orig)
+        sprite.width *= scaleFactor
+        sprite.height *= scaleFactor
         sprite._textures = newTexture
         if (newTexture.length > 1) {
           sprite.gotoAndPlay(0)
