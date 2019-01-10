@@ -1222,6 +1222,12 @@ export default class PopItHere extends Game {
       const posString = positionToString(position)
       const msg = `${posString}${name}`
       this.socket.emit('pi', msg)
+    } else {
+      this.alertSystem.addAlert({
+        color: 'warning',
+        text: 'Slow down!',
+        countdown: 5000,
+      })
     }
   }
 }
