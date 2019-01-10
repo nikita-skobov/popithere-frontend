@@ -33,7 +33,11 @@ export default class AlertItem extends Component {
   endAlert(cb) {
     this.setState({ open: false, mutable: false })
     setTimeout(() => {
-      cb()
+      if (typeof cb === 'function') {
+        cb()
+      } else {
+        this.brain.tell.AlertSystem.updateList()
+      }
     }, 300)
   }
 
@@ -53,7 +57,7 @@ export default class AlertItem extends Component {
     const { open, waiting } = this.state
 
     return (
-      <Alert isOpen={open} transition={{ appear: true, exit: true }} color={data.color}>
+      <Alert isOpen={open} toggle={this.endAlert} transition={{ appear: true, exit: true }} color={data.color}>
         <div>
           {waiting > 0 && (
             <Button size="sm" className="mr1em" disabled color="secondary">{waiting}</Button>
