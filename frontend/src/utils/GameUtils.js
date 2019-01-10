@@ -6,7 +6,7 @@ import PopItHere from '../Games/PopItHere'
  * @todo write a fetch helper
  * to fetch the current game from a server
  */
-export function getCurrentGame({ renderer, modal, canvas, dataMan, socket, uploader }) {
+export function getCurrentGame({ renderer, modal, canvas, limitMan, dataMan, socket, uploader }) {
   const root = createRoot(renderer, { interactive: true })
 
   const modalInner = {
@@ -44,6 +44,17 @@ export function getCurrentGame({ renderer, modal, canvas, dataMan, socket, uploa
     fetchList: dataMan.fetchList,
   }
 
+  const limitInner = {
+    canPerformAction: (type) => {
+      if (type !== 'chat') {
+        // prevent game class from affecting chat limit
+        return undefined
+      }
+      return limitMan.canPerformAction(type)
+    },
+    setLimit: limitMan.setLimit,
+  }
+
   return new PopItHere({
     renderer,
     root,
@@ -52,6 +63,7 @@ export function getCurrentGame({ renderer, modal, canvas, dataMan, socket, uploa
     canvas: canvasInner,
     uploader: uploadInner,
     dataMan: dataInner,
+    limitMan: limitInner,
   })
 }
 
