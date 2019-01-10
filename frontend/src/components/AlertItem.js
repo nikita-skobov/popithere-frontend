@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 
 import {
   Alert,
+  Button,
 } from 'reactstrap'
 
 const has = Object.prototype.hasOwnProperty
@@ -55,7 +56,7 @@ export default class AlertItem extends Component {
       <Alert isOpen={open} transition={{ appear: true, exit: true }} color={data.color}>
         <div>
           {waiting > 0 && (
-            <span>{waiting}</span>
+            <Button size="sm" className="mr1em" disabled color="secondary">{waiting}</Button>
           )}
           {data.text}
         </div>
