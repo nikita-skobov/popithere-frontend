@@ -178,7 +178,7 @@ export default class PopItHere extends Game {
   }
 
   reloadTextures(reactElement) {
-    this.dataMan.fetchList(() => {
+    this.dataMan.fetchList(null, () => {
       const newNumbers = this.dataMan.getDataNumbers()
       const appendNumbers = []
       newNumbers.forEach((num) => {

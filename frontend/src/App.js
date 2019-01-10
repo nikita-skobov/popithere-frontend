@@ -159,7 +159,7 @@ export default class App extends Component {
       return null
     }
 
-    this.brain.ask.DataMan.fetchList((err, listSize) => {
+    this.brain.ask.DataMan.fetchList(null, (err, listSize) => {
       if (err) {
         // not sure what else to do here...
         console.error(err)
