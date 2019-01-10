@@ -20,6 +20,28 @@ export default class AlertItem extends Component {
       open: true,
       waiting: props.waiting,
       mutable: true,
+      countdown: this.data.countdown && 1,
+      timeLeft: 0,
+    }
+
+    if (this.data.countdown) {
+      this.state.timeLeft = Math.floor(this.data.countdown / 1000)
+      const decreaseTimeLeft = () => {
+        this.setState((prevState) => {
+          const tempState = prevState
+          tempState.timeLeft -= 1
+          if (tempState.timeLeft <= 0) {
+            const { mutable } = this.state
+            if (mutable) {
+              this.endAlert()
+            }
+          } else {
+            setTimeout(decreaseTimeLeft, 1000)
+          }
+          return tempState
+        })
+      }
+      setTimeout(decreaseTimeLeft, 1000)
     }
 
     this.endAlert = this.endAlert.bind(this)
@@ -54,15 +76,20 @@ export default class AlertItem extends Component {
 
   render() {
     const { data } = this
-    const { open, waiting } = this.state
+    const { open, waiting, countdown, timeLeft } = this.state
 
     return (
       <Alert isOpen={open} toggle={this.endAlert} transition={{ appear: true, exit: true }} color={data.color}>
-        <div>
+        <div className="pr">
           {waiting > 0 && (
             <Button size="sm" className="mr1em" disabled color="secondary">{waiting}</Button>
           )}
           {data.text}
+          {countdown && (
+            <div className="pa r0 dil">
+              {timeLeft}
+            </div>
+          )}
         </div>
       </Alert>
     )
