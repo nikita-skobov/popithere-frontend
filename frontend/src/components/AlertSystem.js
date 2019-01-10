@@ -32,6 +32,8 @@ export default class AlertSystem extends Component {
   }
 
   addAlert(obj) {
+    console.log(this.brain.ask.Canvas)
+    console.log(this.brain.ask.Canvas.leaflet)
     this.setState((prevState) => {
       const tempState = prevState
 
@@ -64,7 +66,14 @@ export default class AlertSystem extends Component {
     const { open, alerts } = this.state
     if (!open) return null
 
-    return <AlertItem data={alerts[0]} brain={this.brain} />
+    const canvasWidth = this.brain.ask.Canvas.leaflet.offsetWidth
+    console.log(`canvas width: ${canvasWidth}`)
+
+    return (
+      <div style={{ position: 'absolute', top: '0px', width: canvasWidth }}>
+        <AlertItem data={alerts[0]} brain={this.brain} />
+      </div>
+    )
   }
 }
 
