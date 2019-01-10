@@ -83,7 +83,7 @@ export default class AlertSystem extends Component {
 
     return (
       <div style={{ position: 'absolute', top: '0px', width }}>
-        <AlertItem data={alerts[0]} brain={this.brain} />
+        <AlertItem key={alerts[0].text} data={alerts[0]} brain={this.brain} />
       </div>
     )
   }
