@@ -87,7 +87,7 @@ exports.assetList = [
 ]
 
 exports.defaultButtons = [
-  'options',
+  'about',
   'mutechat',
   'benefits',
 ]
