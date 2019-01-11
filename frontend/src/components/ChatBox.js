@@ -48,6 +48,7 @@ export default class ChatBox extends Component {
       maxChatItems: 50,
       isMuted: false,
       chats: [],
+      mutedUsers: {},
     }
 
     this.brain.store('ChatBox', this)
@@ -55,6 +56,9 @@ export default class ChatBox extends Component {
     this.isChatMuted = this.isChatMuted.bind(this)
     this.toggleMuteChat = this.toggleMuteChat.bind(this)
     this.toggleChatUserInfo = this.toggleChatUserInfo.bind(this)
+    this.isUserMuted = this.isUserMuted.bind(this)
+    this.muteUser = this.muteUser.bind(this)
+    this.unmuteUser = this.unmuteUser.bind(this)
 
     this.socket = this.brain.ask.Sockets
     if (this.socket.isConnected()) {
@@ -73,6 +77,30 @@ export default class ChatBox extends Component {
     if (this.socket.isConnected()) {
       this.socket.off('ci', this.addChat)
     }
+  }
+
+  isUserMuted(username) {
+    const { mutedUsers } = this.state
+    return has.call(mutedUsers, username)
+  }
+
+  unmuteUser(username) {
+    const { mutedUsers } = this.state
+    if (has.call(mutedUsers, username)) {
+      this.setState((prevState) => {
+        const tempState = prevState
+        delete tempState.muteUsers[username]
+        return tempState
+      })
+    }
+  }
+
+  muteUser(username) {
+    this.setState((prevState) => {
+      const tempState = prevState
+      tempState.mutedUsers[username] = null
+      return tempState
+    })
   }
 
   toggleChatUserInfo(e) {
