@@ -182,6 +182,13 @@ export default class App extends Component {
 
   afterSocketConnect(socket) {
     console.log('connected')
+    if (this.brain.ask.Sockets.getConnectionCount() > 1) {
+      this.brain.tell.AlertSystem.addAlert({
+        color: 'success',
+        text: 'Successfully reconnected!',
+        countdown: 5000,
+      })
+    }
 
     let serverNameOut = (sn) => {
       console.log(`got servername: ${sn}`)
@@ -230,6 +237,12 @@ export default class App extends Component {
     socket.on('it', invalidTokenHandler)
 
     socket.on('disconnect', () => {
+      this.brain.tell.AlertSystem.addAlert({
+        color: 'danger',
+        text: 'Disconnected from socket server. Attempting automatic reconnect',
+        countdown: 5000,
+      })
+
       socket.removeListener('it', invalidTokenHandler)
       socket.removeListener('sno', serverNameOut)
       socket.removeListener('disconnect')
