@@ -60,7 +60,7 @@ export default class ChatInfo extends Component {
         </Row>
         <Row>
           <Button onClick={this.handleMute} className="mr1em" color="danger">{muteString}</Button>
-          <Button className="mr1em" color="danger">Report User</Button>
+          {/* <Button className="mr1em" color="danger">Report User</Button> */}
         </Row>
       </Col>
     )
