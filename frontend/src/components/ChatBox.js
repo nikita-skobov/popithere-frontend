@@ -78,15 +78,11 @@ export default class ChatBox extends Component {
   toggleChatUserInfo(e) {
     e.preventDefault()
     const { target } = e
-    console.log(target)
     const username = target.getAttribute('meta-name')
     const message = target.getAttribute('meta-msg')
     const src = target.getAttribute('src')
-    console.log(src)
-    console.log(message)
-    console.log(username)
     this.brain.tell.MyModal.toggle({
-      text: 'dsadsa',
+      text: 'Chat Info',
       modal: () => (
         <ChatInfo src={src} username={username} message={message} brain={this.brain} />
       ),
