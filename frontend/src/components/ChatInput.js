@@ -21,7 +21,12 @@ export default class ChatInput extends Component {
     e.preventDefault()
     const { Sockets } = this.brain.ask
     const socket = Sockets
-    if (socket.isConnected()) {
+
+    const alerts = this.brain.ask.AlertSystem
+    const limiter = this.brain.ask.LimitManager
+    const action = limiter.canPerformAction('chat')
+    const { allowed } = action
+    if (allowed && socket.isConnected()) {
       document.activeElement.blur()
       const input = e.target.getElementsByTagName('input')[0]
       const { value } = input
@@ -30,13 +35,15 @@ export default class ChatInput extends Component {
       if (!ContainsBadWords(value)) {
         socket.emit('ci', value)
       }
-
-      // const chat = {
-      //   name: 'Johhnuyyy',
-      //   msg: value,
-      // }
-
-      // this.brain.tell.ChatBox.addChat(chat)
+    } else if (!allowed) {
+      const { limit, nextTime, interval } = action
+      if (!alerts.isAlertOpen()) {
+        alerts.addAlert({
+          color: 'warning',
+          text: `You have reached your limit of ${limit} chat messages per ${Math.floor(interval / 1000)} seconds. You will be able to chat again in about ${Math.floor(nextTime / 1000)} seconds`,
+          countdown: interval + 1000,
+        })
+      }
     }
   }
 
