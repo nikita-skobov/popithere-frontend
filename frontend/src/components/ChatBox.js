@@ -3,6 +3,8 @@ import PropTypes from 'prop-types'
 
 import { Media } from 'reactstrap'
 
+import ChatInfo from './ChatInfo'
+
 import Avatars from '@dicebear/avatars'
 import SpriteCollection1 from '@dicebear/avatars-identicon-sprites'
 import SpriteCollection2 from '@dicebear/avatars-male-sprites'
@@ -52,6 +54,7 @@ export default class ChatBox extends Component {
     this.addChat = this.addChat.bind(this)
     this.isChatMuted = this.isChatMuted.bind(this)
     this.toggleMuteChat = this.toggleMuteChat.bind(this)
+    this.toggleChatUserInfo = this.toggleChatUserInfo.bind(this)
 
     this.socket = this.brain.ask.Sockets
     if (this.socket.isConnected()) {
@@ -70,6 +73,24 @@ export default class ChatBox extends Component {
     if (this.socket.isConnected()) {
       this.socket.off('ci', this.addChat)
     }
+  }
+
+  toggleChatUserInfo(e) {
+    e.preventDefault()
+    const { target } = e
+    console.log(target)
+    const username = target.getAttribute('meta-name')
+    const message = target.getAttribute('meta-msg')
+    const src = target.getAttribute('src')
+    console.log(src)
+    console.log(message)
+    console.log(username)
+    this.brain.tell.MyModal.toggle({
+      text: 'dsadsa',
+      modal: () => (
+        <ChatInfo src={src} username={username} message={message} brain={this.brain} />
+      ),
+    })
   }
 
   isChatMuted() {
@@ -139,7 +160,7 @@ export default class ChatBox extends Component {
           return (
             <Media style={{ backgroundColor: color }}>
               <Media style={{ width: '5em' }}>
-                <Media className="hvrptr" meta-name={name} meta-msg={msg} style={{ width: '100%', paddingTop: '10%', paddingBottom: '10%' }} object src={svg} alt="some alt" />
+                <Media className="hvrptr" onClick={this.toggleChatUserInfo} meta-name={name} meta-msg={msg} style={{ width: '100%', paddingTop: '10%', paddingBottom: '10%' }} object src={svg} alt="some alt" />
               </Media>
               <Media body style={{ wordBreak: 'break-all', paddingTop: '5%' }}>{msg}</Media>
             </Media>
