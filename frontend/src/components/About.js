@@ -10,7 +10,7 @@ import {
   Button,
 } from 'reactstrap'
 
-import { defaultButtons } from '../customConfig'
+import { patreonPage, githubPage, discordPage, websitePage, twitterPage } from '../customConfig'
 
 export default function About() {
   return (
@@ -40,10 +40,14 @@ export default function About() {
         <Col xs="auto">
           <Row>
             <Col>
-              <Button className="ma db">Website</Button>
+              <a className="tdnone" href={websitePage}>
+                <Button className="ma db btn-my-website">Website</Button>
+              </a>
             </Col>
             <Col>
-              <Button className="ma db">Twitter</Button>
+              <a className="tdnone" href={twitterPage}>
+                <Button className="ma db btn-twitter">Twitter</Button>
+              </a>
             </Col>
           </Row>
         </Col>
@@ -65,7 +69,9 @@ export default function About() {
         <Col>
           <Row>
             <Col>
-              <Button className="db ma">Discord</Button>
+              <a className="tdnone" href={discordPage}>
+                <Button className="db ma btn-discord">Discord</Button>
+              </a>
             </Col>
           </Row>
         </Col>
@@ -88,7 +94,9 @@ export default function About() {
         <Col>
           <Row>
             <Col>
-              <Button className="db ma">Github</Button>
+              <a className="tdnone" href={githubPage}>
+                <Button className="db ma btn-github">Github</Button>
+              </a>
             </Col>
           </Row>
         </Col>
@@ -114,7 +122,9 @@ export default function About() {
         <Col>
           <Row>
             <Col>
-              <Button className="db ma">Patreon</Button>
+              <a className="tdnone" href={patreonPage}>
+                <Button className="db ma btn-patreon">Patreon</Button>
+              </a>
             </Col>
           </Row>
         </Col>
