@@ -34,16 +34,8 @@ export default class MyModalBody extends Component {
 
   render() {
     const { type } = this
-    const maxSpriteCount = this.brain.ask.Canvas.maxSprites
+    // const maxSpriteCount = this.brain.ask.Canvas.maxSprites
 
-    if (type === 'options') {
-      return (
-        <div>
-          <Label for="exampleCount" className="mr-sm-2">Max Sprite Count</Label>
-          <Input name="maxspritecount" onChange={this.handleChange} bsSzie="sm" id="exampleCount" type="number" defaultValue={maxSpriteCount} />
-        </div>
-      )
-    }
     if (typeof type === 'object') {
       const ModalBody = type.modal
       return <ModalBody />

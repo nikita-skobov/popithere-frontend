@@ -9,6 +9,7 @@ import {
 } from 'reactstrap'
 
 import PatreonBenefits from './PatreonBenefits'
+import About from './About'
 
 import { defaultButtons } from '../customConfig'
 
@@ -37,6 +38,13 @@ export default class Buttons extends Component {
         size: 'lg',
         modal: () => (
           <PatreonBenefits brain={this.brain} />
+        ),
+      },
+      about: {
+        text: 'About',
+        size: 'lg',
+        modal: () => (
+          <About />
         ),
       },
     }
@@ -111,10 +119,9 @@ export default class Buttons extends Component {
             // users can load buttons into the menu dynamically
             <DropdownItem name={item.name} onClick={this.handleButton}>{item.text}</DropdownItem>
           ))}
-          <DropdownItem name="options" onClick={this.handleButton}>Options</DropdownItem>
           <DropdownItem name="mutechat" onClick={this.handleButton}>{muteChatText}</DropdownItem>
           <DropdownItem name="benefits" onClick={this.handleButton}>Benefits</DropdownItem>
-          <DropdownItem>Support</DropdownItem>
+          <DropdownItem name="about" onClick={this.handleButton}>About</DropdownItem>
         </DropdownMenu>
       </ButtonDropdown>
     )

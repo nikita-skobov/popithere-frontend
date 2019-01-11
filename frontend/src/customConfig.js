@@ -87,7 +87,7 @@ exports.assetList = [
 ]
 
 exports.defaultButtons = [
-  'options',
+  'about',
   'mutechat',
   'benefits',
 ]
@@ -119,12 +119,17 @@ exports.benefitTiers = {
   },
 }
 
-exports.DEV_MODE = false
+exports.DEV_MODE = true
 
 exports.placeholder = {
   name: '.placeholder.',
   url: '/images/temp/placeholder.png',
 }
+
+exports.githubPage = 'https://github.com/nikita-skobov/popithere-frontend'
+exports.discordPage = 'https://discordapp.com/invite/WgppuWr'
+exports.websitePage = 'https://equllc.com'
+exports.twitterPage = 'https://twitter.com/equLLC'
 
 exports.patreonPage = 'https://www.patreon.com/equilateral'
 exports.patreonClientId = 'i2bAT_IDUs86TadxLNJJ4FoTXfMsFCOOPtOyGW2IJEbBxAkb0ue2RCP-DMf0VJlN'
