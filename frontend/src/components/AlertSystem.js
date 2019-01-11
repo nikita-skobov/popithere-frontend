@@ -20,6 +20,7 @@ export default class AlertSystem extends Component {
     this.endAlert = this.endAlert.bind(this)
     this.reposition = this.reposition.bind(this)
     this.updateList = this.updateList.bind(this)
+    this.isAlertOpen = this.isAlertOpen.bind(this)
 
     this.brain.onResize(this.reposition)
   }
@@ -46,6 +47,11 @@ export default class AlertSystem extends Component {
       })
       return tempState
     })
+  }
+
+  isAlertOpen() {
+    const { open } = this.state
+    return open
   }
 
   updateList() {

@@ -46,6 +46,7 @@ export function getCurrentGame({ tokenMan, renderer, modal, alertSystem, canvas,
 
   const alertInner = {
     addAlert: alertSystem.addAlert,
+    isAlertOpen: alertSystem.isAlertOpen,
   }
 
   const tokenInner = {
