@@ -119,7 +119,7 @@ exports.benefitTiers = {
   },
 }
 
-exports.DEV_MODE = false
+exports.DEV_MODE = true
 
 exports.placeholder = {
   name: '.placeholder.',
