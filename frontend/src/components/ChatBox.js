@@ -136,11 +136,16 @@ export default class ChatBox extends Component {
       return null
     }
 
+    if (this.isUserMuted(chat.i)) {
+      return null
+    }
+
     this.setState((prevState) => {
       const tempState = prevState
       const { colorIndex, maxChatItems } = tempState
       const name = chat.i
       const msg = chat.t
+
       let svg = ''
       if (has.call(this.authors, name)) {
         // we already generated a sprite, so use it
