@@ -3,12 +3,12 @@ import PropTypes from 'prop-types'
 
 import { Media } from 'reactstrap'
 
-import ChatInfo from './ChatInfo'
-
 import Avatars from '@dicebear/avatars'
 import SpriteCollection1 from '@dicebear/avatars-identicon-sprites'
 import SpriteCollection2 from '@dicebear/avatars-male-sprites'
 import SpriteCollection3 from '@dicebear/avatars-female-sprites'
+
+import ChatInfo from './ChatInfo'
 
 const avatars1 = new Avatars(SpriteCollection1)
 const avatars2 = new Avatars(SpriteCollection2)
@@ -113,7 +113,13 @@ export default class ChatBox extends Component {
     this.brain.tell.MyModal.toggle({
       text: 'Chat Info',
       modal: () => (
-        <ChatInfo src={src} ismuted={isMuted} username={username} message={message} brain={this.brain} />
+        <ChatInfo
+          src={src}
+          ismuted={isMuted}
+          username={username}
+          message={message}
+          brain={this.brain}
+        />
       ),
     })
   }

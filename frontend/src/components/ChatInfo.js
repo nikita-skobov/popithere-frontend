@@ -2,16 +2,10 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 import {
-  ButtonDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
   Row,
   Col,
   Button,
 } from 'reactstrap'
-
-const has = Object.prototype.hasOwnProperty
 
 export default class ChatInfo extends Component {
   constructor(props) {
