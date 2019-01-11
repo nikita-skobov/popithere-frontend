@@ -105,13 +105,13 @@ export default class AlertSystem extends Component {
   }
 
   render() {
-    const { open, alerts, width } = this.state
+    const { open, alerts } = this.state
     if (!open) return null
 
     const waiting = alerts.length - 1
 
     return (
-      <div style={{ width }}>
+      <div>
         <AlertItem key={`${alerts[0].random}.${alerts[0].text}`} data={alerts[0]} waiting={waiting} brain={this.brain} />
       </div>
     )

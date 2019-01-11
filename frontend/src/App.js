@@ -292,10 +292,10 @@ export default class App extends Component {
     }
 
     return [
+      <AlertSystem brain={this.brain} />,
       <Canvas brain={this.brain} />,
       <Chat brain={this.brain} />,
       <MyModal startingModal={this.startingModal} brain={this.brain} />,
-      <AlertSystem brain={this.brain} />,
     ]
   }
 }
