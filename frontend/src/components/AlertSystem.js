@@ -11,24 +11,14 @@ export default class AlertSystem extends Component {
     this.state = {
       open: false,
       alerts: [],
-      width: 100,
     }
 
     this.brain.store('AlertSystem', this)
 
     this.addAlert = this.addAlert.bind(this)
     this.endAlert = this.endAlert.bind(this)
-    this.reposition = this.reposition.bind(this)
     this.updateList = this.updateList.bind(this)
     this.isAlertOpen = this.isAlertOpen.bind(this)
-
-    this.brain.onResize(this.reposition)
-  }
-
-  componentDidMount() {
-    setTimeout(() => {
-      this.reposition()
-    }, 3000)
   }
 
   addAlert(obj) {
@@ -97,11 +87,6 @@ export default class AlertSystem extends Component {
     this.brain.tell.AlertItem.endAlert(() => {
       this.updateList()
     })
-  }
-
-  reposition() {
-    const canvasWidth = this.brain.ask.Canvas.leaflet.offsetWidth
-    this.setState({ width: canvasWidth })
   }
 
   render() {
