@@ -67,7 +67,12 @@ export default class AlertItem extends Component {
 
   render() {
     const { data } = this
-    const { open, waiting, countdown, timeLeft } = this.state
+    const {
+      open,
+      waiting,
+      countdown,
+      timeLeft,
+    } = this.state
 
     return (
       <Alert isOpen={open} toggle={this.endAlert} color={data.color}>

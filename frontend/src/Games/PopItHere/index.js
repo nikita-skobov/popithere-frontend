@@ -1217,7 +1217,6 @@ export default class PopItHere extends Game {
   emitPopIt(event) {
     const action = this.limitMan.canPerformAction('popit')
     const { allowed } = action
-    console.log(`can perform? ${allowed}`)
     if (allowed) {
       const position = getLocalPosition(event, this.root)
       const name = this.poppingName

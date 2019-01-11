@@ -32,6 +32,7 @@ function SocketManager(datastore) {
 
       socket.on('connect', () => {
         if (callbacks) {
+          // eslint-disable-next-line
           socket._callbacks = callbacks
         }
         successfulConnections += 1
