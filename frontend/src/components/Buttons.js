@@ -9,6 +9,7 @@ import {
 } from 'reactstrap'
 
 import PatreonBenefits from './PatreonBenefits'
+import About from './About'
 
 import { defaultButtons } from '../customConfig'
 
@@ -43,9 +44,7 @@ export default class Buttons extends Component {
         text: 'About',
         size: 'lg',
         modal: () => (
-          <div>
-            <h3>yur poooop lmao</h3>
-          </div>
+          <About />
         ),
       },
     }
