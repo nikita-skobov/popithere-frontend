@@ -41,7 +41,7 @@ export default class ChatInput extends Component {
         alerts.addAlert({
           color: 'warning',
           text: `You have reached your limit of ${limit} chat messages per ${Math.floor(interval / 1000)} seconds. You will be able to chat again in about ${Math.floor(nextTime / 1000)} seconds`,
-          countdown: interval + 1000,
+          countdown: nextTime + 1000,
         })
       }
     }
