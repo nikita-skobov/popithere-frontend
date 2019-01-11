@@ -89,7 +89,7 @@ export default class ChatBox extends Component {
     if (has.call(mutedUsers, username)) {
       this.setState((prevState) => {
         const tempState = prevState
-        delete tempState.muteUsers[username]
+        delete tempState.mutedUsers[username]
         return tempState
       })
     }
@@ -109,10 +109,11 @@ export default class ChatBox extends Component {
     const username = target.getAttribute('meta-name')
     const message = target.getAttribute('meta-msg')
     const src = target.getAttribute('src')
+    const isMuted = this.isUserMuted(username)
     this.brain.tell.MyModal.toggle({
       text: 'Chat Info',
       modal: () => (
-        <ChatInfo src={src} username={username} message={message} brain={this.brain} />
+        <ChatInfo src={src} ismuted={isMuted} username={username} message={message} brain={this.brain} />
       ),
     })
   }

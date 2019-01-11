@@ -22,18 +22,44 @@ export default class ChatInfo extends Component {
     this.message = props.message
     this.src = props.src
 
+    this.state = {
+      isMuted: props.ismuted,
+    }
+
+    this.handleMute = this.handleMute.bind(this)
+    // this.handleReport = this.handleReport.bind(this)
+
     this.brain.store('ChatInfo', this)
+  }
+
+  handleMute(e) {
+    e.preventDefault()
+    const { username } = this
+    const { isMuted } = this.state
+    this.setState((prevState) => {
+      const tempState = prevState
+      if (!isMuted) {
+        this.brain.tell.ChatBox.muteUser(username)
+        tempState.isMuted = true
+      } else {
+        this.brain.tell.ChatBox.unmuteUser(username)
+        tempState.isMuted = false
+      }
+      return tempState
+    })
   }
 
   render() {
     const { src } = this
+    const { isMuted } = this.state
+    const muteString = isMuted ? 'Unmute User' : 'Mute User'
     return (
       <Col fluid>
         <Row className="mb1em">
           <img className="ma" src={src} alt="some alt" />
         </Row>
         <Row>
-          <Button className="mr1em" color="danger">Mute User</Button>
+          <Button onClick={this.handleMute} className="mr1em" color="danger">{muteString}</Button>
           <Button className="mr1em" color="danger">Report User</Button>
         </Row>
       </Col>
@@ -46,4 +72,5 @@ ChatInfo.propTypes = {
   src: PropTypes.string.isRequired,
   message: PropTypes.string.isRequired,
   username: PropTypes.string.isRequired,
+  ismuted: PropTypes.bool.isRequired,
 }
