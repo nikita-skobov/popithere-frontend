@@ -8,6 +8,8 @@ import SpriteCollection1 from '@dicebear/avatars-identicon-sprites'
 import SpriteCollection2 from '@dicebear/avatars-male-sprites'
 import SpriteCollection3 from '@dicebear/avatars-female-sprites'
 
+import ChatInfo from './ChatInfo'
+
 const avatars1 = new Avatars(SpriteCollection1)
 const avatars2 = new Avatars(SpriteCollection2)
 const avatars3 = new Avatars(SpriteCollection3)
@@ -46,12 +48,17 @@ export default class ChatBox extends Component {
       maxChatItems: 50,
       isMuted: false,
       chats: [],
+      mutedUsers: {},
     }
 
     this.brain.store('ChatBox', this)
     this.addChat = this.addChat.bind(this)
     this.isChatMuted = this.isChatMuted.bind(this)
     this.toggleMuteChat = this.toggleMuteChat.bind(this)
+    this.toggleChatUserInfo = this.toggleChatUserInfo.bind(this)
+    this.isUserMuted = this.isUserMuted.bind(this)
+    this.muteUser = this.muteUser.bind(this)
+    this.unmuteUser = this.unmuteUser.bind(this)
 
     this.socket = this.brain.ask.Sockets
     if (this.socket.isConnected()) {
@@ -70,6 +77,51 @@ export default class ChatBox extends Component {
     if (this.socket.isConnected()) {
       this.socket.off('ci', this.addChat)
     }
+  }
+
+  isUserMuted(username) {
+    const { mutedUsers } = this.state
+    return has.call(mutedUsers, username)
+  }
+
+  unmuteUser(username) {
+    const { mutedUsers } = this.state
+    if (has.call(mutedUsers, username)) {
+      this.setState((prevState) => {
+        const tempState = prevState
+        delete tempState.mutedUsers[username]
+        return tempState
+      })
+    }
+  }
+
+  muteUser(username) {
+    this.setState((prevState) => {
+      const tempState = prevState
+      tempState.mutedUsers[username] = null
+      return tempState
+    })
+  }
+
+  toggleChatUserInfo(e) {
+    e.preventDefault()
+    const { target } = e
+    const username = target.getAttribute('meta-name')
+    const message = target.getAttribute('meta-msg')
+    const src = target.getAttribute('src')
+    const isMuted = this.isUserMuted(username)
+    this.brain.tell.MyModal.toggle({
+      text: 'Chat Info',
+      modal: () => (
+        <ChatInfo
+          src={src}
+          ismuted={isMuted}
+          username={username}
+          message={message}
+          brain={this.brain}
+        />
+      ),
+    })
   }
 
   isChatMuted() {
@@ -91,11 +143,16 @@ export default class ChatBox extends Component {
       return null
     }
 
+    if (this.isUserMuted(chat.i)) {
+      return null
+    }
+
     this.setState((prevState) => {
       const tempState = prevState
       const { colorIndex, maxChatItems } = tempState
       const name = chat.i
       const msg = chat.t
+
       let svg = ''
       if (has.call(this.authors, name)) {
         // we already generated a sprite, so use it
@@ -139,7 +196,7 @@ export default class ChatBox extends Component {
           return (
             <Media style={{ backgroundColor: color }}>
               <Media style={{ width: '5em' }}>
-                <Media meta-name={name} meta-msg={msg} style={{ width: '100%', paddingTop: '10%', paddingBottom: '10%' }} object src={svg} alt="some alt" />
+                <Media className="hvrptr" onClick={this.toggleChatUserInfo} meta-name={name} meta-msg={msg} style={{ width: '100%', paddingTop: '10%', paddingBottom: '10%' }} object src={svg} alt="some alt" />
               </Media>
               <Media body style={{ wordBreak: 'break-all', paddingTop: '5%' }}>{msg}</Media>
             </Media>
