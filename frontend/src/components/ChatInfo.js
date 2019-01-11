@@ -56,7 +56,7 @@ export default class ChatInfo extends Component {
     return (
       <Col fluid>
         <Row className="mb1em">
-          <img className="ma" src={src} alt="some alt" />
+          <img className="ma h150px" src={src} alt="some alt" />
         </Row>
         <Row>
           <Button onClick={this.handleMute} className="mr1em" color="danger">{muteString}</Button>
