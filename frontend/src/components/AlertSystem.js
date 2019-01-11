@@ -26,16 +26,20 @@ export default class AlertSystem extends Component {
   }
 
   componentDidMount() {
-    this.reposition()
+    setTimeout(() => {
+      this.reposition()
+    }, 3000)
   }
 
   addAlert(obj) {
+    let settingOpen = false
     this.setState((prevState) => {
       const tempState = prevState
 
       const { open } = tempState
       if (!open) {
         tempState.open = true
+        settingOpen = true
       } else {
         // if it is already open, then increment the wait list
         this.brain.tell.AlertItem.addWaiting()
@@ -46,6 +50,15 @@ export default class AlertSystem extends Component {
         ...obj,
       })
       return tempState
+    }, () => {
+      if (settingOpen) {
+        try {
+          const size = this.brain.ask.Canvas.leaflet.offsetHeight
+          this.brain.tell.Chat.adjust(size)
+        } catch (e) {
+          // do nothing
+        }
+      }
     })
   }
 
@@ -55,6 +68,7 @@ export default class AlertSystem extends Component {
   }
 
   updateList() {
+    let settingClosed = false
     this.setState((prevState) => {
       const tempState = prevState
 
@@ -63,9 +77,19 @@ export default class AlertSystem extends Component {
 
       if (!tempState.alerts.length) {
         tempState.open = false
+        settingClosed = true
       }
 
       return tempState
+    }, () => {
+      if (settingClosed) {
+        try {
+          const size = this.brain.ask.Canvas.leaflet.offsetHeight
+          this.brain.tell.Chat.adjust(size)
+        } catch (e) {
+          // do nothing
+        }
+      }
     })
   }
 
@@ -87,7 +111,7 @@ export default class AlertSystem extends Component {
     const waiting = alerts.length - 1
 
     return (
-      <div style={{ position: 'absolute', top: '0px', width }}>
+      <div style={{ width }}>
         <AlertItem key={`${alerts[0].random}.${alerts[0].text}`} data={alerts[0]} waiting={waiting} brain={this.brain} />
       </div>
     )
