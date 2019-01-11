@@ -80,7 +80,7 @@ export default class App extends Component {
         this.doLogInProcess()
       } else {
         // if developing, no need to do log in process
-        this.brain.tell.Welcome.addMessage(this.customMessages.logInSuccess)
+        this.brain.tell.Welcome.addMessage(this.customMessages.logInSuccess, true)
         this.brain.tell.Welcome.addMessage(this.customMessages.connecting)
         this.afterLogIn()
       }
@@ -146,7 +146,7 @@ export default class App extends Component {
         this.afterLogIn()
       } else if (tk) {
         // if just the token then everything is good
-        this.brain.tell.Welcome.addMessage(this.customMessages.logInSuccess)
+        this.brain.tell.Welcome.addMessage(this.customMessages.logInSuccess, true)
         this.brain.tell.Welcome.addMessage(this.customMessages.connecting)
         tokenManager.storeToken(tk)
         this.afterLogIn()
@@ -192,7 +192,7 @@ export default class App extends Component {
 
     let serverNameOut = (sn) => {
       console.log(`got servername: ${sn}`)
-      this.brain.tell.Welcome.addMessage(this.customMessages.connectSuccess)
+      this.brain.tell.Welcome.addMessage(this.customMessages.connectSuccess, true)
       this.brain.tell.Welcome.addMessage(this.customMessages.loadingAssets)
       // here we should fetch the new data list, only
       // after the user has been verified
@@ -259,7 +259,7 @@ export default class App extends Component {
       this.brain.tell.Sockets.connect(token, this.afterSocketConnect)
     } else {
       // if developing, no need to connect to sockets
-      this.brain.tell.Welcome.addMessage(this.customMessages.connectSuccess)
+      this.brain.tell.Welcome.addMessage(this.customMessages.connectSuccess, true)
       this.brain.tell.Welcome.addMessage(this.customMessages.loadingAssets)
       this.afterSocketVerification()
     }
