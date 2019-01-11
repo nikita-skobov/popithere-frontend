@@ -67,6 +67,7 @@ export default class App extends Component {
       connecting: 'Connecting to socket server',
       logInFail: 'Failed to log in',
       logInSuccess: 'Successfully logged in',
+      seizureWarning: 'WARNING: This site may potentially trigger seizures for people with photosensitive epilepsy. Viewer discretion is advised.',
       connectSuccess: 'Successfully connected to socket server',
       invalidToken: 'Socket server rejected your token. Try refreshing the page to generate a new one',
     }
@@ -156,6 +157,7 @@ export default class App extends Component {
 
   afterSocketVerification() {
     if (DEV_MODE) {
+      this.brain.tell.Welcome.addMessage(this.customMessages.seizureWarning, true)
       this.brain.tell.Welcome.welcomeDone()
       return null
     }
@@ -175,6 +177,7 @@ export default class App extends Component {
         fetchUpTo = this.maxInitialFetch
       }
       this.brain.ask.DataMan.fetchRange([0, fetchUpTo])
+      this.brain.tell.Welcome.addMessage(this.customMessages.seizureWarning, true)
       this.brain.tell.Welcome.welcomeDone()
     })
     return null
