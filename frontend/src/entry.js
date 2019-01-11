@@ -10,6 +10,7 @@ import SocketManager from './utils/SocketManager'
 import TokenManager from './utils/TokenManager'
 import UploadManager from './utils/UploadManager'
 import DataManager from './utils/DataManager'
+import LimitManager from './utils/LimitManager'
 
 const reactContainer = document.getElementById('react-container')
 
@@ -32,6 +33,7 @@ const socketManager = SocketManager(brain)
 const tokenManager = TokenManager(brain)
 const uploadManager = UploadManager(brain)
 const dataManager = DataManager(brain)
+const limitManager = LimitManager(brain)
 
 window.addEventListener('resize', (e) => {
   try {

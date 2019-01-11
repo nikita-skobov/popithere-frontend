@@ -47,8 +47,21 @@ export default class Canvas extends Component {
     const modal = this.brain.ask.MyModal
     const socket = this.brain.ask.Sockets
     const dataMan = this.brain.ask.DataMan
+    const limitMan = this.brain.ask.LimitManager
+    const alertSystem = this.brain.ask.AlertSystem
+    const tokenMan = this.brain.ask.Tokens
     const uploader = this.brain.ask.Uploads
-    this.currentGame = getCurrentGame({ renderer: this.renderer, modal, socket, uploader, dataMan, canvas: this })
+    this.currentGame = getCurrentGame({
+      renderer: this.renderer,
+      tokenMan,
+      alertSystem,
+      limitMan,
+      modal,
+      socket,
+      uploader,
+      dataMan,
+      canvas: this,
+    })
     this.newGame()
   }
 
@@ -61,8 +74,21 @@ export default class Canvas extends Component {
       const modal = this.brain.ask.MyModal
       const socket = this.brain.ask.Sockets
       const dataMan = this.brain.ask.DataMan
+      const limitMan = this.brain.ask.LimitManager
+      const alertSystem = this.brain.ask.AlertSystem
+      const tokenMan = this.brain.ask.Tokens
       const uploader = this.brain.ask.Uploads
-      this.currentGame = getCurrentGame({ renderer: this.renderer, modal, socket, uploader, dataMan, canvas: this })
+      this.currentGame = getCurrentGame({
+        renderer: this.renderer,
+        tokenMan,
+        alertSystem,
+        limitMan,
+        modal,
+        socket,
+        uploader,
+        dataMan,
+        canvas: this,
+      })
       this.newGame()
     }, 10000)
   }

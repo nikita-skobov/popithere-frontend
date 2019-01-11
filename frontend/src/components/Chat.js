@@ -16,6 +16,7 @@ export default class Chat extends Component {
     this.state = {
       orientation: iw > ih ? 'landscape' : 'portrait',
       leftPx: 0,
+      topPx: 0,
       width: 100,
     }
 
@@ -50,10 +51,14 @@ export default class Chat extends Component {
   adjust(size) {
     const { orientation } = this.state
     const leftPx = size
+    const topPx = this.brain.ask.Canvas.leaflet.offsetTop
     const width = window.innerWidth - size
     if (this.state.leftPx !== leftPx) {
       // only set state if it is different from the last state
       this.setState({ leftPx })
+    }
+    if (this.state.topPx !== topPx) {
+      this.setState({ topPx })
     }
     if (this.state.width !== width && orientation === 'landscape') {
       // only set width if its different AND orientation is landscape
@@ -63,11 +68,11 @@ export default class Chat extends Component {
   }
 
   render() {
-    const { orientation, leftPx, width } = this.state
+    const { orientation, leftPx, width, topPx } = this.state
 
     if (orientation === 'landscape') {
       return (
-        <div className="chat-l" style={{ left: leftPx, width }}>
+        <div className="chat-l" style={{ left: leftPx, width, top: topPx }}>
           <ChatInput brain={this.brain} />
           <ChatBox brain={this.brain} />
         </div>
@@ -76,7 +81,7 @@ export default class Chat extends Component {
 
     // else, render for mobile
     return (
-      <div className="chat-p" style={{ top: leftPx }}>
+      <div className="chat-p" style={{ top: leftPx + topPx }}>
         <ChatInput brain={this.brain} />
         <ChatBox brain={this.brain} />
       </div>

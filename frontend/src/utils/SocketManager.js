@@ -7,6 +7,7 @@ import {
 function SocketManager(datastore) {
   const brain = datastore
   let socket = null
+  let successfulConnections = 0
 
   const retObj = {
     on: (type, cb) => {
@@ -22,6 +23,8 @@ function SocketManager(datastore) {
 
     isConnected: () => socket && socket.connected,
 
+    getConnectionCount: () => successfulConnections,
+
     connect: (token, cb, callbacks) => {
       socket = io.connect(`${socketEndpoint}?ua=${token}`, {
         transports: ['websocket', 'xhr-polling'],
@@ -29,9 +32,10 @@ function SocketManager(datastore) {
 
       socket.on('connect', () => {
         if (callbacks) {
+          // eslint-disable-next-line
           socket._callbacks = callbacks
         }
-
+        successfulConnections += 1
         cb(socket)
       })
     },

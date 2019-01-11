@@ -65,6 +65,9 @@ export default class PopItHere extends Game {
     let dataNumbers = this.dataMan.getDataNumbers()
     this.dataNumbers = this.sortBaseX(dataNumbers, undefined, 32, initialFetchLimit)
 
+    const myGameClaimLimit = this.tokenMan.getGameClaim()
+    this.limitMan.setLimit('popit', 5000, myGameClaimLimit)
+
     this.textures = {}
     this.previewImages = []
     this.userPopitList = []
@@ -1212,10 +1215,23 @@ export default class PopItHere extends Game {
   }
 
   emitPopIt(event) {
-    const position = getLocalPosition(event, this.root)
-    const name = this.poppingName
-    const posString = positionToString(position)
-    const msg = `${posString}${name}`
-    this.socket.emit('pi', msg)
+    const action = this.limitMan.canPerformAction('popit')
+    const { allowed } = action
+    if (allowed) {
+      const position = getLocalPosition(event, this.root)
+      const name = this.poppingName
+      const posString = positionToString(position)
+      const msg = `${posString}${name}`
+      this.socket.emit('pi', msg)
+    } else {
+      const { limit, nextTime, interval } = action
+      if (!this.alertSystem.isAlertOpen()) {
+        this.alertSystem.addAlert({
+          color: 'warning',
+          text: `You have reached your limit of ${limit} popits per ${Math.floor(interval / 1000)} seconds. You will be able to place popits again in about ${Math.floor(nextTime / 1000)} seconds`,
+          countdown: nextTime + 1000,
+        })
+      }
+    }
   }
 }

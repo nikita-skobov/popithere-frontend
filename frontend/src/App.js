@@ -8,6 +8,7 @@ import MyModal from './components/MyModal'
 import Welcome from './components/Welcome'
 import FirstTime from './components/FirstTime'
 import PatreonBenefits from './components/PatreonBenefits'
+import AlertSystem from './components/AlertSystem'
 
 import { DEV_MODE } from './customConfig'
 
@@ -181,6 +182,13 @@ export default class App extends Component {
 
   afterSocketConnect(socket) {
     console.log('connected')
+    if (this.brain.ask.Sockets.getConnectionCount() > 1) {
+      this.brain.tell.AlertSystem.addAlert({
+        color: 'success',
+        text: 'Successfully reconnected!',
+        countdown: 5000,
+      })
+    }
 
     let serverNameOut = (sn) => {
       console.log(`got servername: ${sn}`)
@@ -229,6 +237,12 @@ export default class App extends Component {
     socket.on('it', invalidTokenHandler)
 
     socket.on('disconnect', () => {
+      this.brain.tell.AlertSystem.addAlert({
+        color: 'danger',
+        text: 'Disconnected from socket server. Attempting automatic reconnect',
+        countdown: 5000,
+      })
+
       socket.removeListener('it', invalidTokenHandler)
       socket.removeListener('sno', serverNameOut)
       socket.removeListener('disconnect')
@@ -237,6 +251,9 @@ export default class App extends Component {
 
   afterLogIn() {
     const token = this.brain.ask.Tokens.getToken()
+    const chatLimit = this.brain.ask.Tokens.getClaim('cht')
+
+    this.brain.tell.LimitManager.setLimit('chat', 5000, chatLimit)
 
     if (!DEV_MODE) {
       this.brain.tell.Sockets.connect(token, this.afterSocketConnect)
@@ -275,6 +292,7 @@ export default class App extends Component {
     }
 
     return [
+      <AlertSystem brain={this.brain} />,
       <Canvas brain={this.brain} />,
       <Chat brain={this.brain} />,
       <MyModal startingModal={this.startingModal} brain={this.brain} />,
