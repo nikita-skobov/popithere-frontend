@@ -67,6 +67,7 @@ export default class App extends Component {
       connecting: 'Connecting to socket server',
       logInFail: 'Failed to log in',
       logInSuccess: 'Successfully logged in',
+      seizureWarning: 'WARNING: This site may potentially trigger seizures for people with photosensitive epilepsy. Viewer discretion is advised.',
       connectSuccess: 'Successfully connected to socket server',
       invalidToken: 'Socket server rejected your token. Try refreshing the page to generate a new one',
     }
@@ -80,7 +81,7 @@ export default class App extends Component {
         this.doLogInProcess()
       } else {
         // if developing, no need to do log in process
-        this.brain.tell.Welcome.addMessage(this.customMessages.logInSuccess)
+        this.brain.tell.Welcome.addMessage(this.customMessages.logInSuccess, true)
         this.brain.tell.Welcome.addMessage(this.customMessages.connecting)
         this.afterLogIn()
       }
@@ -146,7 +147,7 @@ export default class App extends Component {
         this.afterLogIn()
       } else if (tk) {
         // if just the token then everything is good
-        this.brain.tell.Welcome.addMessage(this.customMessages.logInSuccess)
+        this.brain.tell.Welcome.addMessage(this.customMessages.logInSuccess, true)
         this.brain.tell.Welcome.addMessage(this.customMessages.connecting)
         tokenManager.storeToken(tk)
         this.afterLogIn()
@@ -156,6 +157,7 @@ export default class App extends Component {
 
   afterSocketVerification() {
     if (DEV_MODE) {
+      this.brain.tell.Welcome.addMessage(this.customMessages.seizureWarning, true)
       this.brain.tell.Welcome.welcomeDone()
       return null
     }
@@ -175,6 +177,7 @@ export default class App extends Component {
         fetchUpTo = this.maxInitialFetch
       }
       this.brain.ask.DataMan.fetchRange([0, fetchUpTo])
+      this.brain.tell.Welcome.addMessage(this.customMessages.seizureWarning, true)
       this.brain.tell.Welcome.welcomeDone()
     })
     return null
@@ -192,7 +195,7 @@ export default class App extends Component {
 
     let serverNameOut = (sn) => {
       console.log(`got servername: ${sn}`)
-      this.brain.tell.Welcome.addMessage(this.customMessages.connectSuccess)
+      this.brain.tell.Welcome.addMessage(this.customMessages.connectSuccess, true)
       this.brain.tell.Welcome.addMessage(this.customMessages.loadingAssets)
       // here we should fetch the new data list, only
       // after the user has been verified
@@ -259,7 +262,7 @@ export default class App extends Component {
       this.brain.tell.Sockets.connect(token, this.afterSocketConnect)
     } else {
       // if developing, no need to connect to sockets
-      this.brain.tell.Welcome.addMessage(this.customMessages.connectSuccess)
+      this.brain.tell.Welcome.addMessage(this.customMessages.connectSuccess, true)
       this.brain.tell.Welcome.addMessage(this.customMessages.loadingAssets)
       this.afterSocketVerification()
     }
