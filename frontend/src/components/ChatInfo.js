@@ -6,6 +6,9 @@ import {
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
+  Row,
+  Col,
+  Button,
 } from 'reactstrap'
 
 const has = Object.prototype.hasOwnProperty
@@ -23,15 +26,17 @@ export default class ChatInfo extends Component {
   }
 
   render() {
-    const { username, message, src } = this
+    const { src } = this
     return (
-      <div>
-        <img src={src} alt="dsadsa" />
-        You are viewing a message from {username}
-        <div>
-          {message}
-        </div>
-      </div>
+      <Col fluid>
+        <Row className="mb1em">
+          <img className="ma" src={src} alt="some alt" />
+        </Row>
+        <Row>
+          <Button className="mr1em" color="danger">Mute User</Button>
+          <Button className="mr1em" color="danger">Report User</Button>
+        </Row>
+      </Col>
     )
   }
 }
