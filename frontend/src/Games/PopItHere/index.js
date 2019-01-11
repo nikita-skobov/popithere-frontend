@@ -65,7 +65,8 @@ export default class PopItHere extends Game {
     let dataNumbers = this.dataMan.getDataNumbers()
     this.dataNumbers = this.sortBaseX(dataNumbers, undefined, 32, initialFetchLimit)
 
-    this.limitMan.setLimit('popit', 5000, 5)
+    const myGameClaimLimit = this.tokenMan.getGameClaim()
+    this.limitMan.setLimit('popit', 5000, myGameClaimLimit)
 
     this.textures = {}
     this.previewImages = []

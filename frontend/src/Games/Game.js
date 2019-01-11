@@ -12,6 +12,7 @@ export default class Game {
     this.uploader = props.uploader
     this.dataMan = props.dataMan
     this.alertSystem = props.alertSystem
+    this.tokenMan = props.tokenMan
     this.limitMan = props.limitMan
     this.socket = props.socket
     this.canvas = props.canvas
