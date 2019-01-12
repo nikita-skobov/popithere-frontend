@@ -38,7 +38,7 @@ const RowGenerator = (props) => {
           return (
             <Row className="mb1em">
               <Col>
-                <Button id={`dn-${item1.name}`} onClick={cb} name={item1.name} className="half-trans">
+                <Button id={`dn-${item1.name}`} onClick={cb} name={item1.name} className="half-trans w100">
                   <img name={item1.name} className="w50" src={item1.url} alt="some shit" />
                 </Button>
                 <UncontrolledTooltip placement="top" target={`dn-${item1.name}`}>
@@ -46,7 +46,7 @@ const RowGenerator = (props) => {
                 </UncontrolledTooltip>
               </Col>
               <Col>
-                <Button id={`dn-${item2.name}`} onClick={cb} name={item2.name} className="half-trans">
+                <Button id={`dn-${item2.name}`} onClick={cb} name={item2.name} className="half-trans w100">
                   <img name={item2.name} className="w50" src={item2.url} alt="some shit" />
                 </Button>
                 <UncontrolledTooltip placement="top" target={`dn-${item2.name}`}>
@@ -61,12 +61,12 @@ const RowGenerator = (props) => {
         return (
           <Row className="mb1em">
             <Col>
-              <Button id={`dn-${item1.name}`} onClick={cb} name={item1.name} className="half-trans">
+              <Button id={`dn-${item1.name}`} onClick={cb} name={item1.name} className="half-trans w100">
                 <img name={item1.name} className="w50" src={item1.url} alt="some shit" />
               </Button>
               <UncontrolledTooltip placement="top" target={`dn-${item1.name}`}>
-                  {item1.name}
-                </UncontrolledTooltip>
+                {item1.name}
+              </UncontrolledTooltip>
             </Col>
             <Col />
           </Row>
