@@ -11,6 +11,7 @@ import TokenManager from './utils/TokenManager'
 import UploadManager from './utils/UploadManager'
 import DataManager from './utils/DataManager'
 import LimitManager from './utils/LimitManager'
+import SoundManager from './utils/SoundManager'
 
 const reactContainer = document.getElementById('react-container')
 
@@ -34,6 +35,13 @@ const tokenManager = TokenManager(brain)
 const uploadManager = UploadManager(brain)
 const dataManager = DataManager(brain)
 const limitManager = LimitManager(brain)
+const soundManager = SoundManager(brain)
+
+soundManager.addSound('test', ['test.mp3'])
+
+setInterval(() => {
+  soundManager.playSound('test')
+}, 5000)
 
 window.addEventListener('resize', (e) => {
   try {
