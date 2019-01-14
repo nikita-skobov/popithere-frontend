@@ -1,9 +1,14 @@
+/* global window */
 import { Howl, Howler } from 'howler'
 
 const has = Object.prototype.hasOwnProperty
 
 function SoundManager(datastore) {
   const brain = datastore
+
+  const synth = window.speechSynthesis
+  let useVoice = null
+  let voiceRate = 0.85
 
   const sounds = {}
 
@@ -26,12 +31,33 @@ function SoundManager(datastore) {
       }
       return null
     },
+    playText: (text) => {
+      // some browsers dont have speechSynthesis
+      const voices = synth ? synth.getVoices() : []
+      voices.forEach((voice) => {
+        if (voice.name === 'Microsoft Zira Desktop - English (United States)') {
+          useVoice = voice
+        }
+      })
+
+      const utterance = new window.SpeechSynthesisUtterance(text)
+
+      if (useVoice) {
+        utterance.voice = useVoice
+      }
+
+      utterance.rate = voiceRate
+      utterance.volume = retObj.getVolume()
+      synth.speak(utterance)
+    },
     changeVolume: (volume) => {
       Howler.volume(volume)
     },
     // eslint-disable-next-line
     getVolume: () => Howler._volume,
   }
+
+  window.retObj1 = retObj
 
   brain.store('SoundManager', retObj)
   return retObj
