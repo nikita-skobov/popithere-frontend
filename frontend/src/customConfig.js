@@ -127,7 +127,7 @@ exports.placeholder = {
 }
 
 exports.soundClips = {
-  test: ['test.mp3'],
+  test: ['/sounds/test.mp3'],
 }
 
 exports.githubPage = 'https://github.com/nikita-skobov/popithere-frontend'
