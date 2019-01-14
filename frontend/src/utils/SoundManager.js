@@ -26,6 +26,11 @@ function SoundManager(datastore) {
       }
       return null
     },
+    changeVolume: (volume) => {
+      Howler.volume(volume)
+    },
+    // eslint-disable-next-line
+    getVolume: () => Howler._volume,
   }
 
   brain.store('SoundManager', retObj)

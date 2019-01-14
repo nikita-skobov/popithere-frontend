@@ -42,6 +42,7 @@ const soundManager = SoundManager(brain)
 Object.keys(soundClips).forEach((key) => {
   soundManager.addSound(key, soundClips[key])
 })
+soundManager.changeVolume(0.5)
 
 window.addEventListener('resize', (e) => {
   try {

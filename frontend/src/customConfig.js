@@ -90,6 +90,7 @@ exports.defaultButtons = [
   'about',
   'mutechat',
   'benefits',
+  'options',
 ]
 
 exports.benefitTiers = {

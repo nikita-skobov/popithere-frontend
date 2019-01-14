@@ -10,6 +10,7 @@ import {
 
 import PatreonBenefits from './PatreonBenefits'
 import About from './About'
+import Options from './Options'
 
 import { defaultButtons } from '../customConfig'
 
@@ -45,6 +46,12 @@ export default class Buttons extends Component {
         size: 'lg',
         modal: () => (
           <About />
+        ),
+      },
+      options: {
+        text: 'Options',
+        modal: () => (
+          <Options brain={this.brain} />
         ),
       },
     }
@@ -120,6 +127,7 @@ export default class Buttons extends Component {
             <DropdownItem name={item.name} onClick={this.handleButton}>{item.text}</DropdownItem>
           ))}
           <DropdownItem name="mutechat" onClick={this.handleButton}>{muteChatText}</DropdownItem>
+          <DropdownItem name="options" onClick={this.handleButton}>Options</DropdownItem>
           <DropdownItem name="benefits" onClick={this.handleButton}>Benefits</DropdownItem>
           <DropdownItem name="about" onClick={this.handleButton}>About</DropdownItem>
         </DropdownMenu>
