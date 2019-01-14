@@ -13,6 +13,8 @@ import DataManager from './utils/DataManager'
 import LimitManager from './utils/LimitManager'
 import SoundManager from './utils/SoundManager'
 
+import { soundClips } from './customConfig'
+
 const reactContainer = document.getElementById('react-container')
 
 const brain = (function brain() {
@@ -37,11 +39,9 @@ const dataManager = DataManager(brain)
 const limitManager = LimitManager(brain)
 const soundManager = SoundManager(brain)
 
-soundManager.addSound('test', ['test.mp3'])
-
-setInterval(() => {
-  soundManager.playSound('test')
-}, 5000)
+Object.keys(soundClips).forEach((key) => {
+  soundManager.addSound(key, soundClips[key])
+})
 
 window.addEventListener('resize', (e) => {
   try {

@@ -126,6 +126,10 @@ exports.placeholder = {
   url: '/images/temp/placeholder.png',
 }
 
+exports.soundClips = {
+  test: ['test.mp3'],
+}
+
 exports.githubPage = 'https://github.com/nikita-skobov/popithere-frontend'
 exports.discordPage = 'https://discordapp.com/invite/WgppuWr'
 exports.websitePage = 'https://equllc.com'
