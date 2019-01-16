@@ -211,8 +211,18 @@ export default class App extends Component {
     }
     serverNameOut = serverNameOut.bind(this)
 
-    socket.emit('sni', '')
+    let userCountOut = (uc) => {
+      this.currentUserCount = uc
+    }
+    userCountOut = userCountOut.bind(this)
+
+    socket.on('uco', userCountOut)
     socket.on('sno', serverNameOut)
+    socket.emit('sni', '')
+
+    setInterval(() => {
+      socket.emit('uci', '')
+    }, 30000)
 
 
     let invalidTokenHandler = () => {
