@@ -40,15 +40,19 @@ function SoundManager(datastore) {
         }
       })
 
-      const utterance = new window.SpeechSynthesisUtterance(text)
+      try {
+        const utterance = new window.SpeechSynthesisUtterance(text)
 
-      if (useVoice) {
-        utterance.voice = useVoice
+        if (useVoice) {
+          utterance.voice = useVoice
+        }
+
+        utterance.rate = voiceRate
+        utterance.volume = retObj.getVolume()
+        synth.speak(utterance)
+      } catch (e) {
+        console.error('Your browser does not have Text-To-Speech support')
       }
-
-      utterance.rate = voiceRate
-      utterance.volume = retObj.getVolume()
-      synth.speak(utterance)
     },
     changeVolume: (volume) => {
       Howler.volume(volume)
