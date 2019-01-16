@@ -10,6 +10,7 @@ import {
   Button,
   Input,
   InputGroup,
+  FormFeedback,
   InputGroupAddon,
 } from 'reactstrap'
 
@@ -57,6 +58,7 @@ export default class PatreonBenefits extends Component {
     this.state = {
       tierLevel: 'premium',
       redirect: props.redirect,
+      invalidTTSMessage: '',
     }
 
     const username = tm.getClaim('id')
@@ -72,13 +74,18 @@ export default class PatreonBenefits extends Component {
     e.preventDefault()
     const limiter = this.brain.ask.LimitManager
     const action = limiter.canPerformAction('tts')
-    const { allowed } = action
+    const { limit, nextTime, allowed } = action
+    if (!allowed) {
+      const limitMsg = `You have reached your text-to-speech limit. You will be able to send another message in about ${Math.floor(nextTime / 1000)} seconds`
+      this.setState({ invalidTTSMessage: limitMsg })
+      return null
+    }
     console.log(action)
     console.log(allowed)
   }
 
   render() {
-    const { tierLevel, redirect } = this.state
+    const { tierLevel, redirect, invalidTTSMessage } = this.state
 
     const makeList = (benefitObj, tierName) => (
       <ul className="pl1em">
@@ -143,10 +150,13 @@ export default class PatreonBenefits extends Component {
             </Row>
             <Row>
               <InputGroup>
-                <Input type="text" placeholder="Enter your text here" />
+                <Input invalid={invalidTTSMessage} type="text" placeholder="Enter your text here" />
                 <InputGroupAddon addonType="append">
                   <Button onClick={this.handleBenefit}>Submit</Button>
                 </InputGroupAddon>
+                {invalidTTSMessage && (
+                  <FormFeedback>{invalidTTSMessage}</FormFeedback>
+                )}
               </InputGroup>
             </Row>
           </Col>
