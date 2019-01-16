@@ -34,6 +34,7 @@ export default class App extends Component {
     this.brain.store('App', this)
 
     this.startingModal = ''
+    this.currentUserCount = 0 // start at 0, get update from server later
 
     if (redirect) {
       this.startingModal = {
@@ -51,6 +52,7 @@ export default class App extends Component {
     this.afterSocketVerification = this.afterSocketVerification.bind(this)
     this.doLogInProcess = this.doLogInProcess.bind(this)
     this.onWelcomeDone = this.onWelcomeDone.bind(this)
+    this.getUserCount = this.getUserCount.bind(this)
 
     const tokenManager = this.brain.ask.Tokens
     const token = tokenManager.getToken()
@@ -103,6 +105,11 @@ export default class App extends Component {
       }
     }
     this.setState({ ready: true })
+  }
+
+  getUserCount() {
+    console.log('getting user count!!!')
+    return this.currentUserCount
   }
 
   doLogInProcess() {
