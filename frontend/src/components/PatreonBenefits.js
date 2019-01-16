@@ -8,6 +8,9 @@ import {
   CardTitle,
   CardText,
   Button,
+  Input,
+  InputGroup,
+  InputGroupAddon
 } from 'reactstrap'
 
 import { benefitTiers, patreonEndpoint, patreonClientId, patreonPage } from '../customConfig'
@@ -18,6 +21,7 @@ export default class PatreonBenefits extends Component {
   constructor(props) {
     super(props)
     this.brain = props.brain
+    this.brain.store('PatreonBenefits', this)
 
     const tm = this.brain.ask.Tokens
 
@@ -48,10 +52,6 @@ export default class PatreonBenefits extends Component {
       tierLevel,
       redirect: props.redirect,
     }
-
-    this.brain.store('PatreonBenefits', this)
-
-    this.handleButton = this.handleButton.bind(this)
 
     const username = tm.getClaim('id')
 
@@ -113,11 +113,26 @@ export default class PatreonBenefits extends Component {
             </a>
           </Row>,
         ]}
-        <Row>
+        <Row className={!redirect ? 'cool-bottom-line pb1em' : ''}>
           {makeCard('notier', 'No Tier')}
           {makeCard('basic', 'Basic Tier')}
           {makeCard('premium', 'Premium Tier')}
         </Row>
+        {!redirect && (
+          <Col className={`pt1em ${tierLevel !== 'premium' ? 'grey-out' : ''}`} fluid>
+            <Row className="mbhalfem">
+              <h5>Text To Speech {tierLevel !== 'premium' ? '(Only for Premium Tier)' : ''}</h5>
+            </Row>
+            <Row>
+              <InputGroup>
+                <Input type="text" placeholder="Enter your text here" />
+                <InputGroupAddon addonType="append">
+                  <Button>Submit</Button>
+                </InputGroupAddon>
+              </InputGroup>
+            </Row>
+          </Col>
+        )}
       </Col>
     )
   }
