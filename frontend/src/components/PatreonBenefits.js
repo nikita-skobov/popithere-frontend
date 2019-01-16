@@ -65,11 +65,14 @@ export default class PatreonBenefits extends Component {
   render() {
     const { tierLevel, redirect } = this.state
 
-    const makeList = benefitObj => (
+    const makeList = (benefitObj, tierName) => (
       <ul className="pl1em">
         <li>Chat messages: {`${benefitObj.cht}`} every 5 seconds</li>
         <li>Place PopIts: {`${benefitObj.pit}`} every 5 seconds</li>
         <li>Make your own PopIts: {`${benefitObj.myo}`} every 30 minutes</li>
+        {tierName === 'premium' && (
+          <li>Send text-to-speech alerts: {`${benefitObj.tts}`} every 30 minutes</li>
+        )}
       </ul>
     )
 
@@ -78,7 +81,7 @@ export default class PatreonBenefits extends Component {
         <Card body inverse={tierLevel === tierName} outline={tierLevel !== tierName} color="success">
           <CardTitle>{tierText} {tierLevel === tierName && <h6>(This is your tier)</h6>}</CardTitle>
           <CardText>You are allowed to: </CardText>
-          {makeList(benefitTiers[tierName])}
+          {makeList(benefitTiers[tierName], tierName)}
           <CardText>Price: {benefitTiers[tierName].price}</CardText>
         </Card>
       </Col>
