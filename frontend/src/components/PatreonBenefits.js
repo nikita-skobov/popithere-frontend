@@ -1,4 +1,4 @@
-/* global document */
+/* global document window */
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
@@ -70,6 +70,17 @@ export default class PatreonBenefits extends Component {
       this.patreonAuthorization = '#'
     } else {
       this.patreonAuthorization = `https://www.patreon.com/oauth2/authorize?state=${username}&response_type=code&scope=identity%20campaigns.members&client_id=${patreonClientId}&redirect_uri=${patreonEndpoint}`
+    }
+
+    if (props.redirect) {
+      try {
+        // reset /redirect/success back to /
+        window.history.replaceState({}, '', '/')
+      } catch (e) {
+        // maybe some browsers cant do this?
+        console.error('Failed to replace state:')
+        console.error(e)
+      }
     }
   }
 
