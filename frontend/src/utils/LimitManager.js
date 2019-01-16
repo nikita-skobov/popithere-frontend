@@ -9,6 +9,16 @@ function LimitManager(datastore) {
     canPerformAction: (type) => {
       const actionCounter = counter[type]
       const { limit, limiter, interval } = actionCounter
+      if (limit === 0) {
+        // user is never allowed to do this
+        return {
+          allowed: false,
+          limit,
+          current: undefined,
+          nextTime: undefined,
+          interval,
+        }
+      }
       if (limiter.length === 0) {
         // initial action, so yes it is allowed
         limiter.push(Date.now())

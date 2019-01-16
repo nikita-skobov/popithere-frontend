@@ -11,6 +11,9 @@ import TokenManager from './utils/TokenManager'
 import UploadManager from './utils/UploadManager'
 import DataManager from './utils/DataManager'
 import LimitManager from './utils/LimitManager'
+import SoundManager from './utils/SoundManager'
+
+import { soundClips } from './customConfig'
 
 const reactContainer = document.getElementById('react-container')
 
@@ -34,6 +37,12 @@ const tokenManager = TokenManager(brain)
 const uploadManager = UploadManager(brain)
 const dataManager = DataManager(brain)
 const limitManager = LimitManager(brain)
+const soundManager = SoundManager(brain)
+
+Object.keys(soundClips).forEach((key) => {
+  soundManager.addSound(key, soundClips[key])
+})
+soundManager.changeVolume(0.5)
 
 window.addEventListener('resize', (e) => {
   try {

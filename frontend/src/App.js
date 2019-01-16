@@ -237,7 +237,19 @@ export default class App extends Component {
     }
     invalidTokenHandler = invalidTokenHandler.bind(this)
 
+    let ttsHandler = (msg) => {
+      this.brain.tell.AlertSystem.addAlert({
+        color: 'success',
+        text: `Message From User:   ${msg}`,
+        countdown: 15000,
+      })
+      this.brain.tell.SoundManager.playText(msg)
+    }
+    ttsHandler = ttsHandler.bind(this)
+
+
     socket.on('it', invalidTokenHandler)
+    socket.on('ttso', ttsHandler)
 
     socket.on('disconnect', () => {
       this.brain.tell.AlertSystem.addAlert({
@@ -247,6 +259,7 @@ export default class App extends Component {
       })
 
       socket.removeListener('it', invalidTokenHandler)
+      socket.removeListener('ttso', ttsHandler)
       socket.removeListener('sno', serverNameOut)
       socket.removeListener('disconnect')
     })
@@ -255,8 +268,10 @@ export default class App extends Component {
   afterLogIn() {
     const token = this.brain.ask.Tokens.getToken()
     const chatLimit = this.brain.ask.Tokens.getClaim('cht')
+    const ttsLimit = this.brain.ask.Tokens.getClaim('tts')
 
     this.brain.tell.LimitManager.setLimit('chat', 5000, chatLimit)
+    this.brain.tell.LimitManager.setLimit('tts', 1800000, ttsLimit)
 
     if (!DEV_MODE) {
       this.brain.tell.Sockets.connect(token, this.afterSocketConnect)
