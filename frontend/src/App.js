@@ -255,8 +255,10 @@ export default class App extends Component {
   afterLogIn() {
     const token = this.brain.ask.Tokens.getToken()
     const chatLimit = this.brain.ask.Tokens.getClaim('cht')
+    const ttsLimit = this.brain.ask.Tokens.getClaim('tts')
 
     this.brain.tell.LimitManager.setLimit('chat', 5000, chatLimit)
+    this.brain.tell.LimitManager.setLimit('tts', 1800000, ttsLimit)
 
     if (!DEV_MODE) {
       this.brain.tell.Sockets.connect(token, this.afterSocketConnect)

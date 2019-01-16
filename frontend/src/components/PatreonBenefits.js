@@ -10,7 +10,7 @@ import {
   Button,
   Input,
   InputGroup,
-  InputGroupAddon
+  InputGroupAddon,
 } from 'reactstrap'
 
 import { benefitTiers, patreonEndpoint, patreonClientId, patreonPage } from '../customConfig'
@@ -23,33 +23,39 @@ export default class PatreonBenefits extends Component {
     this.brain = props.brain
     this.brain.store('PatreonBenefits', this)
 
+    this.handleBenefit = this.handleBenefit.bind(this)
+
     const tm = this.brain.ask.Tokens
 
     const claims = {
       pit: tm.getClaim('pit'),
       cht: tm.getClaim('cht'),
       myo: tm.getClaim('myo'),
+      // for debugging purposes. REMOVE THIS LATER
+      tts: tm.getClaim('tts') ? tm.getClaim('tts') : 0,
     }
 
     console.log(claims)
 
     let tierLevel = 'notoken'
-    if (claims.pit && claims.cht && claims.myo) {
+    if (claims.pit && claims.cht && claims.myo && claims.tts === 0) {
       tierLevel = 'notier'
     }
 
     if (tierLevel === 'notier' && claims.pit > benefitTiers.notier.pit
-    && claims.cht > benefitTiers.notier.cht && claims.myo > benefitTiers.notier.myo) {
+    && claims.cht > benefitTiers.notier.cht && claims.myo > benefitTiers.notier.myo
+    && claims.tts > benefitTiers.notier.tts) {
       tierLevel = 'basic'
     }
 
     if (tierLevel === 'basic' && claims.pit > benefitTiers.basic.pit
-    && claims.cht > benefitTiers.basic.cht && claims.myo > benefitTiers.basic.myo) {
+    && claims.cht > benefitTiers.basic.cht && claims.myo > benefitTiers.basic.myo
+    && claims.tts > benefitTiers.basic.tts) {
       tierLevel = 'premium'
     }
 
     this.state = {
-      tierLevel,
+      tierLevel: 'premium',
       redirect: props.redirect,
     }
 
@@ -60,6 +66,15 @@ export default class PatreonBenefits extends Component {
     } else {
       this.patreonAuthorization = `https://www.patreon.com/oauth2/authorize?state=${username}&response_type=code&scope=identity%20campaigns.members&client_id=${patreonClientId}&redirect_uri=${patreonEndpoint}`
     }
+  }
+
+  handleBenefit(e) {
+    e.preventDefault()
+    const limiter = this.brain.ask.LimitManager
+    const action = limiter.canPerformAction('tts')
+    const { allowed } = action
+    console.log(action)
+    console.log(allowed)
   }
 
   render() {
@@ -130,7 +145,7 @@ export default class PatreonBenefits extends Component {
               <InputGroup>
                 <Input type="text" placeholder="Enter your text here" />
                 <InputGroupAddon addonType="append">
-                  <Button>Submit</Button>
+                  <Button onClick={this.handleBenefit}>Submit</Button>
                 </InputGroupAddon>
               </InputGroup>
             </Row>
