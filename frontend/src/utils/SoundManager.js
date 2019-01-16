@@ -61,8 +61,6 @@ function SoundManager(datastore) {
     getVolume: () => Howler._volume,
   }
 
-  window.retObj1 = retObj
-
   brain.store('SoundManager', retObj)
   return retObj
 }
