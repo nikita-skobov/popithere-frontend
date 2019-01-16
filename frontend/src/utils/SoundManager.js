@@ -1,9 +1,14 @@
+/* global window */
 import { Howl, Howler } from 'howler'
 
 const has = Object.prototype.hasOwnProperty
 
 function SoundManager(datastore) {
   const brain = datastore
+
+  const synth = window.speechSynthesis
+  let useVoice = null
+  let voiceRate = 0.85
 
   const sounds = {}
 
@@ -25,6 +30,29 @@ function SoundManager(datastore) {
         return id
       }
       return null
+    },
+    playText: (text) => {
+      // some browsers dont have speechSynthesis
+      const voices = synth ? synth.getVoices() : []
+      voices.forEach((voice) => {
+        if (voice.name === 'Microsoft Zira Desktop - English (United States)') {
+          useVoice = voice
+        }
+      })
+
+      try {
+        const utterance = new window.SpeechSynthesisUtterance(text)
+
+        if (useVoice) {
+          utterance.voice = useVoice
+        }
+
+        utterance.rate = voiceRate
+        utterance.volume = retObj.getVolume()
+        synth.speak(utterance)
+      } catch (e) {
+        console.error('Your browser does not have Text-To-Speech support')
+      }
     },
     changeVolume: (volume) => {
       Howler.volume(volume)

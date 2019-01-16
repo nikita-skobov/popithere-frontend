@@ -15,6 +15,11 @@ function SocketManager(datastore) {
         socket.on(type, cb)
       }
     },
+    once: (type, cb) => {
+      if (retObj.isConnected()) {
+        socket.once(type, cb)
+      }
+    },
     off: (type) => {
       if (retObj.isConnected()) {
         socket.off(type)
