@@ -2,10 +2,6 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 import {
-  ButtonDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
   Row,
   Col,
   Card,
@@ -64,10 +60,6 @@ export default class PatreonBenefits extends Component {
     } else {
       this.patreonAuthorization = `https://www.patreon.com/oauth2/authorize?state=${username}&response_type=code&scope=identity%20campaigns.members&client_id=${patreonClientId}&redirect_uri=${patreonEndpoint}`
     }
-  }
-
-  handleButton(e) {
-    e.preventDefault()
   }
 
   render() {
