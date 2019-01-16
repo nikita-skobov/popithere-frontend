@@ -1,3 +1,4 @@
+/* global document */
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
@@ -15,6 +16,7 @@ import {
 } from 'reactstrap'
 
 import { benefitTiers, patreonEndpoint, patreonClientId, patreonPage } from '../customConfig'
+import ContainsBadWords from '../utils/ContainsBadWords'
 
 const has = Object.prototype.hasOwnProperty
 
@@ -59,6 +61,7 @@ export default class PatreonBenefits extends Component {
       tierLevel: 'premium',
       redirect: props.redirect,
       invalidTTSMessage: '',
+      validTTSMessage: '',
     }
 
     const username = tm.getClaim('id')
@@ -72,20 +75,45 @@ export default class PatreonBenefits extends Component {
 
   handleBenefit(e) {
     e.preventDefault()
+    const inputElm = document.getElementById('tts-input')
+    const { value } = inputElm
+
+    if (ContainsBadWords(value)) {
+      const badWordMsg = 'Your message contains bad words!'
+      this.setState({ invalidTTSMessage: badWordMsg })
+      return null
+    }
+
     const limiter = this.brain.ask.LimitManager
     const action = limiter.canPerformAction('tts')
-    const { limit, nextTime, allowed } = action
+    const { nextTime, allowed } = action
     if (!allowed) {
-      const limitMsg = `You have reached your text-to-speech limit. You will be able to send another message in about ${Math.floor(nextTime / 1000)} seconds`
+      const limitMsg = `You have reached your text-to-speech limit. You will be able to send another message in about ${Math.floor(nextTime / 60000)} minutes`
       this.setState({ invalidTTSMessage: limitMsg })
       return null
     }
-    console.log(action)
-    console.log(allowed)
+
+    inputElm.value = ''
+    this.setState({ validTTSMessage: 'Sending text-to-speech request to server', invalidTTSMessage: '' })
+
+    this.brain.tell.Sockets.emit('ttsi', value)
+
+    let socketResponseHandler = (msg) => {
+      // if socket server responds with an invalid message, notify user
+      const { type, text } = msg
+      if (type === 'invalid') {
+        this.setState({ validTTSMessage: '', invalidTTSMessage: text })
+      } else if (type === 'valid') {
+        this.setState({ validTTSMessage: text })
+      }
+    }
+    socketResponseHandler = socketResponseHandler.bind(this)
+    this.brain.tell.Sockets.once('r.ttso', socketResponseHandler)
+    return null
   }
 
   render() {
-    const { tierLevel, redirect, invalidTTSMessage } = this.state
+    const { tierLevel, redirect, invalidTTSMessage, validTTSMessage } = this.state
 
     const makeList = (benefitObj, tierName) => (
       <ul className="pl1em">
@@ -150,10 +178,13 @@ export default class PatreonBenefits extends Component {
             </Row>
             <Row>
               <InputGroup>
-                <Input invalid={invalidTTSMessage} type="text" placeholder="Enter your text here" />
+                <Input id="tts-input" invalid={invalidTTSMessage} valid={validTTSMessage} type="text" placeholder="Enter your text here" />
                 <InputGroupAddon addonType="append">
                   <Button onClick={this.handleBenefit}>Submit</Button>
                 </InputGroupAddon>
+                {validTTSMessage && (
+                  <FormFeedback valid>{validTTSMessage}</FormFeedback>
+                )}
                 {invalidTTSMessage && (
                   <FormFeedback>{invalidTTSMessage}</FormFeedback>
                 )}
