@@ -95,24 +95,28 @@ exports.defaultButtons = [
 
 exports.benefitTiers = {
   notoken: {
+    tts: 0,
     cht: 0,
     pit: 0,
     myo: 0,
     price: 'Free',
   },
   notier: {
+    tts: 0,
     cht: 10,
     pit: 10,
     myo: 10,
     price: 'Free',
   },
   basic: {
+    tts: 0,
     cht: 12,
     pit: 52,
     myo: 12,
     price: '$1 a month',
   },
   premium: {
+    tts: 1,
     cht: 23,
     pit: 103,
     myo: 23,
