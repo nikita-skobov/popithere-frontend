@@ -40,12 +40,12 @@ export default function About() {
         <Col xs="auto">
           <Row>
             <Col>
-              <a className="tdnone" href={websitePage}>
+              <a target="_blank" rel="noopener noreferrer" className="tdnone" href={websitePage}>
                 <Button className="ma db btn-my-website">Website</Button>
               </a>
             </Col>
             <Col>
-              <a className="tdnone" href={twitterPage}>
+              <a target="_blank" rel="noopener noreferrer" className="tdnone" href={twitterPage}>
                 <Button className="ma db btn-twitter">Twitter</Button>
               </a>
             </Col>
@@ -69,7 +69,7 @@ export default function About() {
         <Col>
           <Row>
             <Col>
-              <a className="tdnone" href={discordPage}>
+              <a target="_blank" rel="noopener noreferrer" className="tdnone" href={discordPage}>
                 <Button className="db ma btn-discord">Discord</Button>
               </a>
             </Col>
@@ -94,7 +94,7 @@ export default function About() {
         <Col>
           <Row>
             <Col>
-              <a className="tdnone" href={githubPage}>
+              <a target="_blank" rel="noopener noreferrer" className="tdnone" href={githubPage}>
                 <Button className="db ma btn-github">Github</Button>
               </a>
             </Col>
@@ -122,7 +122,7 @@ export default function About() {
         <Col>
           <Row>
             <Col>
-              <a className="tdnone" href={patreonPage}>
+              <a target="_blank" rel="noopener noreferrer" className="tdnone" href={patreonPage}>
                 <Button className="db ma btn-patreon">Patreon</Button>
               </a>
             </Col>
