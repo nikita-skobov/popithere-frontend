@@ -35,13 +35,13 @@ export default class PatreonBenefits extends Component {
       cht: tm.getClaim('cht'),
       myo: tm.getClaim('myo'),
       // for debugging purposes. REMOVE THIS LATER
-      tts: tm.getClaim('tts') ? tm.getClaim('tts') : 0,
+      tts: tm.getClaim('tts'),
     }
 
     console.log(claims)
 
     let tierLevel = 'notoken'
-    if (claims.pit && claims.cht && claims.myo && claims.tts === 0) {
+    if (claims.pit && claims.cht && claims.myo && claims.tts >= 0) {
       tierLevel = 'notier'
     }
 
@@ -58,7 +58,7 @@ export default class PatreonBenefits extends Component {
     }
 
     this.state = {
-      tierLevel: 'premium',
+      tierLevel,
       redirect: props.redirect,
       invalidTTSMessage: '',
       validTTSMessage: '',
