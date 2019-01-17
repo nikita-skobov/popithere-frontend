@@ -216,15 +216,6 @@ export default class App extends Component {
     }
     userCountOut = userCountOut.bind(this)
 
-    socket.on('uco', userCountOut)
-    socket.on('sno', serverNameOut)
-    socket.emit('sni', '')
-
-    setInterval(() => {
-      socket.emit('uci', '')
-    }, 30000)
-
-
     let invalidTokenHandler = () => {
       // invalid token
       console.log('invalid token')
@@ -264,9 +255,24 @@ export default class App extends Component {
     }
     ttsHandler = ttsHandler.bind(this)
 
+    let userStillHere = () => {
+      // if server asks user if they are still here,
+      // user should respond
+      socket.emit('ushi', '')
+    }
+    userStillHere = userStillHere.bind(this)
 
+    socket.on('uco', userCountOut)
+    socket.on('sno', serverNameOut)
     socket.on('it', invalidTokenHandler)
     socket.on('ttso', ttsHandler)
+    socket.on('usho', userStillHere)
+
+    socket.emit('sni', '')
+
+    setInterval(() => {
+      socket.emit('uci', '')
+    }, 30000)
 
     socket.on('disconnect', () => {
       this.brain.tell.AlertSystem.addAlert({
@@ -277,6 +283,7 @@ export default class App extends Component {
 
       socket.removeListener('it', invalidTokenHandler)
       socket.removeListener('ttso', ttsHandler)
+      socket.removeListener('usho', userStillHere)
       socket.removeListener('sno', serverNameOut)
       socket.removeListener('disconnect')
     })
