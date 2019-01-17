@@ -366,13 +366,13 @@ export default class PopItSelection extends Component {
         <Col fluid>
           <Form onSubmit={notSubmit}>
             <Row>
-              <FormGroup>
+              <FormGroup className="w100">
                 <Label for="textinput">Enter your text: </Label>
                 <Input invalid={invalidInput} onChange={this.handleText} type="text" placeholder="Your Text Here..." id="textinput" name="text" />
               </FormGroup>
             </Row>
             <Row>
-              <FormGroup>
+              <FormGroup className="w100">
                 <Label for="textinputsize">Size: </Label>
                 <Input onChange={this.handleText} defaultValue={fontSize} type="number" id="textinputsize" name="size" />
               </FormGroup>
