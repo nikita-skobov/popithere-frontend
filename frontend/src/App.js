@@ -108,7 +108,6 @@ export default class App extends Component {
   }
 
   getUserCount() {
-    console.log('getting user count!!!')
     return this.currentUserCount
   }
 
