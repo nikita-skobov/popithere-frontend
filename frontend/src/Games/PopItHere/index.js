@@ -893,6 +893,10 @@ export default class PopItHere extends Game {
           this.activeSprite.scale[dir] -= scaleVal
         }
 
+        if (this.activeSprite.scale[dir] < 0.01) {
+          this.activeSprite.scale[dir] = 0.01
+        }
+
         item.lastPos = newPos
       }
     }
