@@ -32,6 +32,8 @@ const scaleMap = (num, inMin, inMax, outMin, outMax) => {
 }
 
 const normalizeScale = (val) => {
+  // takes the current sprite scale factor
+  // and returns a normalized value between 0 and 100000
   let pos = val
   if (pos > 15) pos = 15
   if (pos < 0) pos = 0
@@ -45,6 +47,10 @@ const normalizeScale = (val) => {
 }
 
 const denormalizeScale = (val) => {
+  // takes a value from a sliding scale
+  // and returns a value between 0 and 15
+  // to be applied to the sprite scale factor
+
   let pos = val
   if (pos > 100000) pos = 100000
   if (pos < 0) pos = 0
@@ -193,11 +199,13 @@ export default class PopItSelection extends Component {
   }
 
   handleResizeHeight(e) {
-    this.game.activeSprite.scale.y = denormalizeScale(e)
+    this.game.activeSprite.scale.y = Math.exp(e)
+    // this.game.activeSprite.scale.y = denormalizeScale(e)
   }
 
   handleResizeWidth(e) {
-    this.game.activeSprite.scale.x = denormalizeScale(e)
+    this.game.activeSprite.scale.x = Math.exp(e)
+    // this.game.activeSprite.scale.x = denormalizeScale(e)
   }
 
   handleResizeBoth(e) {
@@ -208,8 +216,8 @@ export default class PopItSelection extends Component {
       if (e < this.previousScaleBothVal) {
         scaleVal = -scaleVal
       }
-      this.game.activeSprite.scale.x += scaleVal
-      this.game.activeSprite.scale.y += scaleVal
+      this.game.activeSprite.scale.x *= 1 + scaleVal
+      this.game.activeSprite.scale.y *= 1 + scaleVal
       this.previousScaleBothVal = e
       if (this.game.activeSprite.scale.x < 0) {
         this.game.activeSprite.scale.x = 0.01
@@ -291,8 +299,10 @@ export default class PopItSelection extends Component {
 
     if (choice === 'resize') {
       const { x, y } = this.game.activeSprite.scale
-      const normX = normalizeScale(x)
-      const normY = normalizeScale(y)
+      // const normX = normalizeScale(x)
+      // const normY = normalizeScale(y)
+      const normY = Math.log(y)
+      const normX = Math.log(x)
       return (
         <Col fluid>
           <Row>
@@ -301,11 +311,11 @@ export default class PopItSelection extends Component {
           </Row>
           <Row>
             <Label for="rotateControl">Width</Label>
-            <Slider onChange={this.handleResizeWidth} min={0} max={100000} defaultValue={normX} />
+            <Slider onChange={this.handleResizeWidth} min={-5} max={4} step={0.005} defaultValue={normX} />
           </Row>
           <Row>
             <Label for="rotateControl">Height</Label>
-            <Slider onChange={this.handleResizeHeight} min={0} max={100000} defaultValue={normY} />
+            <Slider onChange={this.handleResizeHeight} min={-5} max={4} step={0.005} defaultValue={normY} />
           </Row>
         </Col>
       )
