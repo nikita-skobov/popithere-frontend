@@ -58,7 +58,7 @@ export default class ChatInput extends Component {
           </InputGroupAddon>
           <Input placeholder="Send a message" />
           <InputGroupAddon addonType="append">
-            <Button>Chat</Button>
+            <Button className="btn-popithere">Chat</Button>
           </InputGroupAddon>
         </InputGroup>
       </form>

@@ -254,10 +254,10 @@ export default class PopItSelection extends Component {
       return (
         <Row>
           <Col fluid>
-            <Button onClick={this.handleButton} name="image" block>Pre-Made</Button>
+            <Button className="btn-popithere" onClick={this.handleButton} name="image" block>Pre-Made</Button>
           </Col>
           <Col fluid>
-            <Button onClick={this.handleCustom} name="custom" block>Make your own!</Button>
+            <Button className="btn-popithere" onClick={this.handleCustom} name="custom" block>Make your own!</Button>
           </Col>
         </Row>
       )
@@ -323,8 +323,8 @@ export default class PopItSelection extends Component {
               </FormGroup>
             </Row>
             <Row>
-              <Button className="mr1em" onClick={this.handlePreview} name="submit">Submit</Button>
-              <Button onClick={this.handlePreview} name="cancel">Cancel</Button>
+              <Button className="mr1em btn-popithere" onClick={this.handlePreview} name="submit">Submit</Button>
+              <Button className="btn-popithere" onClick={this.handlePreview} name="cancel">Cancel</Button>
             </Row>
           </Form>
         </Col>
@@ -339,7 +339,7 @@ export default class PopItSelection extends Component {
               <FormGroup>
                 <Label for="filebrowser">Choose an image</Label>
                 <CustomInput onChange={this.handleFile} type="file" label="Choose an image" id="filebrowser" name="customFileBrowser" />
-                <Button className="mt1em" onClick={this.game.modal.toggle} name="cancel">Cancel</Button>
+                <Button className="mt1em btn-popithere" onClick={this.game.modal.toggle} name="cancel">Cancel</Button>
               </FormGroup>
             </Form>
           </Col>
@@ -351,10 +351,10 @@ export default class PopItSelection extends Component {
       return (
         <Row>
           <Col fluid>
-            <Button onClick={this.handleCancel} name="yes" block>Yes</Button>
+            <Button className="btn-popithere" onClick={this.handleCancel} name="yes" block>Yes</Button>
           </Col>
           <Col fluid>
-            <Button onClick={this.handleCancel} name="no" block>No</Button>
+            <Button className="btn-popithere" onClick={this.handleCancel} name="no" block>No</Button>
           </Col>
         </Row>
       )
@@ -378,7 +378,7 @@ export default class PopItSelection extends Component {
               </FormGroup>
             </Row>
             <Row>
-              <Button onClick={this.handleText} name="submit">Submit</Button>
+              <Button className="btn-popithere" onClick={this.handleText} name="submit">Submit</Button>
             </Row>
           </Form>
         </Col>
@@ -443,19 +443,19 @@ export default class PopItSelection extends Component {
 
       return (
         <div>
-          <Button disabled={isLoading} className="mb1em mr1em" onClick={this.handleButton} name="back">Back</Button>
-          <Button disabled={isLoading} className="mb1em mr1em" onClick={refresh} name="refresh">Refresh</Button>
-          <Button disabled={isLoading} className="mb1em mr1em" onClick={mylist} name="mylist">My PopIts</Button>
-          <Button disabled={isLoading} className="mb1em mr1em" onClick={search} name="search">Search</Button>
+          <Button disabled={isLoading} className="mb1em mr1em btn-popithere" onClick={this.handleButton} name="back">Back</Button>
+          <Button disabled={isLoading} className="mb1em mr1em btn-popithere" onClick={refresh} name="refresh">Refresh</Button>
+          <Button disabled={isLoading} className="mb1em mr1em btn-popithere" onClick={mylist} name="mylist">My PopIts</Button>
+          <Button disabled={isLoading} className="mb1em mr1em btn-popithere" onClick={search} name="search">Search</Button>
           {isSearching && (
             <InputGroup className="mb1em">
               <Input onChange={handlePreSearch} type="text" placeholder="Enter a data number" id="searchnum" name="searchnum" />
               <InputGroupAddon addonType="append">
-                <Button disabled={isLoading} onClick={handlePreSearch} name="go">Go</Button>
+                <Button className="btn-popithere" disabled={isLoading} onClick={handlePreSearch} name="go">Go</Button>
               </InputGroupAddon>
             </InputGroup>
           )}
-          <Button className="mb1em" onClick={this.handleButton} name="prev" block disabled={offset === 0 || isLoading}> Previous </Button>
+          <Button className="mb1em btn-popithere" onClick={this.handleButton} name="prev" block disabled={offset === 0 || isLoading}> Previous </Button>
           {ready && (
             <RowGenerator
               isSearching={isSearching}
@@ -466,7 +466,7 @@ export default class PopItSelection extends Component {
               loopArray={loopArray}
             />
           )}
-          <Button onClick={this.handleButton} name="next" block disabled={loopArray.length - this.maxImages <= offset || isLoading}> Next </Button>
+          <Button className="btn-popithere" onClick={this.handleButton} name="next" block disabled={loopArray.length - this.maxImages <= offset || isLoading}> Next </Button>
         </div>
       )
     }

@@ -118,7 +118,7 @@ export default class Buttons extends Component {
 
     return (
       <ButtonDropdown direction="left" isOpen={open} toggle={toggleDropdown}>
-        <DropdownToggle className="btn-override">
+        <DropdownToggle className="btn-popithere">
           <i className="fa fa-bars" />
         </DropdownToggle>
         <DropdownMenu>

@@ -191,7 +191,7 @@ export default class PatreonBenefits extends Component {
               <InputGroup>
                 <Input id="tts-input" invalid={invalidTTSMessage} valid={validTTSMessage} type="text" placeholder="Enter your text here" />
                 <InputGroupAddon addonType="append">
-                  <Button onClick={this.handleBenefit}>Submit</Button>
+                  <Button className="btn-popithere" onClick={this.handleBenefit}>Submit</Button>
                 </InputGroupAddon>
                 {validTTSMessage && (
                   <FormFeedback valid>{validTTSMessage}</FormFeedback>
