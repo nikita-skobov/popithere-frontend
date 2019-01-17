@@ -255,18 +255,10 @@ export default class App extends Component {
     }
     ttsHandler = ttsHandler.bind(this)
 
-    let userStillHere = () => {
-      // if server asks user if they are still here,
-      // user should respond
-      socket.emit('ushi', '')
-    }
-    userStillHere = userStillHere.bind(this)
-
     socket.on('uco', userCountOut)
     socket.on('sno', serverNameOut)
     socket.on('it', invalidTokenHandler)
     socket.on('ttso', ttsHandler)
-    socket.on('usho', userStillHere)
 
     socket.emit('sni', '')
 
@@ -283,7 +275,6 @@ export default class App extends Component {
 
       socket.removeListener('it', invalidTokenHandler)
       socket.removeListener('ttso', ttsHandler)
-      socket.removeListener('usho', userStillHere)
       socket.removeListener('sno', serverNameOut)
       socket.removeListener('disconnect')
     })
