@@ -261,6 +261,7 @@ export default class App extends Component {
     socket.on('ttso', ttsHandler)
 
     socket.emit('sni', '')
+    socket.emit('uci', '')
 
     setInterval(() => {
       socket.emit('uci', '')
