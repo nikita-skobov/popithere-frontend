@@ -10,13 +10,22 @@ import {
   Button,
 } from 'reactstrap'
 
+import PropTypes from 'prop-types'
+
 import { patreonPage, githubPage, discordPage, websitePage, twitterPage } from '../customConfig'
 
-export default function About() {
+export default function About(props) {
+  const { brain } = props
+
+  const userCount = brain.ask.App.getUserCount()
+
   return (
     <Col fluid>
       <Row>
-        <h1 className="ma mthalfem mbhalfem">PopItHere!</h1>
+        <h1 className="ma mthalfem">PopItHere!</h1>
+      </Row>
+      <Row>
+        <p className="ma mbhalfem">Currently Online: {userCount}</p>
       </Row>
       <Row className="cool-bottom-line">
         <h6 className="ml1em mr1em pb1em">
@@ -132,4 +141,8 @@ export default function About() {
       </Row>
     </Col>
   )
+}
+
+About.propTypes = {
+  brain: PropTypes.instanceOf(Object).isRequired,
 }

@@ -34,6 +34,7 @@ export default class App extends Component {
     this.brain.store('App', this)
 
     this.startingModal = ''
+    this.currentUserCount = 0 // start at 0, get update from server later
 
     if (redirect) {
       this.startingModal = {
@@ -51,6 +52,7 @@ export default class App extends Component {
     this.afterSocketVerification = this.afterSocketVerification.bind(this)
     this.doLogInProcess = this.doLogInProcess.bind(this)
     this.onWelcomeDone = this.onWelcomeDone.bind(this)
+    this.getUserCount = this.getUserCount.bind(this)
 
     const tokenManager = this.brain.ask.Tokens
     const token = tokenManager.getToken()
@@ -103,6 +105,10 @@ export default class App extends Component {
       }
     }
     this.setState({ ready: true })
+  }
+
+  getUserCount() {
+    return this.currentUserCount
   }
 
   doLogInProcess() {
@@ -204,9 +210,10 @@ export default class App extends Component {
     }
     serverNameOut = serverNameOut.bind(this)
 
-    socket.emit('sni', '')
-    socket.on('sno', serverNameOut)
-
+    let userCountOut = (uc) => {
+      this.currentUserCount = uc
+    }
+    userCountOut = userCountOut.bind(this)
 
     let invalidTokenHandler = () => {
       // invalid token
@@ -247,9 +254,17 @@ export default class App extends Component {
     }
     ttsHandler = ttsHandler.bind(this)
 
-
+    socket.on('uco', userCountOut)
+    socket.on('sno', serverNameOut)
     socket.on('it', invalidTokenHandler)
     socket.on('ttso', ttsHandler)
+
+    socket.emit('sni', '')
+    socket.emit('uci', '')
+
+    setInterval(() => {
+      socket.emit('uci', '')
+    }, 30000)
 
     socket.on('disconnect', () => {
       this.brain.tell.AlertSystem.addAlert({

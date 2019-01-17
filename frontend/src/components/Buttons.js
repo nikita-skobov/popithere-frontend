@@ -45,7 +45,7 @@ export default class Buttons extends Component {
         text: 'About',
         size: 'lg',
         modal: () => (
-          <About />
+          <About brain={this.brain} />
         ),
       },
       options: {
