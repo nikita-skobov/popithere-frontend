@@ -91,6 +91,7 @@ function UploadManager(datastore) {
             brain.tell.Welcome.addMessage('Successfully Uploaded!')
             brain.tell.Welcome.addMessage('Your data number is: ')
             brain.tell.Welcome.addMessage(`${dataNumber}`)
+            brain.tell.Welcome.addMessage('Note: sometimes it might take a few minutes for your data to appear. If you dont see your data after 5 minutes, please email equilateralllc@gmail.com with your data number.')
             brain.tell.Welcome.welcomeDone()
           } else {
             cbErr = 'Error uploading data to server'
