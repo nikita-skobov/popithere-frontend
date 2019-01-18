@@ -450,11 +450,11 @@ export default class PopItSelection extends Component {
             </Row>
             <Row className="pb1em">
               <Dropdown isOpen={isDropdownOpen} toggle={this.toggleTextDropdown}>
-                <DropdownToggle className="btn-popithere" caret>
+                <DropdownToggle style={{ fontFamily }} className="btn-popithere" caret>
                   {fontFamily}
                 </DropdownToggle>
                 <DropdownMenu>
-                  {fontList.map(fontName => <DropdownItem onClick={this.handleFontSelect}>{fontName}</DropdownItem>)}
+                  {fontList.map(fontName => <DropdownItem style={{ fontFamily: fontName }} onClick={this.handleFontSelect}>{fontName}</DropdownItem>)}
                 </DropdownMenu>
               </Dropdown>
             </Row>
