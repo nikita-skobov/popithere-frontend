@@ -446,6 +446,19 @@ export default class PopItSelection extends Component {
               </FormGroup>
             </Row>
             <Row>
+              <Label>Font: </Label>
+            </Row>
+            <Row className="pb1em">
+              <Dropdown isOpen={isDropdownOpen} toggle={this.toggleTextDropdown}>
+                <DropdownToggle className="btn-popithere" caret>
+                  {fontFamily}
+                </DropdownToggle>
+                <DropdownMenu>
+                  {fontList.map(fontName => <DropdownItem onClick={this.handleFontSelect}>{fontName}</DropdownItem>)}
+                </DropdownMenu>
+              </Dropdown>
+            </Row>
+            <Row>
               <Label>Color: </Label>
             </Row>
             <Row className="pb1em">
@@ -453,16 +466,6 @@ export default class PopItSelection extends Component {
             </Row>
             <Row className="pb1em">
               <Slider onChange={this.handleTextColor} min={-1} max={360} step={0.01} defaultValue={-1} />
-            </Row>
-            <Row>
-              <Dropdown isOpen={isDropdownOpen} toggle={this.toggleTextDropdown}>
-                <DropdownToggle caret>
-                  {fontFamily}
-                </DropdownToggle>
-                <DropdownMenu>
-                  {fontList.map(fontName => <DropdownItem onClick={this.handleFontSelect}>{fontName}</DropdownItem>)}
-                </DropdownMenu>
-              </Dropdown>
             </Row>
             <Row>
               <Button className="btn-popithere" onClick={this.handleText} name="submit">Submit</Button>
