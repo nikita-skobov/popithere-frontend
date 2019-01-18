@@ -462,10 +462,10 @@ export default class PopItSelection extends Component {
               <Label>Color: </Label>
             </Row>
             <Row className="pb1em">
-              <div className="w100" style={{ border: '1px solid black', height: '40px', backgroundColor: fill }} />
+              <Slider onChange={this.handleTextColor} min={-1} max={360} step={0.01} defaultValue={275} />
             </Row>
             <Row className="pb1em">
-              <Slider onChange={this.handleTextColor} min={-1} max={360} step={0.01} defaultValue={275} />
+              <div className="w100" style={{ border: '1px solid black', height: '40px', backgroundColor: fill }} />
             </Row>
             <Row>
               <Button className="btn-popithere" onClick={this.handleText} name="submit">Submit</Button>
