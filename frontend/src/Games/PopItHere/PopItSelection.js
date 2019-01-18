@@ -94,7 +94,7 @@ export default class PopItSelection extends Component {
       isLoading: false,
       invalidInput: false,
       textInput: '',
-      fill: 'black',
+      fill: 'hsl(275, 100%, 50%)', // popithere color is the default
       isDropdownOpen: false,
       fontFamily: fontList[0],
       fontSize: 100,
@@ -465,7 +465,7 @@ export default class PopItSelection extends Component {
               <div className="w100" style={{ border: '1px solid black', height: '40px', backgroundColor: fill }} />
             </Row>
             <Row className="pb1em">
-              <Slider onChange={this.handleTextColor} min={-1} max={360} step={0.01} defaultValue={-1} />
+              <Slider onChange={this.handleTextColor} min={-1} max={360} step={0.01} defaultValue={275} />
             </Row>
             <Row>
               <Button className="btn-popithere" onClick={this.handleText} name="submit">Submit</Button>
