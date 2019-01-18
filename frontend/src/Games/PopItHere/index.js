@@ -71,6 +71,7 @@ export default class PopItHere extends Game {
     this.textures = {}
     this.previewImages = []
     this.userPopitList = []
+    this.buildingTextures = {}
     this.loadTextures()
 
     this.poppingName = null
@@ -88,6 +89,8 @@ export default class PopItHere extends Game {
     this.popItChosenLive = this.popItChosenLive.bind(this)
     this.stopPoppingLive = this.stopPoppingLive.bind(this)
     this.reloadTextures = this.reloadTextures.bind(this)
+    this.currentlyBuildingTexture = this.currentlyBuildingTexture.bind(this)
+    this.doneBuildingTexture = this.doneBuildingTexture.bind(this)
 
     // config for custom build mode
     this.customBuildMode = false
@@ -1115,11 +1118,17 @@ export default class PopItHere extends Game {
     if (this.hasTexture(textureName)) {
       this.placeTexture(textureName, pos)
     } else {
+      console.log(`I dont have texture: ${textureName}`)
       const sprite = this.placeTexture(this.placeholder.name, pos)
       this.dataMan.getDataLater(textureName, async (err, data) => {
         let newTexture
-        if (!this.hasTexture(textureName)) {
+        const currentlyBuilding = this.currentlyBuildingTexture(textureName)
+        if (!this.hasTexture(textureName) && !currentlyBuilding) {
+          console.log(`gonna start building: ${textureName}`)
           newTexture = await this.buildTextureAndPreview(textureName, data)
+        } else if (currentlyBuilding) {
+          console.log(`already building: ${textureName}`)
+          // newTexture = await this.waitForTextureBuild(textureName)
         } else {
           newTexture = this.textures[textureName]
         }
@@ -1186,8 +1195,32 @@ export default class PopItHere extends Game {
     }
   }
 
+  currentlyBuildingTexture(name, append) {
+    const isCurrentlyBuilding = has.call(this.buildingTextures, name)
+    if (append) {
+      this.buildingTextures[name] = []
+    }
+    return isCurrentlyBuilding
+  }
+
+  doneBuildingTexture(name, texture) {
+    try {
+      const callbacks = this.buildingTextures[name]
+      if (Array.isArray(callbacks)) {
+        callbacks.forEach((cb) => {
+          cb(texture)
+        })
+      }
+      delete this.buildingTextures[name]
+    } catch (e) {
+      console.error(`failed to issue callbacks after building texture: ${name}`)
+      console.error(e)
+    }
+  }
+
   buildTextureAndPreview(name, data) {
     const tempTextures = []
+    this.currentlyBuildingTexture(name, true)
     return new Promise((res, rej) => {
       try {
         data.forEach(async (b64str, index) => {
@@ -1199,6 +1232,7 @@ export default class PopItHere extends Game {
             })
             tempTextures.push(texture)
             if (index === 0) {
+              console.log(`adding ${name} to previewImage list`)
               this.previewImages.push({
                 name,
                 url: imgStr,
@@ -1206,6 +1240,7 @@ export default class PopItHere extends Game {
             }
             if (index === data.length - 1) {
               this.textures[name] = tempTextures
+              this.doneBuildingTexture(name, this.textures[name])
               return res(this.textures[name])
             }
           } catch (e) {
