@@ -261,6 +261,11 @@ export default class PopItSelection extends Component {
   render() {
     const { choice, loadingError } = this.state
 
+    let closeModal = () => {
+      this.game.modal.toggle()
+    }
+    closeModal = closeModal.bind(this)
+
     if (choice === 'none') {
       return (
         <Row>
@@ -276,11 +281,16 @@ export default class PopItSelection extends Component {
 
     if (choice === 'loading') {
       return (
-        <Row>
-          <Col fluid>
-            <Progress animated value={100} color={loadingError ? 'danger' : 'success'}>{loadingError ? `Error: ${loadingError}` : 'Loading'}</Progress>
-          </Col>
-        </Row>
+        <Col fluid>
+          <Row>
+            <Progress className="w100 mb1em" animated value={100} color={loadingError ? 'danger' : 'success'}>{loadingError ? `Error: ${loadingError}` : 'Loading'}</Progress>
+          </Row>
+          {loadingError && (
+            <Row>
+              <Button onClick={closeModal} className="btn-popithere">Close</Button>
+            </Row>
+          )}
+        </Col>
       )
     }
 
