@@ -80,7 +80,7 @@ export default class PopItSelection extends Component {
       invalidInput: false,
       textInput: '',
       fill: 'black',
-      fontSize: 26,
+      fontSize: 100,
       loadingError: '',
       choice: props.startingChoice || 'none',
       offset: 0,
