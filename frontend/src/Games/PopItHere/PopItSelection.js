@@ -119,6 +119,9 @@ export default class PopItSelection extends Component {
         const gif = await createImage({ file, makeTexture: false })
         const textures = await createGifTextures(gif)
         this.textureLoaded(textures)
+      } else if (file.type !== 'image/bmp' && file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/svg+xml') {
+        // all other formats are not allowed
+        throw new Error(`Unsupported file format: ${file.type}`)
       } else {
         const texture = await createImage({ file })
         this.textureLoaded(texture)
@@ -348,7 +351,7 @@ export default class PopItSelection extends Component {
             <Form onSubmit={notSubmit}>
               <FormGroup>
                 <Label for="filebrowser">Choose an image</Label>
-                <CustomInput onChange={this.handleFile} type="file" accept=".jpeg,.jpg,.gif,.png,.bmp" label="Choose an image" id="filebrowser" name="customFileBrowser" />
+                <CustomInput onChange={this.handleFile} type="file" accept=".jpeg,.jpg,.gif,.png,.bmp,.svg" label="Choose an image" id="filebrowser" name="customFileBrowser" />
                 <Button className="mt1em btn-popithere" onClick={this.game.modal.toggle} name="cancel">Cancel</Button>
               </FormGroup>
             </Form>
