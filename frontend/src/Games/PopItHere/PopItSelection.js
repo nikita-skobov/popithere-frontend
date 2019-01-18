@@ -26,6 +26,7 @@ import RowGenerator from './RowGenerator'
 
 import { createImage, createGifTextures } from '../../utils/PixiUtils'
 import ContainsBadWords from '../../utils/ContainsBadWords'
+import Detector from '../../utils/FontDetector'
 
 const notSubmit = (e) => {
   e.preventDefault()
@@ -35,7 +36,7 @@ const scaleMap = (num, inMin, inMax, outMin, outMax) => {
   return (num - inMin) * (outMax - outMin) / (inMax - inMin) + outMin
 }
 
-const fontList = [
+const testFontList = [
   'Arial',
   'Times New Roman',
   'Georgia',
@@ -45,6 +46,15 @@ const fontList = [
   'Verdana',
   'Courier New',
 ]
+
+const fontList = []
+
+const fontDetector = new Detector()
+testFontList.forEach((font) => {
+  if (fontDetector.detect(font)) {
+    fontList.push(font)
+  }
+})
 
 const normalizeScale = (val) => {
   // takes the current sprite scale factor
