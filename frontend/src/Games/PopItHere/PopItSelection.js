@@ -79,6 +79,7 @@ export default class PopItSelection extends Component {
       isLoading: false,
       invalidInput: false,
       textInput: '',
+      fill: 'black',
       fontSize: 26,
       loadingError: '',
       choice: props.startingChoice || 'none',
@@ -93,6 +94,7 @@ export default class PopItSelection extends Component {
     this.handleRotate = this.handleRotate.bind(this)
     this.handlePreview = this.handlePreview.bind(this)
     this.handleText = this.handleText.bind(this)
+    this.handleTextColor = this.handleTextColor.bind(this)
     this.handleResizeWidth = this.handleResizeWidth.bind(this)
     this.handleResizeHeight = this.handleResizeHeight.bind(this)
     this.handleResizeBoth = this.handleResizeBoth.bind(this)
@@ -167,16 +169,26 @@ export default class PopItSelection extends Component {
     }
   }
 
+  handleTextColor(e) {
+    if (e < 0) {
+      this.setState({ fill: 'black' })
+    } else if (e > 359) {
+      this.setState({ fill: 'white' })
+    } else {
+      this.setState({ fill: `hsl(${e}, 100%, 50%)` })
+    }
+  }
+
   handleText(e) {
     e.preventDefault()
     const { name, value } = e.target
     if (name === 'text') {
       this.setState({ textInput: value })
     } else if (name === 'submit') {
-      const { textInput, fontSize } = this.state
+      const { textInput, fontSize, fill } = this.state
 
       if (!ContainsBadWords(textInput)) {
-        this.game.customNewImage(textInput, 'text', { fontSize })
+        this.game.customNewImage(textInput, 'text', { fontSize, fill })
         this.game.modal.toggle()
       } else {
         this.setState({ invalidInput: true })
@@ -384,7 +396,7 @@ export default class PopItSelection extends Component {
     }
 
     if (choice === 'text') {
-      const { fontSize, invalidInput } = this.state
+      const { fontSize, invalidInput, fill } = this.state
       return (
         <Col fluid>
           <Form onSubmit={notSubmit}>
@@ -399,6 +411,15 @@ export default class PopItSelection extends Component {
                 <Label for="textinputsize">Size: </Label>
                 <Input onChange={this.handleText} defaultValue={fontSize} type="number" id="textinputsize" name="size" />
               </FormGroup>
+            </Row>
+            <Row>
+              <Label>Color: </Label>
+            </Row>
+            <Row className="pb1em">
+              <div className="w100" style={{ height: '40px', backgroundColor: fill }} />
+            </Row>
+            <Row className="pb1em">
+              <Slider onChange={this.handleTextColor} min={-1} max={360} step={0.01} defaultValue={-1} />
             </Row>
             <Row>
               <Button className="btn-popithere" onClick={this.handleText} name="submit">Submit</Button>
