@@ -91,6 +91,7 @@ export default class PopItHere extends Game {
     this.reloadTextures = this.reloadTextures.bind(this)
     this.currentlyBuildingTexture = this.currentlyBuildingTexture.bind(this)
     this.doneBuildingTexture = this.doneBuildingTexture.bind(this)
+    this.waitForTextureBuild = this.waitForTextureBuild.bind(this)
 
     // config for custom build mode
     this.customBuildMode = false
@@ -1118,7 +1119,6 @@ export default class PopItHere extends Game {
     if (this.hasTexture(textureName)) {
       this.placeTexture(textureName, pos)
     } else {
-      console.log(`I dont have texture: ${textureName}`)
       const sprite = this.placeTexture(this.placeholder.name, pos)
       this.dataMan.getDataLater(textureName, async (err, data) => {
         let newTexture
@@ -1128,7 +1128,8 @@ export default class PopItHere extends Game {
           newTexture = await this.buildTextureAndPreview(textureName, data)
         } else if (currentlyBuilding) {
           console.log(`already building: ${textureName}`)
-          // newTexture = await this.waitForTextureBuild(textureName)
+          newTexture = await this.waitForTextureBuild(textureName)
+          console.log(`resolve promise for texture name: ${textureName}`)
         } else {
           newTexture = this.textures[textureName]
         }
@@ -1195,6 +1196,28 @@ export default class PopItHere extends Game {
     }
   }
 
+  waitForTextureBuild(name) {
+    return new Promise((res, rej) => {
+      try {
+        if (this.currentlyBuildingTexture(name)) {
+          this.buildingTextures[name].push((data) => {
+            return res(data)
+          })
+          return null
+        }
+        if (this.textures[name]) {
+          return res(this.textures[name])
+        }
+        const notBuildingAndNonExistantTextureErr = new Error(
+          'texture is not being built, and we also do not have it... why was this function called?',
+        )
+        return rej(notBuildingAndNonExistantTextureErr)
+      } catch (e) {
+        return rej(e)
+      }
+    })
+  }
+
   currentlyBuildingTexture(name, append) {
     const isCurrentlyBuilding = has.call(this.buildingTextures, name)
     if (append) {
@@ -1232,7 +1255,6 @@ export default class PopItHere extends Game {
             })
             tempTextures.push(texture)
             if (index === 0) {
-              console.log(`adding ${name} to previewImage list`)
               this.previewImages.push({
                 name,
                 url: imgStr,
