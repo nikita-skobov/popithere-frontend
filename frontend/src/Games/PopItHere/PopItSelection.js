@@ -8,6 +8,10 @@ import {
   FormGroup,
   InputGroup,
   InputGroupAddon,
+  Dropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
   Label,
   Progress,
   Input,
@@ -22,6 +26,7 @@ import RowGenerator from './RowGenerator'
 
 import { createImage, createGifTextures } from '../../utils/PixiUtils'
 import ContainsBadWords from '../../utils/ContainsBadWords'
+import Detector from '../../utils/FontDetector'
 
 const notSubmit = (e) => {
   e.preventDefault()
@@ -30,6 +35,26 @@ const notSubmit = (e) => {
 const scaleMap = (num, inMin, inMax, outMin, outMax) => {
   return (num - inMin) * (outMax - outMin) / (inMax - inMin) + outMin
 }
+
+const testFontList = [
+  'Arial',
+  'Times New Roman',
+  'Georgia',
+  'Comic Sans MS',
+  'Impact',
+  'Trebuchet MS',
+  'Verdana',
+  'Courier New',
+]
+
+const fontList = []
+
+const fontDetector = new Detector()
+testFontList.forEach((font) => {
+  if (fontDetector.detect(font)) {
+    fontList.push(font)
+  }
+})
 
 const normalizeScale = (val) => {
   // takes the current sprite scale factor
@@ -79,7 +104,10 @@ export default class PopItSelection extends Component {
       isLoading: false,
       invalidInput: false,
       textInput: '',
-      fontSize: 26,
+      fill: 'hsl(275, 100%, 50%)', // popithere color is the default
+      isDropdownOpen: false,
+      fontFamily: fontList[0],
+      fontSize: 100,
       loadingError: '',
       choice: props.startingChoice || 'none',
       offset: 0,
@@ -93,6 +121,9 @@ export default class PopItSelection extends Component {
     this.handleRotate = this.handleRotate.bind(this)
     this.handlePreview = this.handlePreview.bind(this)
     this.handleText = this.handleText.bind(this)
+    this.toggleTextDropdown = this.toggleTextDropdown.bind(this)
+    this.handleTextColor = this.handleTextColor.bind(this)
+    this.handleFontSelect = this.handleFontSelect.bind(this)
     this.handleResizeWidth = this.handleResizeWidth.bind(this)
     this.handleResizeHeight = this.handleResizeHeight.bind(this)
     this.handleResizeBoth = this.handleResizeBoth.bind(this)
@@ -167,16 +198,40 @@ export default class PopItSelection extends Component {
     }
   }
 
+  handleTextColor(e) {
+    if (e < 0) {
+      this.setState({ fill: 'black' })
+    } else if (e > 359) {
+      this.setState({ fill: 'white' })
+    } else {
+      this.setState({ fill: `hsl(${e}, 100%, 50%)` })
+    }
+  }
+
+  handleFontSelect(e) {
+    const { target } = e
+    const { innerHTML } = target
+    this.setState({ fontFamily: innerHTML })
+  }
+
+  toggleTextDropdown() {
+    this.setState((prevState) => {
+      const tempState = prevState
+      tempState.isDropdownOpen = !tempState.isDropdownOpen
+      return tempState
+    })
+  }
+
   handleText(e) {
     e.preventDefault()
     const { name, value } = e.target
     if (name === 'text') {
       this.setState({ textInput: value })
     } else if (name === 'submit') {
-      const { textInput, fontSize } = this.state
+      const { textInput, fontSize, fill, fontFamily } = this.state
 
       if (!ContainsBadWords(textInput)) {
-        this.game.customNewImage(textInput, 'text', { fontSize })
+        this.game.customNewImage(textInput, 'text', { fontSize, fill, fontFamily })
         this.game.modal.toggle()
       } else {
         this.setState({ invalidInput: true })
@@ -384,7 +439,7 @@ export default class PopItSelection extends Component {
     }
 
     if (choice === 'text') {
-      const { fontSize, invalidInput } = this.state
+      const { fontSize, invalidInput, fill, isDropdownOpen, fontFamily } = this.state
       return (
         <Col fluid>
           <Form onSubmit={notSubmit}>
@@ -399,6 +454,28 @@ export default class PopItSelection extends Component {
                 <Label for="textinputsize">Size: </Label>
                 <Input onChange={this.handleText} defaultValue={fontSize} type="number" id="textinputsize" name="size" />
               </FormGroup>
+            </Row>
+            <Row>
+              <Label>Font: </Label>
+            </Row>
+            <Row className="pb1em">
+              <Dropdown isOpen={isDropdownOpen} toggle={this.toggleTextDropdown}>
+                <DropdownToggle style={{ fontFamily }} className="btn-popithere" caret>
+                  {fontFamily}
+                </DropdownToggle>
+                <DropdownMenu>
+                  {fontList.map(fontName => <DropdownItem style={{ fontFamily: fontName }} onClick={this.handleFontSelect}>{fontName}</DropdownItem>)}
+                </DropdownMenu>
+              </Dropdown>
+            </Row>
+            <Row>
+              <Label>Color: </Label>
+            </Row>
+            <Row className="pb1em">
+              <Slider onChange={this.handleTextColor} min={-1} max={360} step={0.01} defaultValue={275} />
+            </Row>
+            <Row className="pb1em">
+              <div className="w100" style={{ border: '1px solid black', height: '40px', backgroundColor: fill }} />
             </Row>
             <Row>
               <Button className="btn-popithere" onClick={this.handleText} name="submit">Submit</Button>
