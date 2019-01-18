@@ -8,6 +8,10 @@ import {
   FormGroup,
   InputGroup,
   InputGroupAddon,
+  Dropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
   Label,
   Progress,
   Input,
@@ -30,6 +34,17 @@ const notSubmit = (e) => {
 const scaleMap = (num, inMin, inMax, outMin, outMax) => {
   return (num - inMin) * (outMax - outMin) / (inMax - inMin) + outMin
 }
+
+const fontList = [
+  'Arial',
+  'Times New Roman',
+  'Georgia',
+  'Comic Sans MS',
+  'Impact',
+  'Trebuchet MS',
+  'Verdana',
+  'Courier New',
+]
 
 const normalizeScale = (val) => {
   // takes the current sprite scale factor
@@ -80,6 +95,8 @@ export default class PopItSelection extends Component {
       invalidInput: false,
       textInput: '',
       fill: 'black',
+      isDropdownOpen: false,
+      fontFamily: fontList[0],
       fontSize: 100,
       loadingError: '',
       choice: props.startingChoice || 'none',
@@ -94,7 +111,9 @@ export default class PopItSelection extends Component {
     this.handleRotate = this.handleRotate.bind(this)
     this.handlePreview = this.handlePreview.bind(this)
     this.handleText = this.handleText.bind(this)
+    this.toggleTextDropdown = this.toggleTextDropdown.bind(this)
     this.handleTextColor = this.handleTextColor.bind(this)
+    this.handleFontSelect = this.handleFontSelect.bind(this)
     this.handleResizeWidth = this.handleResizeWidth.bind(this)
     this.handleResizeHeight = this.handleResizeHeight.bind(this)
     this.handleResizeBoth = this.handleResizeBoth.bind(this)
@@ -179,16 +198,30 @@ export default class PopItSelection extends Component {
     }
   }
 
+  handleFontSelect(e) {
+    const { target } = e
+    const { innerHTML } = target
+    this.setState({ fontFamily: innerHTML })
+  }
+
+  toggleTextDropdown() {
+    this.setState((prevState) => {
+      const tempState = prevState
+      tempState.isDropdownOpen = !tempState.isDropdownOpen
+      return tempState
+    })
+  }
+
   handleText(e) {
     e.preventDefault()
     const { name, value } = e.target
     if (name === 'text') {
       this.setState({ textInput: value })
     } else if (name === 'submit') {
-      const { textInput, fontSize, fill } = this.state
+      const { textInput, fontSize, fill, fontFamily } = this.state
 
       if (!ContainsBadWords(textInput)) {
-        this.game.customNewImage(textInput, 'text', { fontSize, fill })
+        this.game.customNewImage(textInput, 'text', { fontSize, fill, fontFamily })
         this.game.modal.toggle()
       } else {
         this.setState({ invalidInput: true })
@@ -396,7 +429,7 @@ export default class PopItSelection extends Component {
     }
 
     if (choice === 'text') {
-      const { fontSize, invalidInput, fill } = this.state
+      const { fontSize, invalidInput, fill, isDropdownOpen, fontFamily } = this.state
       return (
         <Col fluid>
           <Form onSubmit={notSubmit}>
@@ -420,6 +453,16 @@ export default class PopItSelection extends Component {
             </Row>
             <Row className="pb1em">
               <Slider onChange={this.handleTextColor} min={-1} max={360} step={0.01} defaultValue={-1} />
+            </Row>
+            <Row>
+              <Dropdown isOpen={isDropdownOpen} toggle={this.toggleTextDropdown}>
+                <DropdownToggle caret>
+                  {fontFamily}
+                </DropdownToggle>
+                <DropdownMenu>
+                  {fontList.map(fontName => <DropdownItem onClick={this.handleFontSelect}>{fontName}</DropdownItem>)}
+                </DropdownMenu>
+              </Dropdown>
             </Row>
             <Row>
               <Button className="btn-popithere" onClick={this.handleText} name="submit">Submit</Button>
