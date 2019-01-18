@@ -78,6 +78,10 @@ function UploadManager(datastore) {
 
       const data = tempData[key]
 
+      if (token === 'notoken') {
+        brain.tell.Welcome.addMessage('Cannot upload data without a token. Please try refreshing your page to generate a new token.', true)
+      }
+
       const resp1 = (r) => {
         brain.tell.Welcome.addMessage('Got response', true)
 
@@ -193,7 +197,12 @@ function UploadManager(datastore) {
           .catch(errCatcher)
       }
 
-      rootFetch()
+      if (token === 'notoken') {
+        cbErr = 'cannot upload with notoken'
+        brain.tell.Welcome.welcomeDone()
+      } else {
+        rootFetch()
+      }
     },
   }
 
