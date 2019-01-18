@@ -1289,8 +1289,8 @@ export default class PopItHere extends Game {
       if (!this.alertSystem.isAlertOpen()) {
         this.alertSystem.addAlert({
           color: 'warning',
-          text: `You have reached your limit of ${limit} popits per ${Math.floor(interval / 1000)} seconds. You will be able to place popits again in about ${Math.floor(nextTime / 1000)} seconds`,
-          countdown: nextTime + 1000,
+          text: `You have reached your limit of ${limit} popits per ${Math.floor(interval / 1000)} seconds. You will be able to place popits again in about ${typeof nextTime !== 'number' ? 'Infinity' : Math.floor(nextTime / 1000)} seconds`,
+          countdown: typeof nextTime !== 'number' ? 5000 : nextTime + 1000,
         })
       }
     }
