@@ -78,7 +78,6 @@ export default class Buttons extends Component {
     if (defaultButtons.includes(name)) {
       if (name === 'mutechat') {
         this.brain.tell.ChatBox.toggleMuteChat()
-        console.log('muting chat')
       } else if (has.call(this.defaultModals, name)) {
         this.brain.tell.MyModal.toggle(this.defaultModals[name])
       } else {

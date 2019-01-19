@@ -44,8 +44,6 @@ export default class PatreonBenefits extends Component {
       tts: tm.getClaim('tts'),
     }
 
-    console.log(claims)
-
     let tierLevel = 'notoken'
     if (claims.pit && claims.cht && claims.myo && claims.tts >= 0) {
       tierLevel = 'notier'

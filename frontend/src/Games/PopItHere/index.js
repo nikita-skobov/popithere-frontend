@@ -40,7 +40,6 @@ export default class PopItHere extends Game {
       name: 'popit',
       text: 'Pop It!',
       on: () => {
-        console.log('ya pressed tha button!!!')
         this.previewImages = this.sortBaseX(this.previewImages, 'name', 32)
       },
       modal: () => (
@@ -1065,7 +1064,6 @@ export default class PopItHere extends Game {
   }
 
   pointerDown(event) {
-    console.log('pointer down')
     const clickPos = getLocalPosition(event, this.root)
     if (Array.isArray(this.poppingName)) {
       // if an array of textures, then treat it as a gif
@@ -1124,12 +1122,12 @@ export default class PopItHere extends Game {
         let newTexture
         const currentlyBuilding = this.currentlyBuildingTexture(textureName)
         if (!this.hasTexture(textureName) && !currentlyBuilding) {
-          console.log(`gonna start building: ${textureName}`)
+          // console.log(`gonna start building: ${textureName}`)
           newTexture = await this.buildTextureAndPreview(textureName, data)
         } else if (currentlyBuilding) {
-          console.log(`already building: ${textureName}`)
+          // console.log(`already building: ${textureName}`)
           newTexture = await this.waitForTextureBuild(textureName)
-          console.log(`resolve promise for texture name: ${textureName}`)
+          // console.log(`resolve promise for texture name: ${textureName}`)
         } else {
           newTexture = this.textures[textureName]
         }
