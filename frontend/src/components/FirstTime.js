@@ -5,7 +5,8 @@ import {
   Carousel,
   CarouselItem,
   CarouselControl,
-  CarouselCaption,
+  Col,
+  Row,
 } from 'reactstrap'
 
 import { firstTimeItems } from '../customConfig'
@@ -59,26 +60,34 @@ export default class FirstTime extends Component {
         onExited={this.onExited}
         key={item.src}
       >
-        <img className="w100" src={item.src} alt={item.altText} />
-        <CarouselCaption className="crsbk" captionText={item.caption} captionHeader={item.header} />
+        <img key={item.src} className="w100" src={item.src} alt={item.altText} />
       </CarouselItem>
     ))
 
     return (
-      <Carousel
-        activeIndex={activeIndex}
-        next={this.next}
-        previous={this.previous}
-        interval={false}
-      >
-        {slides}
-        {activeIndex > 0 && (
-          <CarouselControl className="ccc" direction="prev" directionText="Previous" onClickHandler={this.previous} />
-        )}
-        {activeIndex < this.items.length - 1 && (
-          <CarouselControl className="ccc" direction="next" directionText="Next" onClickHandler={this.next} />
-        )}
-      </Carousel>
+      <Col fluid>
+        <Row>
+          <Carousel
+            activeIndex={activeIndex}
+            next={this.next}
+            previous={this.previous}
+            interval={false}
+          >
+            {slides}
+            {activeIndex > 0 && (
+              <CarouselControl className="ccc" direction="prev" directionText="Previous" onClickHandler={this.previous} />
+            )}
+            {activeIndex < this.items.length - 1 && (
+              <CarouselControl className="ccc" direction="next" directionText="Next" onClickHandler={this.next} />
+            )}
+          </Carousel>
+        </Row>
+        <Row>
+          <h5 className="text-center" key={activeIndex}>
+            {firstTimeItems.latest[activeIndex].header}
+          </h5>
+        </Row>
+      </Col>
     )
   }
 }
