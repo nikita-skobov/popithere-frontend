@@ -5,7 +5,9 @@ import {
   Carousel,
   CarouselItem,
   CarouselControl,
-  CarouselCaption,
+  Col,
+  Row,
+  Button,
 } from 'reactstrap'
 
 import { firstTimeItems } from '../customConfig'
@@ -59,26 +61,40 @@ export default class FirstTime extends Component {
         onExited={this.onExited}
         key={item.src}
       >
-        <img className="w100" src={item.src} alt={item.altText} />
-        <CarouselCaption className="crsbk" captionText={item.caption} captionHeader={item.header} />
+        <img key={item.src} className="w100" src={item.src} alt={item.altText} />
       </CarouselItem>
     ))
 
     return (
-      <Carousel
-        activeIndex={activeIndex}
-        next={this.next}
-        previous={this.previous}
-        interval={false}
-      >
-        {slides}
-        {activeIndex > 0 && (
-          <CarouselControl className="ccc" direction="prev" directionText="Previous" onClickHandler={this.previous} />
-        )}
-        {activeIndex < this.items.length - 1 && (
-          <CarouselControl className="ccc" direction="next" directionText="Next" onClickHandler={this.next} />
-        )}
-      </Carousel>
+      <Col fluid>
+        <Row className="pb1em">
+          <Carousel
+            activeIndex={activeIndex}
+            next={this.next}
+            previous={this.previous}
+            interval={false}
+          >
+            {slides}
+          </Carousel>
+        </Row>
+        <Row>
+          <div className="dil w10p">
+            <Button onClick={this.previous} disabled={activeIndex <= 0} className="btn-popithere half-trans floatleft">
+              {'<'}
+            </Button>
+          </div>
+          <div className="dil w80p pshalfem">
+            <h5 className="text-center" key={activeIndex}>
+              {firstTimeItems.latest[activeIndex].header}
+            </h5>
+          </div>
+          <div className="dil w10p">
+            <Button onClick={this.next} disabled={activeIndex >= this.items.length - 1} className="btn-popithere half-trans floatright">
+              {'>'}
+            </Button>
+          </div>
+        </Row>
+      </Col>
     )
   }
 }
