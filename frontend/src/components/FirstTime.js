@@ -7,6 +7,7 @@ import {
   CarouselControl,
   Col,
   Row,
+  Button,
 } from 'reactstrap'
 
 import { firstTimeItems } from '../customConfig'
@@ -66,7 +67,7 @@ export default class FirstTime extends Component {
 
     return (
       <Col fluid>
-        <Row>
+        <Row className="pb1em">
           <Carousel
             activeIndex={activeIndex}
             next={this.next}
@@ -74,18 +75,24 @@ export default class FirstTime extends Component {
             interval={false}
           >
             {slides}
-            {activeIndex > 0 && (
-              <CarouselControl className="ccc" direction="prev" directionText="Previous" onClickHandler={this.previous} />
-            )}
-            {activeIndex < this.items.length - 1 && (
-              <CarouselControl className="ccc" direction="next" directionText="Next" onClickHandler={this.next} />
-            )}
           </Carousel>
         </Row>
         <Row>
-          <h5 className="text-center" key={activeIndex}>
-            {firstTimeItems.latest[activeIndex].header}
-          </h5>
+          <div className="dil w10p">
+            <Button onClick={this.previous} disabled={activeIndex <= 0} className="btn-popithere half-trans floatleft">
+              {'<'}
+            </Button>
+          </div>
+          <div className="dil w80p pshalfem">
+            <h5 className="text-center" key={activeIndex}>
+              {firstTimeItems.latest[activeIndex].header}
+            </h5>
+          </div>
+          <div className="dil w10p">
+            <Button onClick={this.next} disabled={activeIndex >= this.items.length - 1} className="btn-popithere half-trans floatright">
+              {'>'}
+            </Button>
+          </div>
         </Row>
       </Col>
     )
