@@ -10,55 +10,31 @@ exports.firstTimeItems = {
     },
     {
       src: '/images/tutorial_clips/v1/anim__3.gif',
-      header: 'To choose your image or gif (called a PopIt), click on the burger menu located near the chat bar, and select "Pop It!"',
+      header: 'To choose your image or gif (called a PopIt), click on the burger menu located near the chat bar, and select "Pop It!". Then click "Pre-Made", and then pick a PopIt that you like. If you hover over a PopIt, you will see the name of that PopIt. You can search for specific PopIts via this name.',
     },
     {
       src: '/images/tutorial_clips/v1/anim__4.gif',
-      header: 'From here, you can either choose a Pre-Made PopIt, or you can create your own. Let\'s start by creating our own',
+      header: 'Now you can click anywhere on the canvas to place down the PopIt. When you click on the canvas, all other users see it show up on their screen in real time.',
     },
     {
       src: '/images/tutorial_clips/v1/anim__5.gif',
-      header: 'Here, we add a few images, and some text, and rotate/resize our items as needed. When ready, you can click "Submit" to immediately pick a size, and upload your PopIt, or click preview to see what your final PopIt will look like',
+      header: 'You can also create your own PopIts by clicking the burger menu, then click "Pop It!", then click "Make your own!"',
     },
     {
       src: '/images/tutorial_clips/v1/anim__6.gif',
-      header: 'When picking a size, 100 is the maximum your PopIt is allowed to be. It will cover up about 5% of the canvas',
+      header: 'From here you can create your PopIt. You can add images, gifs, and text. You can position them however you want. When you are ready to submit your PopIt, you can either click "Submit" to submit it right away, or you can click "Preview" to see what your PopIt will look like. Before choosing one of those options, you will be asked to pick a size for your PopIt. The default is 100, which covers up about 5% of the canvas.',
     },
     {
       src: '/images/tutorial_clips/v1/anim__7.gif',
-      header: 'You can choose a size you want. For example, a size of 20 will cover up about 1% of the canvas',
+      header: 'After you submit your PopIt, you will be asked if you want to make more PopIts, or if you want to go back to the home page. Back at the home page, you can find your submitted PopIt by going to the PopIt menu, and clicking "My PopIts"',
     },
     {
       src: '/images/tutorial_clips/v1/anim__8.gif',
-      header: 'If you don\'t like your PopIt, you can go back, and change it, and try to preview it again.',
+      header: 'There is also a chat. The avatars in the chat are generated uniquely for each user. If you come back to the site on the same device, you will have the same avatar. If you don\'t like what a user is saying, simply click on the avatar, and click "Mute User". You can also mute the whole chat by clicking the burger menu, and clicking "Mute Chat".',
     },
     {
       src: '/images/tutorial_clips/v1/anim__9.gif',
-      header: 'Now that we are ready, we can click Submit. New users are limited to submitting a custom PopIt once every 30 minutes. However, for the alpha version, I have increased this to 10 submissions every 30 minutes.',
-    },
-    {
-      src: '/images/tutorial_clips/v1/anim__10.gif',
-      header: 'After you submit a PopIt, the server will tell you an estimate of your "data number". You can use this to search for your PopIt.',
-    },
-    {
-      src: '/images/tutorial_clips/v1/anim__11.gif',
-      header: 'After we upload a PopIt, you can stay in the creation screen to make more PopIts, or you can go back to the home page.',
-    },
-    {
-      src: '/images/tutorial_clips/v1/anim__12.gif',
-      header: 'Now, let\'s find our PopIt! Click the burger menu again, then "Pop It!" then "Pre-Made", then "Search", then type your data number, and click "Go"',
-    },
-    {
-      src: '/images/tutorial_clips/v1/anim__13.gif',
-      header: 'Most of the time we should see it right away. Sometimes it can take up to 5 minutes to upload. If it has been longer than 5 minutes, please file a bug report with your data number.',
-    },
-    {
-      src: '/images/tutorial_clips/v1/anim__14.gif',
-      header: 'Now that we have selected our PopIt, simply click anywhere on the canvas to Pop It!',
-    },
-    {
-      src: '/images/tutorial_clips/v1/anim__15.gif',
-      header: 'Last thing! There is a chat. The icons that appear are randomly generated based on your user ID. If you don\'t like having a chat, simply click the burger menu and click "Mute Chat"',
+      header: 'This site has benefits for users who are supporters of my Patreon. If you become a patron, you can place PopIts, upload PopIts, and chat more frequently. There\'s even a feature that allows sending text-to-speech messages for premium patrons! If you would like to learn more about Patreon benefits, click the burger menu, and click "Benefits".',
     },
   ],
 }
