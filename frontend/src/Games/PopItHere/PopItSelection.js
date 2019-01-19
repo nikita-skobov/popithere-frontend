@@ -56,37 +56,37 @@ testFontList.forEach((font) => {
   }
 })
 
-const normalizeScale = (val) => {
-  // takes the current sprite scale factor
-  // and returns a normalized value between 0 and 100000
-  let pos = val
-  if (pos > 15) pos = 15
-  if (pos < 0) pos = 0
-  if (pos === 1) return 50000
-  if (pos > 1) {
-    return scaleMap(pos, 1, 15, 50000, 100000)
-  }
-  if (pos < 1) {
-    return scaleMap(pos, 0, 1, 0, 50000)
-  }
-}
+// const normalizeScale = (val) => {
+//   // takes the current sprite scale factor
+//   // and returns a normalized value between 0 and 100000
+//   let pos = val
+//   if (pos > 15) pos = 15
+//   if (pos < 0) pos = 0
+//   if (pos === 1) return 50000
+//   if (pos > 1) {
+//     return scaleMap(pos, 1, 15, 50000, 100000)
+//   }
+//   if (pos < 1) {
+//     return scaleMap(pos, 0, 1, 0, 50000)
+//   }
+// }
 
-const denormalizeScale = (val) => {
-  // takes a value from a sliding scale
-  // and returns a value between 0 and 15
-  // to be applied to the sprite scale factor
+// const denormalizeScale = (val) => {
+//   // takes a value from a sliding scale
+//   // and returns a value between 0 and 15
+//   // to be applied to the sprite scale factor
 
-  let pos = val
-  if (pos > 100000) pos = 100000
-  if (pos < 0) pos = 0
-  if (pos === 50000) return 1
-  if (pos > 50000) {
-    return scaleMap(pos, 50000, 100000, 1, 15)
-  }
-  if (pos < 50000) {
-    return scaleMap(pos, 0, 50000, 0, 1)
-  }
-}
+//   let pos = val
+//   if (pos > 100000) pos = 100000
+//   if (pos < 0) pos = 0
+//   if (pos === 50000) return 1
+//   if (pos > 50000) {
+//     return scaleMap(pos, 50000, 100000, 1, 15)
+//   }
+//   if (pos < 50000) {
+//     return scaleMap(pos, 0, 50000, 0, 1)
+//   }
+// }
 
 export default class PopItSelection extends Component {
   constructor(props) {

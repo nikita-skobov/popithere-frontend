@@ -69,18 +69,6 @@ exports.assetList = [
     url: '/images/temp/rotateBetter.png',
   },
   {
-    name: '8panels',
-    url: '/images/temp/8panels.png',
-  },
-  {
-    name: 'test2',
-    url: '/images/temp/test1.png',
-  },
-  {
-    name: 'test1',
-    url: '/images/temp/hqdefault.jpg',
-  },
-  {
     name: '.placeholder.',
     url: '/images/temp/placeholder.png',
   },
@@ -103,24 +91,24 @@ exports.benefitTiers = {
   },
   notier: {
     tts: 0,
-    cht: 10,
-    pit: 10,
-    myo: 10,
+    cht: 1,
+    pit: 5,
+    myo: 1,
     price: 'Free',
   },
   basic: {
     tts: 0,
-    cht: 12,
-    pit: 52,
-    myo: 12,
-    price: '$1 a month',
+    cht: 3,
+    pit: 10,
+    myo: 3,
+    price: '$1',
   },
   premium: {
     tts: 1,
-    cht: 23,
-    pit: 103,
-    myo: 23,
-    price: '$5 a month',
+    cht: 5,
+    pit: 20,
+    myo: 15,
+    price: '$5',
   },
 }
 
@@ -131,9 +119,7 @@ exports.placeholder = {
   url: '/images/temp/placeholder.png',
 }
 
-exports.soundClips = {
-  test: ['/sounds/test.mp3'],
-}
+exports.soundClips = {}
 
 exports.githubPage = 'https://github.com/nikita-skobov/popithere-frontend'
 exports.discordPage = 'https://discordapp.com/invite/WgppuWr'

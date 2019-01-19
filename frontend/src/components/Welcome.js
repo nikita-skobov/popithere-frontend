@@ -1,7 +1,13 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import { Button, Row, Col, ListGroup, ListGroupItem } from 'reactstrap'
+import {
+  Button,
+  Row,
+  Col,
+  ListGroup,
+  ListGroupItem,
+} from 'reactstrap'
 
 export default class Welcome extends Component {
   constructor(props) {
@@ -59,7 +65,13 @@ export default class Welcome extends Component {
   }
 
   render() {
-    const { messages, done, warnings, errors } = this.state
+    const {
+      messages,
+      done,
+      warnings,
+      errors,
+    } = this.state
+
     if (!done) {
       // not done, so keep rendering a list of messages
       return (

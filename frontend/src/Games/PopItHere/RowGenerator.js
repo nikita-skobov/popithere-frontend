@@ -1,6 +1,11 @@
 import React from 'react'
 
-import { Row, Col, Button, UncontrolledTooltip } from 'reactstrap'
+import {
+  Row,
+  Col,
+  Button,
+  UncontrolledTooltip,
+} from 'reactstrap'
 
 import PropTypes from 'prop-types'
 

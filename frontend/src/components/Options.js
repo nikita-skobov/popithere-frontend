@@ -4,7 +4,6 @@ import PropTypes from 'prop-types'
 import {
   Row,
   Col,
-  Button,
 } from 'reactstrap'
 
 import Slider from 'rc-slider'

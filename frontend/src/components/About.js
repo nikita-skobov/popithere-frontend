@@ -1,10 +1,6 @@
 import React from 'react'
 
 import {
-  ButtonDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
   Row,
   Col,
   Button,
@@ -12,7 +8,13 @@ import {
 
 import PropTypes from 'prop-types'
 
-import { patreonPage, githubPage, discordPage, websitePage, twitterPage } from '../customConfig'
+import {
+  patreonPage,
+  githubPage,
+  discordPage,
+  websitePage,
+  twitterPage,
+} from '../customConfig'
 
 export default function About(props) {
   const { brain } = props

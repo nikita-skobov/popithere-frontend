@@ -1,8 +1,4 @@
 import React, { Component } from 'react'
-import {
-  Input,
-  Label,
-} from 'reactstrap'
 
 import PropTypes from 'prop-types'
 
