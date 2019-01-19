@@ -45,8 +45,12 @@ npm run build
   - [React](https://github.com/facebook/react), ReactDOM for easy user interface building
   - [Reactstrap](https://github.com/reactstrap/reactstrap), [Bootstrap](https://www.npmjs.com/package/bootstrap) for nice-looking, pre-made components
   - [PIXI.js](https://github.com/pixijs/pixi.js/) for easy rendering bindings that will work for either WebGL or Canvas
+  - [Socket.io-client](https://github.com/socketio/socket.io-client) for websocket communications
+  - [rc-slider](https://www.npmjs.com/package/rc-slider) for a nice-looking, easy-to-use slider component
+  - [@dicebear/avatars](https://avatars.dicebear.com/) for generating unique sprites as chat avatars.
   - A modified version of [libgif-js](https://github.com/buzzfeed/libgif-js)
     - I rewrote their gif parser to use only pure functions because their code had extreme memory leaks on FireFox, and Edge browsers. Also I found that there were many options that did nothing at all in the code...
+  - [bad-words](https://www.npmjs.com/package/bad-words) for basic profanity filtering (and because I'm bad at regex)
 - Development:
   - [Webpack](https://github.com/webpack/webpack) to bundle, minify, and load my code for easy deployments
   - [Webpack-dev-server](https://github.com/webpack/webpack-dev-server) for fast, easy live updates while developing
