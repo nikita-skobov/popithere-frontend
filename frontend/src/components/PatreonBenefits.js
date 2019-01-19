@@ -15,7 +15,13 @@ import {
   InputGroupAddon,
 } from 'reactstrap'
 
-import { benefitTiers, patreonEndpoint, patreonClientId, patreonPage } from '../customConfig'
+import {
+  benefitTiers,
+  patreonEndpoint,
+  patreonClientId,
+  patreonPage,
+} from '../customConfig'
+
 import ContainsBadWords from '../utils/ContainsBadWords'
 
 const has = Object.prototype.hasOwnProperty
@@ -124,7 +130,12 @@ export default class PatreonBenefits extends Component {
   }
 
   render() {
-    const { tierLevel, redirect, invalidTTSMessage, validTTSMessage } = this.state
+    const {
+      tierLevel,
+      redirect,
+      invalidTTSMessage,
+      validTTSMessage,
+    } = this.state
 
     const makeList = (benefitObj, tierName) => (
       <ul className="pl1em">

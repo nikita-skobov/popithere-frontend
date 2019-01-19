@@ -185,6 +185,7 @@ export default class App extends Component {
       this.brain.ask.DataMan.fetchRange([0, fetchUpTo])
       this.brain.tell.Welcome.addMessage(this.customMessages.seizureWarning, true)
       this.brain.tell.Welcome.welcomeDone()
+      return null
     })
     return null
   }

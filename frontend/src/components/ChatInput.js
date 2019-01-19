@@ -2,7 +2,12 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import { InputGroup, Input, InputGroupAddon, Button } from 'reactstrap'
+import {
+  InputGroup,
+  Input,
+  InputGroupAddon,
+  Button,
+} from 'reactstrap'
 
 import ContainsBadWords from '../utils/ContainsBadWords'
 import Buttons from './Buttons'
@@ -46,8 +51,6 @@ export default class ChatInput extends Component {
       }
     }
   }
-
-// <Buttons buttonsWidth={80} brain={this.brain} />,
 
   render() {
     return (

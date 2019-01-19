@@ -192,7 +192,13 @@ export default class ChatBox extends Component {
     return (
       <div className="input-margins chat-box" style={{ maxHeight }}>
         {chats.slice(0).reverse().map((item) => {
-          const { name, msg, svg, color } = item
+          const {
+            name,
+            msg,
+            svg,
+            color,
+          } = item
+
           return (
             <Media style={{ backgroundColor: color }}>
               <Media style={{ width: '5em' }}>

@@ -13,7 +13,7 @@ export default class Canvas extends Component {
     this.RW = null
 
     this.brain.store('Canvas', this)
-    this.settingsChange = this.settingsChange.bind(this)
+    // this.settingsChange = this.settingsChange.bind(this)
     this.newGame = this.newGame.bind(this)
     this.newButtons = this.newButtons.bind(this)
     this.endGame = this.endGame.bind(this)
@@ -33,9 +33,9 @@ export default class Canvas extends Component {
     loadAssets(assetList, this.afterLoad.bind(this))
   }
 
-  settingsChange(type, value) {
-    // empty for now
-  }
+  // settingsChange(type, value) {
+  //   // empty for now
+  // }
 
   afterLoad() {
     this.renderer = createRenderer({

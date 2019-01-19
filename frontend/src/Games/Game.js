@@ -49,8 +49,8 @@ export default class Game {
       } else {
         this.renderer.view.style.backgroundColor = color
       }
-      return null
     }
+    return null
   }
 
   getButtons() {
