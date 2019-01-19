@@ -39,6 +39,11 @@ Otherwise, if you want to make a single build, and output actual files to the di
 npm run build
 ```
 
+### A Note on Local Development:
+
+This site relies on a couple external resources like databases, object storage, a backend API, and socketio servers. If you look at the `frontend/src/customConfig.js` file you will see some URLs listed there. These URLs are only for testing the production, and staging environment integrations, and they will not work on local development. I have added a DEV_MODE flag inside the customConfig file, which when true prevents communication with these external resources. So for local development, you will not be able to load resources, upload data, or send messages to the socket servers. What you can do, however, is edit the PopItHere game files, change the component functionality, add your own games, etc.
+
+
 ## Dependencies:
 
 - Production:
@@ -48,12 +53,16 @@ npm run build
   - [Socket.io-client](https://github.com/socketio/socket.io-client) for websocket communications
   - [rc-slider](https://www.npmjs.com/package/rc-slider) for a nice-looking, easy-to-use slider component
   - [@dicebear/avatars](https://avatars.dicebear.com/) for generating unique sprites as chat avatars.
+  - [bad-words](https://www.npmjs.com/package/bad-words) for basic profanity filtering (and because I'm bad at regex)
   - A modified version of [libgif-js](https://github.com/buzzfeed/libgif-js)
     - I rewrote their gif parser to use only pure functions because their code had extreme memory leaks on FireFox, and Edge browsers. Also I found that there were many options that did nothing at all in the code...
-  - [bad-words](https://www.npmjs.com/package/bad-words) for basic profanity filtering (and because I'm bad at regex)
 - Development:
   - [Webpack](https://github.com/webpack/webpack) to bundle, minify, and load my code for easy deployments
   - [Webpack-dev-server](https://github.com/webpack/webpack-dev-server) for fast, easy live updates while developing
   - [babel](https://github.com/babel/babel) (and all of its necessary plugins/polyfills) for modern javascript transpilation
   - [prop-types](https://www.npmjs.com/package/prop-types) because eslint yells at me if I dont use prop-types
   - [eslint](https://www.npmjs.com/package/eslint) with [AirBnB style guide](https://www.npmjs.com/package/eslint-config-airbnb) to write nice-looking, modern code
+
+## Support:
+
+I built PopItHere with the intention of not having ads, or harvesting user data. Because of this, the only remaining ways to monetize the site are asking for donations, or implementing microtransactions. I decided to do a bit of a mix of both. Anyone can use the site for free, but there are rate limits set up to limit how often you can chat/upload images/place popits. If you support PopItHere on my [Patreon](https://patreon.com/equilateral) you will get increased limits. (Also premium patrons are allowed to send text-to-speech messages to the whole site)
