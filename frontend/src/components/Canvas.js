@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import { assetList } from '../customConfig'
 
-import { createRenderer, createRoot, replaceCanvas, loadAssets } from '../utils/PixiUtils'
+import { createRenderer, replaceCanvas, loadAssets } from '../utils/PixiUtils'
 import { getCurrentGame } from '../utils/GameUtils'
 
 export default class Canvas extends Component {
