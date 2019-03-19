@@ -62,7 +62,3 @@ This site relies on a couple external resources like databases, object storage, 
   - [babel](https://github.com/babel/babel) (and all of its necessary plugins/polyfills) for modern javascript transpilation
   - [prop-types](https://www.npmjs.com/package/prop-types) because eslint yells at me if I dont use prop-types
   - [eslint](https://www.npmjs.com/package/eslint) with [AirBnB style guide](https://www.npmjs.com/package/eslint-config-airbnb) to write nice-looking, modern code
-
-## Support:
-
-I built PopItHere with the intention of not having ads, or harvesting user data. Because of this, the only remaining ways to monetize the site are asking for donations, or implementing microtransactions. I decided to do a bit of a mix of both. Anyone can use the site for free, but there are rate limits set up to limit how often you can chat/upload images/place popits. If you support PopItHere on my [Patreon](https://patreon.com/equilateral) you will get increased limits. (Also premium patrons are allowed to send text-to-speech messages to the whole site)
