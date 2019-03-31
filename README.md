@@ -1,3 +1,8 @@
+# UPDATE 3/31/2019
+The domain has been deleted. I don't receive enough traffic on the site to justify paying for the domain name. I will, however, keep the repository open.
+
+
+
 # Pop It Here!
 
 This is the code for the website popithere.com
